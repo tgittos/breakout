@@ -10,3 +10,10 @@
 *.lai
 *.la
 *.a
+
+# Confirmed Crit specific stuff
+out
+bin
+build
+.rbenv*
+*.swp
