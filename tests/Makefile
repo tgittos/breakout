@@ -14,10 +14,10 @@
 
 # Points to the root of Google Test, relative to where this file is.
 # Remember to tweak this if you move this file.
-GTEST_DIR = ../googletest
+GTEST_DIR = ../../googletest
 
 # Where to find user code.
-USER_DIR = src
+USER_DIR = ../src
 
 # Flags passed to the preprocessor.
 CPPFLAGS += -I$(GTEST_DIR)/include
@@ -36,7 +36,7 @@ GTEST_HEADERS = $(GTEST_DIR)/include/gtest/*.h \
 
 # House-keeping build targets.
 
-tests : $(TESTS)
+all : $(TESTS)
 
 clean :
 	rm -f $(TESTS) gtest.a gtest_main.a *.o
