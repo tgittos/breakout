@@ -1,0 +1,21 @@
+== Main application entry ==
+This is essentially just the entry point for the application,
+and a way to bootstrap the game.
+
+== Bootstrap the game ==
+-
+int main(int argc, char** argv)
+{
+  Game::Start();
+  return 0;
+}
+-
+
+== Includes ==
+-
+#include "Game.hpp"
+-
+
+== @Main.cpp ==
+Includes.
+Bootstrap the game.

@@ -1,0 +1,107 @@
+== Game class ==
+This is the game class
+
+== Initial state ==
+Before we do anything, the state of the game is uninitialized.
+We also need to declare the window variable if we want to
+be able to use it later.
+-
+Game::GameState Game::_gameState = Uninitialized;
+sf::RenderWindow Game::_mainWindow;
+-
+
+== Start the game ==
+To start the game, all we have to do is call the start method.
+The start method will set up the game, and then call the loop.
+First, check that the game is uninitialized. If it's not, it's
+likely the method was called by mistake. Do nothing.
+Next, create the main window and store the reference to it.
+Currently it's hardcoded to be a 1074x768 window with 32 bit
+depth.
+Set the game state to playing, and then as long as we're not
+exiting, run the game loop.
+Once we've exited the game loop, close the window.
+-
+void Game::Start(void)
+{
+  if(_gameState != Uninitialized)
+    return;
+
+  _mainWindow.Create(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32), "Foobar");
+  
+  while(!IsExiting())
+  {
+    GameLoop();
+  }
+
+  _mainWindow.Close();
+}
+-
+
+== Method to check if exiting ==
+-
+bool Game::IsExiting()
+{
+  if(_gameState == Game::Exiting) 
+    return true;
+  else 
+    return false;
+}
+-
+
+== The game loop ==
+The game loop is where all of the action happens. It is run
+as often as possible, while we're not exiting the app. 
+We poll SFML for events, processing events as they come in.
+We handle the SFML event differently, depending on what
+state weire in.
+When the state is playing, we set the state to exiting when we 
+recieve that event, which will stop running the game loop and 
+exit the application.
+If we don't recieve that event, and if the game is in the
+Playing state, we simply clear the window red and render that.
+-
+void Game::GameLoop()
+{
+  sf::Event currentEvent;
+  _mainWindow.GetEvent(currentEvent);
+  
+  switch(_gameState)
+  {
+    default:
+    {
+      if(currentEvent.Type == sf::Event::Closed)
+      {
+        _gameState = Game::Exiting;
+      }
+      if(currentEvent.Type == sf::Event::KeyPressed)
+      {
+        if(sf::Key::Escape == currentEvent.Key.Code)
+        {
+          _gameState = Game::Exiting;
+        }
+      }
+      Render the game.
+    }
+  }
+}
+-
+
+== Render the game ==
+Render the game!
+-
+_mainWindow.Clear(sf::Color(0,0,0));
+_mainWindow.Display();
+-
+
+== Includes ==
+-
+#include "Game.hpp"
+-
+
+== @Game.cpp ==
+Includes.
+Start the game.
+Method to check if exiting.
+The game loop.
+Initial state.

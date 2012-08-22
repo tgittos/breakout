@@ -77,7 +77,9 @@ clean :
 # Game build targets
 ####################################################################
 
-breakout: includes 
+breakout: includes Main.o Game.o
+	mkdir -p bin
+	$(CXX) Main.o Game.o $(IFLAGS) $(LDFLAGS) $(CXXFLAGS) -o bin/$@
 
 %: %.o
 	$(CXX) $< $(IFLAGS) $(LDFLAGS) $(CXXFLAGS) -o bin/$@

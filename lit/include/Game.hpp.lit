@@ -1,0 +1,112 @@
+== Game class header ==
+This header file gives a broad overview of the features
+of the game class.
+
+The first thing to note is that this is a static class.
+This is due to the need for a single interface to the
+game used in the bootstrapping process.
+
+== State enumeration ==
+Pang is a state driven game, meaning that the game can
+only be in a single state at a given time, with the
+available states in the enumeration.
+-
+enum GameState { 
+  Uninitialized, 
+  Exiting 
+};
+-
+
+== Game state variable ==
+For Pang to be state driven, we need to be able to hold
+the current state of the app
+-
+static GameState _gameState;
+-
+
+== Window reference variable ==
+In addition to the game state variable, we need to hold
+a reference to the SFML window
+-
+static sf::RenderWindow _mainWindow;
+-
+
+== Start game method ==
+To that end, there is only a single public method, used
+to start the game. The game itself will handle all
+interactions after that, and all memory management.
+-
+static void Start();
+-
+
+== Public constants ==
+Screen width and height, public so that we can pull it
+for game logic. Maybe needs to be decoupled too.
+
+Try and refactor this away, though it may be pretty hard.
+We don't want to pass in 5 params to each method.
+Maybe a game settings object, especially if you want to be
+able to resize the window.
+-
+const static int SCREEN_WIDTH = 1024;
+const static int SCREEN_HEIGHT = 768;
+-
+
+== Exit poller method ==
+This method is used inside the class to determine if the
+app has been called to shut down.
+-
+static bool IsExiting();
+-
+
+== Game loop method ==
+Start the game loop.
+-
+static void GameLoop();
+-
+
+== The class header ==
+-
+class Game
+{
+
+public:
+  Public constants.
+  
+  Start game method.
+
+private:
+  State enumeration.
+
+  Game state variable.
+  Window reference variable.
+
+  Exit poller method.
+  Game loop method.
+};
+-
+
+== Includes ==
+So far all the application does is open a window. 
+So all we need are the window
+and graphics SFML libraries.
+-
+#include "SFML/Window.hpp"
+#include "SFML/Graphics.hpp"
+#include <cassert>
+-
+
+== Include guard ==
+-
+#ifndef GAME_H
+#define GAME_H
+
+Includes.
+
+The class header.
+
+#endif
+-
+
+== @Game.hpp ==
+Include guard.
