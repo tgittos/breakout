@@ -1,0 +1,12 @@
+== Includes ==
+-
+#include "EventManager.hpp"
+-
+
+== Wrapper ==
+-
+Includes.
+-
+
+== @EventManager.cpp ==
+Wrapper.

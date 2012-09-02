@@ -1,0 +1,19 @@
+== The class ==
+-
+class Brick {
+  
+};
+-
+
+== Include guard ==
+-
+#ifndef BRICK_H
+#define BRICK_H
+
+The class.
+
+#endif
+-
+
+== @Brick.hpp ==
+Include guard.

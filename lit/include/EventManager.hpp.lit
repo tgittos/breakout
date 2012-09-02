@@ -1,0 +1,19 @@
+== The class ==
+-
+class EventManager {
+  
+};
+-
+
+== Include guard ==
+-
+#ifndef EVENT_MANAGER_H
+#define EVENT_MANAGER_H
+
+The class.
+
+#endif
+-
+
+== @EventManager.hpp ==
+Include guard.

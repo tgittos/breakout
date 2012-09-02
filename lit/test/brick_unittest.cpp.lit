@@ -1,0 +1,47 @@
+== Brick Unit Tests ==
+These are unit tests for the Brick class in the game.
+They test the required behavior of bricks to ensure
+that the logic behind the game is correct.
+
+Each of the tests should be relatively straight
+forward, so the documentation on them will not be
+as explanatory as the documentation on the code.
+
+== Brick removes itself after it was hit ==
+-
+TEST(BrickTest, RemovesSelf) {
+  ASSERT_FALSE(true);
+}
+-
+
+== Brick dispatches hit event with score ==
+-
+TEST(BrickTest, DispatchesHitEvent) {
+  ASSERT_FALSE(true);
+}
+-
+
+== Unbreakable brick doesn't remove itself ==
+-
+TEST(BrickTest, UnbreakableNoRemove) {
+  ASSERT_FALSE(true);
+}
+-
+
+== Includes ==
+-
+#include "gtest/gtest.h"
+#include "Brick.hpp"
+-
+
+== Wrapper ==
+-
+Includes.
+
+Brick removes itself after it was hit.
+
+Brick dispatches hit event with score.
+-
+
+== @Brick_unittest.cpp ==
+Wrapper.

@@ -1,0 +1,71 @@
+#! /usr/bin/env ruby
+
+# Create skeletons of source files of every test so that
+# tests will build.
+
+# Add in ActiveResource's underscore method
+class String
+  def underscore
+    self.gsub(/::/, '/').
+    gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
+    gsub(/([a-z\d])([A-Z])/,'\1_\2').
+    tr("-", "_").
+    downcase
+  end
+end
+
+# write header file
+def write_header(file)
+  File.open("lit/include/#{file}.hpp.lit", "w") do |f|
+    f.write <<-EOS
+== The class ==
+-
+class #{file} {
+  
+};
+-
+
+== Include guard ==
+-
+#ifndef #{file.underscore.upcase}_H
+#define #{file.underscore.upcase}_H
+
+The class.
+
+#endif
+-
+
+== @#{file}.hpp ==
+Include guard.
+    EOS
+  end
+end
+
+# write source file
+def write_source(file)
+  File.open("lit/src/#{file}.cpp.lit", "w") do |f|
+    f.write <<-EOS
+== Includes ==
+-
+#include "#{file}.hpp"
+-
+
+== Wrapper ==
+-
+Includes.
+-
+
+== @#{file}.cpp ==
+Wrapper.
+    EOS
+  end
+end
+
+Dir.entries("lit/test").reject{|f| f =~ /^\./}.collect do |f|
+  (@file_list ||= []) << f.split('_').first
+end
+
+@file_list.each do |file|
+  write_source file unless File.exists? "lit/src/#{file}.cpp.lit"
+  write_header file unless File.exists? "lit/include/#{file}.hpp.lit"
+end

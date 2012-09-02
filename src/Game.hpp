@@ -5,8 +5,7 @@
 #include "SFML/Graphics.hpp"
 #include <cassert>
 
-class Game
-{
+class Game {
 
 public:
   const static int SCREEN_WIDTH = 1024;

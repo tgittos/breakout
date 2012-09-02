@@ -1,0 +1,19 @@
+== The class ==
+-
+class Input {
+  
+};
+-
+
+== Include guard ==
+-
+#ifndef INPUT_H
+#define INPUT_H
+
+The class.
+
+#endif
+-
+
+== @Input.hpp ==
+Include guard.

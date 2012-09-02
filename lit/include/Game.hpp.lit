@@ -67,8 +67,7 @@ static void GameLoop();
 
 == The class header ==
 -
-class Game
-{
+class Game {
 
 public:
   Public constants.

@@ -1,0 +1,58 @@
+== Paddle Unit Tests ==
+These are unit tests for the Paddle class in the game.
+They test the required behavior of the score to ensure
+that the logic behind the game is correct.
+
+Each of the tests should be relatively straight
+forward, so the documentation on them will not be
+as explanatory as the documentation on the code.
+
+== Paddle accerlates at an appropriate rate ==
+-
+TEST(PaddleTest, AccelerationOfPaddle) {
+  ASSERT_FALSE(true);
+}
+-
+
+== Paddle decerlarates at an appropriate rate ==
+-
+TEST(PaddleTest, DecelerationOfPaddle) {
+  ASSERT_FALSE(true);
+}
+-
+
+== Paddle instantaneously changes direction ==
+-
+TEST(PaddleTest, InstantaneousDirectionChange) {
+  ASSERT_FALSE(true);
+}
+-
+
+== Paddle listends for keyboard events ==
+-
+TEST(PaddleTest, ListenForKeyboardEvents) {
+  ASSERT_FALSE(true);
+}
+-
+
+== Includes ==
+-
+#include "gtest/gtest.h"
+#include "Paddle.hpp"
+-
+
+== Wrapper ==
+-
+Includes.
+
+Paddle accerlates at an appropriate rate.
+
+Paddle decerlarates at an appropriate rate.
+
+Paddle instantaneously changes direction.
+
+Paddle listends for keyboard events.
+-
+
+== @Paddle_unittest.cpp ==
+Wrapper.

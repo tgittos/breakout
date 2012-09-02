@@ -1,0 +1,40 @@
+== Score Unit Tests ==
+These are unit tests for the Score class in the game.
+They test the required behavior of the score to ensure
+that the logic behind the game is correct.
+
+Each of the tests should be relatively straight
+forward, so the documentation on them will not be
+as explanatory as the documentation on the code.
+
+== Score listens to brick hit events ==
+-
+TEST(ScoreTest, ListensForBrickHitEvents) {
+  ASSERT_FALSE(true);
+}
+-
+
+== Score increments by brick value when handling brick hit events ==
+-
+TEST(ScoreTest, IncrementsScore) {
+  ASSERT_FALSE(true);
+}
+-
+
+== Includes ==
+-
+#include "gtest/gtest.h"
+#include "Score.hpp"
+-
+
+== Wrapper ==
+-
+Includes.
+
+Score listens to brick hit events.
+
+Score increments by brick value when handling brick hit events.
+-
+
+== @Score_unittest.cpp ==
+Wrapper.

@@ -1,0 +1,19 @@
+== The class ==
+-
+class Paddle {
+  
+};
+-
+
+== Include guard ==
+-
+#ifndef PADDLE_H
+#define PADDLE_H
+
+The class.
+
+#endif
+-
+
+== @Paddle.hpp ==
+Include guard.

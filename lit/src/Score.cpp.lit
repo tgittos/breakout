@@ -1,0 +1,12 @@
+== Includes ==
+-
+#include "Score.hpp"
+-
+
+== Wrapper ==
+-
+Includes.
+-
+
+== @Score.cpp ==
+Wrapper.

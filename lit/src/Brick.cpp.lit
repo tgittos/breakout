@@ -1,0 +1,12 @@
+== Includes ==
+-
+#include "Brick.hpp"
+-
+
+== Wrapper ==
+-
+Includes.
+-
+
+== @Brick.cpp ==
+Wrapper.

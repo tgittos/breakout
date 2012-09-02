@@ -1,4 +1,15 @@
 ####################################################################
+# Binaries to create
+####################################################################
+
+# The game binary
+EXECUTABLES = breakout
+
+# All tests produced by this Makefile.  Remember to add new tests you
+# created to the list.
+TESTS = Ball_unittest Brick_unittest EventManager_unittest Input_unittest Paddle_unittest Score_unittest
+
+####################################################################
 # Base variables
 ####################################################################
 
@@ -34,9 +45,6 @@ ifeq "$(OSTYPE)" "Darwin"
 	LDFLAGS = -framework sfml-system -framework sfml-graphics -framework sfml-window -framework sfml-audio
 endif
 
-# The game binary
-EXECUTABLES = breakout
-
 ####################################################################
 # Google Test related variables
 ####################################################################
@@ -55,50 +63,6 @@ GTEST_HEADERS = $(GTEST_DIR)/include/gtest/*.h $(GTEST_DIR)/include/gtest/intern
 # Usually you shouldn't tweak such internal variables, indicated by a
 # trailing _.
 GTEST_SRCS_ = $(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
-
-# All tests produced by this Makefile.  Remember to add new tests you
-# created to the list.
-TESTS = sample1_unittest
-
-####################################################################
-# General build targets
-####################################################################
-
-.PHONY: all clean includes assets
-.DEFAULT: all
-
-all: includes tests $(EXECUTABLES) assets
-
-clean :
-	rm -Rf bin
-	rm -f $(TESTS) gtest.a gtest_main.a *.o
-
-####################################################################
-# Game build targets
-####################################################################
-
-breakout: includes Main.o Game.o
-	mkdir -p bin
-	$(CXX) Main.o Game.o $(IFLAGS) $(LDFLAGS) $(CXXFLAGS) -o bin/$@
-
-%: %.o
-	$(CXX) $< $(IFLAGS) $(LDFLAGS) $(CXXFLAGS) -o bin/$@
-
-%.o: %.cpp
-	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/$<
-
-%.cpp:
-	literati tangle -o src/. lit/src/$@.lit
-
-%.hpp:
-	literati tangle -o src/. lit/include/$@.lit
-
-includes:
-	literati tangle -o src/. lit/include
-
-assets:
-	mkdir -p bin/assets
-	cp -r assets/* bin/assets/.
 
 ####################################################################
 # Google Test build targets
@@ -120,14 +84,152 @@ gtest.a : gtest-all.o
 gtest_main.a : gtest-all.o gtest_main.o
 	$(AR) $(ARFLAGS) $@ gtest-all.o gtest_main.o
 
-# Build rules for the tests themselves
+####################################################################
+# Project build targets
+####################################################################
+
+.PHONY: all clean includes assets
+.DEFAULT: all
+
+all: tests $(EXECUTABLES) assets
+
+clean :
+	rm -Rf bin
+	rm -f $(TESTS) gtest.a gtest_main.a *.o
+
 tests : $(TESTS)
 	$(addprefix ./,$(TESTS))
-	
-.SECONDEXPANSION:
-%_unittest.o: $(SRC_DIR)/$$*_unittest.cpp $(SRC_DIR)/$$*.h $(GTEST_HEADERS)
-	$(CXX) $(GTEST_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/$*_unittest.cpp -o $@
 
-.SECONDEXPANSION:
-%_unittest: $$*.o $$@.o gtest_main.a
-	$(CXX) $(GTEST_IFLAGS) $(CXXFLAGS) $*.o $*_unittest.o gtest_main.a -o $@
+assets:
+	mkdir -p bin/assets
+	cp -r assets/* bin/assets/.
+
+breakout: includes Main.o Game.o
+	mkdir -p bin
+	$(CXX) Main.o Game.o $(IFLAGS) $(LDFLAGS) $(CXXFLAGS) -o bin/$@
+
+####################################################################
+# Auto generated build targets
+####################################################################
+Ball.hpp:
+	literati tangle -o src/. lit/include/$@.lit
+
+Brick.hpp:
+	literati tangle -o src/. lit/include/$@.lit
+
+EventManager.hpp:
+	literati tangle -o src/. lit/include/$@.lit
+
+Game.hpp:
+	literati tangle -o src/. lit/include/$@.lit
+
+Input.hpp:
+	literati tangle -o src/. lit/include/$@.lit
+
+Paddle.hpp:
+	literati tangle -o src/. lit/include/$@.lit
+
+Score.hpp:
+	literati tangle -o src/. lit/include/$@.lit
+
+Ball.cpp:
+	literati tangle -o src/. lit/src/$@.lit
+
+Brick.cpp:
+	literati tangle -o src/. lit/src/$@.lit
+
+EventManager.cpp:
+	literati tangle -o src/. lit/src/$@.lit
+
+Game.cpp:
+	literati tangle -o src/. lit/src/$@.lit
+
+Input.cpp:
+	literati tangle -o src/. lit/src/$@.lit
+
+Main.cpp:
+	literati tangle -o src/. lit/src/$@.lit
+
+Paddle.cpp:
+	literati tangle -o src/. lit/src/$@.lit
+
+Score.cpp:
+	literati tangle -o src/. lit/src/$@.lit
+
+Ball.o: Ball.hpp Ball.cpp
+	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/Ball.cpp
+
+Brick.o: Brick.hpp Brick.cpp
+	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/Brick.cpp
+
+EventManager.o: EventManager.hpp EventManager.cpp
+	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/EventManager.cpp
+
+Game.o: Game.hpp Game.cpp
+	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/Game.cpp
+
+Input.o: Input.hpp Input.cpp
+	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/Input.cpp
+
+Main.o:  Main.cpp
+	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/Main.cpp
+
+Paddle.o: Paddle.hpp Paddle.cpp
+	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/Paddle.cpp
+
+Score.o: Score.hpp Score.cpp
+	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/Score.cpp
+
+Ball_unittest.cpp:
+	literati tangle -o src/. lit/test/$@.lit
+
+Brick_unittest.cpp:
+	literati tangle -o src/. lit/test/$@.lit
+
+EventManager_unittest.cpp:
+	literati tangle -o src/. lit/test/$@.lit
+
+Input_unittest.cpp:
+	literati tangle -o src/. lit/test/$@.lit
+
+Paddle_unittest.cpp:
+	literati tangle -o src/. lit/test/$@.lit
+
+Score_unittest.cpp:
+	literati tangle -o src/. lit/test/$@.lit
+
+Ball_unittest.o: Ball_unittest.cpp Ball.hpp $(GTEST_HEADERS)
+	$(CXX) $(GTEST_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/Ball_unittest.cpp -o $@
+
+Brick_unittest.o: Brick_unittest.cpp Brick.hpp $(GTEST_HEADERS)
+	$(CXX) $(GTEST_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/Brick_unittest.cpp -o $@
+
+EventManager_unittest.o: EventManager_unittest.cpp EventManager.hpp $(GTEST_HEADERS)
+	$(CXX) $(GTEST_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/EventManager_unittest.cpp -o $@
+
+Input_unittest.o: Input_unittest.cpp Input.hpp $(GTEST_HEADERS)
+	$(CXX) $(GTEST_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/Input_unittest.cpp -o $@
+
+Paddle_unittest.o: Paddle_unittest.cpp Paddle.hpp $(GTEST_HEADERS)
+	$(CXX) $(GTEST_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/Paddle_unittest.cpp -o $@
+
+Score_unittest.o: Score_unittest.cpp Score.hpp $(GTEST_HEADERS)
+	$(CXX) $(GTEST_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/Score_unittest.cpp -o $@
+
+Ball_unittest: Ball_unittest.o Ball.o gtest_main.a
+	$(CXX) $(GTEST_IFLAGS) $(CXXFLAGS) Ball.o Ball_unittest.o gtest_main.a -o $@
+
+Brick_unittest: Brick_unittest.o Brick.o gtest_main.a
+	$(CXX) $(GTEST_IFLAGS) $(CXXFLAGS) Brick.o Brick_unittest.o gtest_main.a -o $@
+
+EventManager_unittest: EventManager_unittest.o EventManager.o gtest_main.a
+	$(CXX) $(GTEST_IFLAGS) $(CXXFLAGS) EventManager.o EventManager_unittest.o gtest_main.a -o $@
+
+Input_unittest: Input_unittest.o Input.o gtest_main.a
+	$(CXX) $(GTEST_IFLAGS) $(CXXFLAGS) Input.o Input_unittest.o gtest_main.a -o $@
+
+Paddle_unittest: Paddle_unittest.o Paddle.o gtest_main.a
+	$(CXX) $(GTEST_IFLAGS) $(CXXFLAGS) Paddle.o Paddle_unittest.o gtest_main.a -o $@
+
+Score_unittest: Score_unittest.o Score.o gtest_main.a
+	$(CXX) $(GTEST_IFLAGS) $(CXXFLAGS) Score.o Score_unittest.o gtest_main.a -o $@

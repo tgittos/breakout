@@ -1,0 +1,121 @@
+== Ball Unit Tests ==
+These are unit tests for the Ball class in the game.
+They test the required behavior of the ball to ensure
+that the logic behind the game is correct.
+
+Each of the tests should be relatively straight
+forward, so the documentation on them will not be
+as explanatory as the documentation on the code.
+
+== Ball doesn't intersect with bricks when it doesn't touch them ==
+-
+TEST(BallTest, NoBrickIntersection) {
+  ASSERT_FALSE(true);
+}
+-
+
+== Ball does intersect with bricks when it touches them ==
+-
+TEST(BallTest, BrickIntersection) {
+  ASSERT_FALSE(true);
+}
+-
+
+== Ball will only intersect with a single brick chosen at random ==
+-
+TEST(BallTest, TwoBrickIntersection) {
+  ASSERT_FALSE(true);
+}
+-
+
+== Ball doesn't intersect with paddle when it doesn't touch it ==
+-
+TEST(BallTest, NoPaddleIntersection) {
+  ASSERT_FALSE(true);
+}
+-
+
+== Ball does intersect with paddle when it touches them ==
+-
+TEST(BallTest, PaddleIntersection) {
+  ASSERT_FALSE(true);
+}
+-
+
+== Ball doesn't intersect with wall when it doesn't touch it ==
+-
+TEST(BallTest, NoWallIntersection) {
+  ASSERT_FALSE(true);
+}
+-
+
+== Ball does intersect with wall when it does touch it ==
+-
+TEST(BallTest, WallIntersection) {
+  ASSERT_FALSE(true);
+}
+-
+
+== Ball reflects properly after hitting brick ==
+-
+TEST(BallTest, BrickReflection) {
+  ASSERT_FALSE(true);
+}
+-
+
+== Ball reflects properly after hitting wall ==
+-
+TEST(BallTest, WallReflection) {
+  ASSERT_FALSE(true);
+}
+-
+
+== Ball cannot reflect from wall at an angle that would cause it to oscillate ==
+-
+TEST(BallTest, NoOscillation) {
+  ASSERT_FALSE(true);
+}
+-
+
+== Ball tells intersected brick that it was hit ==
+-
+TEST(BallTest, BallMessagesBrickIntersection) {
+  ASSERT_FALSE(true);
+}
+-
+
+== Includes ==
+-
+#include "gtest/gtest.h"
+#include "Ball.hpp"
+-
+
+== Wrapper ==
+-
+Includes.
+
+Ball doesn't intersect with bricks when it doesn't touch them.
+
+Ball does intersect with bricks when it touches them.
+
+Ball will only intersect with a single brick chosen at random.
+
+Ball doesn't intersect with paddle when it doesn't touch it.
+
+Ball does intersect with paddle when it touches them.
+
+Ball doesn't intersect with wall when it doesn't touch it.
+
+Ball does intersect with wall when it does touch it.
+
+Ball reflects properly after hitting brick.
+
+Ball reflects properly after hitting wall.
+
+Ball cannot reflect from wall at an angle that would cause it to oscillate.
+
+Ball tells intersected brick that it was hit.
+-
+
+== @Ball_unittest.cpp ==
+Wrapper.

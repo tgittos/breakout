@@ -1,0 +1,17 @@
+== Event Manager Unit Tests ==
+Tests that the EventManager class correctly dispatches
+events to event subscribers.
+
+== Includes ==
+-
+#include "gtest/gtest.h"
+#include "EventManager.hpp"
+-
+
+== Wrapper ==
+-
+Includes.
+-
+
+== @EventManager_unittest.cpp ==
+Wrapper.

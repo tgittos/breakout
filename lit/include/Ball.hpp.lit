@@ -1,0 +1,19 @@
+== The class ==
+-
+class Ball {
+  
+};
+-
+
+== Include guard ==
+-
+#ifndef BALL_H
+#define BALL_H
+
+The class.
+
+#endif
+-
+
+== @Ball.hpp ==
+Include guard.

@@ -1,0 +1,40 @@
+== Input Unit Tests ==
+These unit tests test that input sent to the game
+from SFML are correctly translated into commands
+sent to the game engine.
+
+Things like a left arrow press sends a left arrow
+event, mouse clicks are sent through the event
+system.
+
+== Keyboard events are sent to the event system ==
+-
+TEST(InputTest, KeyboardEventsDispatched) {
+  ASSERT_FALSE(true);
+}
+-
+
+== Mouse events are sent to the event system ==
+-
+TEST(InputTest, MouseEventsDispatched) {
+  ASSERT_FALSE(true);
+}
+-
+
+== Includes ==
+-
+#include "gtest/gtest.h"
+#include "Input.hpp"
+-
+
+== Wrapper ==
+-
+Includes.
+
+Keyboard events are sent to the event system.
+
+Mouse events are sent to the event system.
+-
+
+== @Input_unittest.cpp ==
+Wrapper.

@@ -1,0 +1,19 @@
+== The class ==
+-
+class Score {
+  
+};
+-
+
+== Include guard ==
+-
+#ifndef SCORE_H
+#define SCORE_H
+
+The class.
+
+#endif
+-
+
+== @Score.hpp ==
+Include guard.
