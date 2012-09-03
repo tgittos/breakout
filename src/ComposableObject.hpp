@@ -5,8 +5,8 @@ class ComponentFeature;
 
 class ComposableObject {
   public:
-  ComposableObject();
-  virtual ~ComposableObject();
+  ComposableObject() {};
+  virtual ~ComposableObject() {};
 
   bool HasFeature(const char* identifier);
 

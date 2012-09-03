@@ -1,1 +1,1 @@
-#include "MockComponentFeature.hpp"
+#include "ComponentFeature.hpp"

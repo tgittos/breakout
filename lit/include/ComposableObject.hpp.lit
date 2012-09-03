@@ -28,8 +28,8 @@ bool HasFeature(const char* identifier);
 -
 class ComposableObject {
   public:
-  ComposableObject();
-  virtual ~ComposableObject();
+  ComposableObject() {};
+  virtual ~ComposableObject() {};
 
   Has feature?.
 

@@ -71,9 +71,18 @@ class Makefile
 
     # construct rules to build every test binary from test objects/gtest
     test_binaries = Dir.entries("lit/test").reject{|f| f =~ /^\./}.collect do |f|
+      # examine the cpp file to find includes that we don't already know about
+      # and add them as both dependencies and sources to the compile
+      test_includes = IO.readlines("lit/test/#{f}").collect do |l| 
+        matches = l.gsub(/\n/,'').match(/^#include\s["']([^",]+)["']$/)
+        matches.captures.first if matches
+      end.compact
+        .reject{|i| ["gtest/gtest.h", "gmock/gmock.h", "#{get_game_name f}.hpp", "Mock#{get_game_name f}.hpp"].include? i}
+        .reject{|i| i =~ /^Mock/ }
+
       <<-EOS
-#{get_name f}: #{get_name f}.o #{get_game_name(get_name f)}.o gtest_main.a libgmock.a
-\t$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) #{get_game_name(get_name f)}.o #{get_name f}.o gtest_main.a libgmock.a -o $@
+#{get_name f}: #{get_name f}.o #{get_game_name(get_name f)}.o #{test_includes.map{|i| "#{i.split('.').first}.o"}.join(" ")} gtest_main.a libgmock.a
+\t$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) #{get_game_name(get_name f)}.o #{get_name f}.o #{test_includes.map{|i| "#{i.split('.').first}.o"}.join(" ")} gtest_main.a libgmock.a -o $@
       EOS
     end
 

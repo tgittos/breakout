@@ -9,8 +9,8 @@ virtual const char* GetIdentifier() =0;
 -
 class ComponentFeature {
   public:
-  ComponentFeature();
-  virtual ~ComponentFeature();
+  ComponentFeature() {};
+  virtual ~ComponentFeature() {};
 
   Get identifier.
 };

@@ -318,26 +318,26 @@ Paddle_unittest.o: Paddle_unittest.cpp Paddle.hpp $(GTEST_HEADERS)
 Score_unittest.o: Score_unittest.cpp Score.hpp $(GTEST_HEADERS)
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/Score_unittest.cpp -o $@
 
-Ball_unittest: Ball_unittest.o Ball.o gtest_main.a libgmock.a
-	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Ball.o Ball_unittest.o gtest_main.a libgmock.a -o $@
+Ball_unittest: Ball_unittest.o Ball.o  gtest_main.a libgmock.a
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Ball.o Ball_unittest.o  gtest_main.a libgmock.a -o $@
 
-Brick_unittest: Brick_unittest.o Brick.o gtest_main.a libgmock.a
-	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Brick.o Brick_unittest.o gtest_main.a libgmock.a -o $@
+Brick_unittest: Brick_unittest.o Brick.o  gtest_main.a libgmock.a
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Brick.o Brick_unittest.o  gtest_main.a libgmock.a -o $@
 
-ComposableObject_unittest: ComposableObject_unittest.o ComposableObject.o gtest_main.a libgmock.a
-	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) ComposableObject.o ComposableObject_unittest.o gtest_main.a libgmock.a -o $@
+ComposableObject_unittest: ComposableObject_unittest.o ComposableObject.o ComponentFeature.o gtest_main.a libgmock.a
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) ComposableObject.o ComposableObject_unittest.o ComponentFeature.o gtest_main.a libgmock.a -o $@
 
-EventInterface_unittest: EventInterface_unittest.o EventInterface.o gtest_main.a libgmock.a
-	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) EventInterface.o EventInterface_unittest.o gtest_main.a libgmock.a -o $@
+EventInterface_unittest: EventInterface_unittest.o EventInterface.o  gtest_main.a libgmock.a
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) EventInterface.o EventInterface_unittest.o  gtest_main.a libgmock.a -o $@
 
-EventManager_unittest: EventManager_unittest.o EventManager.o gtest_main.a libgmock.a
-	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) EventManager.o EventManager_unittest.o gtest_main.a libgmock.a -o $@
+EventManager_unittest: EventManager_unittest.o EventManager.o  gtest_main.a libgmock.a
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) EventManager.o EventManager_unittest.o  gtest_main.a libgmock.a -o $@
 
-Input_unittest: Input_unittest.o Input.o gtest_main.a libgmock.a
-	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Input.o Input_unittest.o gtest_main.a libgmock.a -o $@
+Input_unittest: Input_unittest.o Input.o  gtest_main.a libgmock.a
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Input.o Input_unittest.o  gtest_main.a libgmock.a -o $@
 
-Paddle_unittest: Paddle_unittest.o Paddle.o gtest_main.a libgmock.a
-	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Paddle.o Paddle_unittest.o gtest_main.a libgmock.a -o $@
+Paddle_unittest: Paddle_unittest.o Paddle.o  gtest_main.a libgmock.a
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Paddle.o Paddle_unittest.o  gtest_main.a libgmock.a -o $@
 
-Score_unittest: Score_unittest.o Score.o gtest_main.a libgmock.a
-	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Score.o Score_unittest.o gtest_main.a libgmock.a -o $@
+Score_unittest: Score_unittest.o Score.o  gtest_main.a libgmock.a
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Score.o Score_unittest.o  gtest_main.a libgmock.a -o $@

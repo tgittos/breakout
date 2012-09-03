@@ -3,8 +3,8 @@
 
 class ComponentFeature {
   public:
-  ComponentFeature();
-  virtual ~ComponentFeature();
+  ComponentFeature() {};
+  virtual ~ComponentFeature() {};
 
   virtual const char* GetIdentifier() =0;
 };
