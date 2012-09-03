@@ -1,0 +1,33 @@
+== Composable Object ==
+See header for all details.
+
+== Add feature ==
+-
+void ComposableObject::AddFeature(const char* identifier, ComponentFeature* feature) {
+  
+}
+-
+
+== Has feature? ==
+-
+bool ComposableObject::HasFeature(const char* identifier) {
+  
+}
+-
+
+== Includes ==
+-
+#include "ComposableObject.hpp"
+-
+
+== Wrapper ==
+-
+Includes.
+
+Add feature.
+
+Has feature?.
+-
+
+== @ComposableObject.cpp ==
+Wrapper.

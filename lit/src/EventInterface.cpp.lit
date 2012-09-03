@@ -1,6 +1,6 @@
 == Includes ==
 -
-#include "Brick.hpp"
+#include "EventInterface.hpp"
 -
 
 == Wrapper ==
@@ -8,5 +8,5 @@
 Includes.
 -
 
-== @Brick.cpp ==
+== @EventInterface.cpp ==
 Wrapper.

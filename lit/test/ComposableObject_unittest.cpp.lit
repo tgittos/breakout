@@ -1,0 +1,68 @@
+== Has feature will return true when feature present ==
+This uses a fake composable object and a fake concrete 
+component feature declared in this test file. See the 
+end of this document for more details.
+-
+TEST(ComposableObject, HasFeatureReturnsTrue) {
+  ConcreteComposableObject co = ConcreteComposableObject();
+  ASSERT_TRUE(co.HasFeature("ConcreteComponentFeature"));
+}
+-
+
+== Has feature will return false when no feature present ==
+-
+TEST(ComposableObject, HasFeatureReturnsFalse) {
+  ConcreteComposableObject co = ConcreteComposableObject();
+  ASSERT_FALSE(co.HasFeature("FoobarComponentFeature"));
+}
+-
+
+== Fake concreate composable object for tests ==
+This will add the ConcreateComponentFeature as a feature
+during construction.
+-
+class ConcreteComposableObject : public ComposableObject {
+  public:
+  ConcreteComposableObject() {
+    ConcreteComponentFeature* ccf = new ConcreteComponentFeature();
+    AddFeature(ccf->GetIdentifier(), ccf);
+  }
+  ~ConcreteComposableObject() {
+    // iterate over features and delete the memory for them
+  }
+};
+-
+
+== Fake concrete component feature for tests ==
+-
+class ConcreteComponentFeature : public ComponentFeature {
+  public:
+  virtual const char* GetIdentifier() {
+    return "ConcreteComponentFeature";
+  }
+};
+-
+
+== Includes ==
+-
+#include "gtest/gtest.h"
+#include "gmock/gmock.h"
+#include "ComposableObject.hpp"
+#include "ComponentFeature.hpp"
+-
+
+== Wrapper ==
+-
+Includes.
+
+Fake concrete component feature for tests.
+
+Fake concreate composable object for tests.
+
+Has feature will return true when feature present.
+
+Has feature will return false when no feature present.
+-
+
+== @ComposableObject_unittest.cpp ==
+Wrapper.

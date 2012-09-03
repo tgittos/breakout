@@ -1,0 +1,27 @@
+== The class ==
+-
+class MockEventInterface : public EventInterface {
+  
+};
+-
+
+== Includes ==
+-
+#include "gmock/gmock.h"
+#include "EventInterface.hpp"
+-
+
+== Include guard ==
+-
+#ifndef MOCK_EVENT_INTERFACE_H
+#define MOCK_EVENT_INTERFACE_H
+
+Includes.
+
+The class.
+
+#endif
+-
+
+== @MockEventInterface.hpp ==
+Include guard.

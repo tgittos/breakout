@@ -1,0 +1,61 @@
+== Composable object ==
+In order to correctly implement compositional classes, I
+need some system for classes to be able to dynamically query
+their component features in order to determine if they
+support a given action, and then the ability to access that
+feature.
+
+Each feature is going to have a unique identifier, and when
+that feature is added to a composable object, it's going to
+be added to a hash map, hashed by the unique identifier
+for the feature.
+
+== Add feature ==
+This protected method will allow the object to add a feature
+to itself.
+-
+void AddFeature(const char* identifier, ComponentFeature* feature);
+-
+
+== Has feature? ==
+This public method will allow other objects to query this
+one to determine what it supports and what it doesn't.
+-
+bool HasFeature(const char* identifier);
+-
+
+== The class ==
+-
+class ComposableObject {
+  public:
+  ComposableObject();
+  virtual ~ComposableObject();
+
+  Has feature?.
+
+  protected:
+  Add feature. 
+};
+-
+
+== Forward declarations ==
+Instead of including the whole header when all we need is
+a reference, forward declare things we need instead
+-
+class ComponentFeature;
+-
+
+== Include guard ==
+-
+#ifndef COMPOSABLE_OBJECT_H
+#define COMPOSABLE_OBJECT_H
+
+Forward declarations.
+
+The class.
+
+#endif
+-
+
+== @ComposableObject.hpp ==
+Include guard.

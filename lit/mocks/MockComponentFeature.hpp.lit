@@ -1,0 +1,27 @@
+== The class ==
+-
+class MockComponentFeature : public ComponentFeature {
+  
+};
+-
+
+== Includes ==
+-
+#include "gmock/gmock.h"
+#include "ComponentFeature.hpp"
+-
+
+== Include guard ==
+-
+#ifndef MOCK_COMPONENT_FEATURE_H
+#define MOCK_COMPONENT_FEATURE_H
+
+Includes.
+
+The class.
+
+#endif
+-
+
+== @MockComponentFeature.hpp ==
+Include guard.

@@ -1,19 +1,19 @@
 == The class ==
 -
-class Ball {
+class Event {
   
 };
 -
 
 == Include guard ==
 -
-#ifndef BALL_H
-#define BALL_H
+#ifndef EVENT_H
+#define EVENT_H
 
 The class.
 
 #endif
 -
 
-== @Ball.hpp ==
+== @Event.hpp ==
 Include guard.

@@ -1,0 +1,27 @@
+== The class ==
+-
+class MockEventManager : public EventManager {
+  
+};
+-
+
+== Includes ==
+-
+#include "gmock/gmock.h"
+#include "EventManager.hpp"
+-
+
+== Include guard ==
+-
+#ifndef MOCK_EVENT_MANAGER_H
+#define MOCK_EVENT_MANAGER_H
+
+Includes.
+
+The class.
+
+#endif
+-
+
+== @MockEventManager.hpp ==
+Include guard.

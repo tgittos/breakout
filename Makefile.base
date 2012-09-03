@@ -35,7 +35,7 @@ TEST_DIR = tests
 ####################################################################
 
 # Include directory
-IFLAGS = -Iinclude
+IFLAGS = -Isrc
 
 # Link flags for Linux
 LDFLAGS = -lGL -lGLU -lglut -lGLEW
@@ -65,6 +65,17 @@ GTEST_HEADERS = $(GTEST_DIR)/include/gtest/*.h $(GTEST_DIR)/include/gtest/intern
 GTEST_SRCS_ = $(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
 
 ####################################################################
+# Google Mock related variables
+####################################################################
+
+# Include Google Test headers
+GMOCK_IFLAGS = -I$(GMOCK_DIR)/include
+
+# Points to the root of Google Test, relative to where this file is.
+# Remember to tweak this if you move this file.
+GMOCK_DIR = ../googlemock
+
+####################################################################
 # Google Test build targets
 ####################################################################
 
@@ -85,6 +96,16 @@ gtest_main.a : gtest-all.o gtest_main.o
 	$(AR) $(ARFLAGS) $@ gtest-all.o gtest_main.o
 
 ####################################################################
+# Google Mock build targets
+####################################################################	
+
+gmock-all.o:
+	$(CXX) $(GTEST_IFLAGS) -I${GTEST_DIR} $(GMOCK_IFLAGS) -I${GMOCK_DIR} $(CXXFLAGS) -c ${GMOCK_DIR}/src/gmock-all.cc
+
+libgmock.a: gtest-all.o gmock-all.o
+	ar -rv libgmock.a gtest-all.o gmock-all.o
+
+####################################################################
 # Project build targets
 ####################################################################
 
@@ -95,9 +116,15 @@ all: tests $(EXECUTABLES) assets
 
 clean :
 	rm -Rf bin
-	rm -f $(TESTS) gtest.a gtest_main.a *.o
+	rm -f $(TESTS) gtest.a gtest_main.a libgmock.a *.o
 
-tests : $(TESTS)
+includes:
+	literati tangle -o src/. lit/include
+
+mocks:
+	literati tangle -o src/. lit/mocks
+
+tests : includes mocks $(TESTS)
 	$(addprefix ./,$(TESTS))
 
 assets:

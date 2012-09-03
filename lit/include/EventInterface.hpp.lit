@@ -1,0 +1,19 @@
+== The class ==
+-
+class EventInterface {
+  
+};
+-
+
+== Include guard ==
+-
+#ifndef EVENT_INTERFACE_H
+#define EVENT_INTERFACE_H
+
+The class.
+
+#endif
+-
+
+== @EventInterface.hpp ==
+Include guard.

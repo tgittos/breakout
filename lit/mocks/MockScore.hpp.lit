@@ -1,0 +1,27 @@
+== The class ==
+-
+class MockScore : public Score {
+  
+};
+-
+
+== Includes ==
+-
+#include "gmock/gmock.h"
+#include "Score.hpp"
+-
+
+== Include guard ==
+-
+#ifndef MOCK_SCORE_H
+#define MOCK_SCORE_H
+
+Includes.
+
+The class.
+
+#endif
+-
+
+== @MockScore.hpp ==
+Include guard.

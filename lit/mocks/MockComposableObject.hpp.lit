@@ -1,0 +1,27 @@
+== The class ==
+-
+class MockComposableObject : public ComposableObject {
+  
+};
+-
+
+== Includes ==
+-
+#include "gmock/gmock.h"
+#include "ComposableObject.hpp"
+-
+
+== Include guard ==
+-
+#ifndef MOCK_COMPOSABLE_OBJECT_H
+#define MOCK_COMPOSABLE_OBJECT_H
+
+Includes.
+
+The class.
+
+#endif
+-
+
+== @MockComposableObject.hpp ==
+Include guard.

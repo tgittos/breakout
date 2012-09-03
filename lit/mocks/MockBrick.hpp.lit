@@ -1,0 +1,27 @@
+== The class ==
+-
+class MockBrick : public Brick {
+  
+};
+-
+
+== Includes ==
+-
+#include "gmock/gmock.h"
+#include "Brick.hpp"
+-
+
+== Include guard ==
+-
+#ifndef MOCK_BRICK_H
+#define MOCK_BRICK_H
+
+Includes.
+
+The class.
+
+#endif
+-
+
+== @MockBrick.hpp ==
+Include guard.

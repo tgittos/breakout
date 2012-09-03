@@ -35,7 +35,7 @@ TEST_DIR = tests
 ####################################################################
 
 # Include directory
-IFLAGS = -Iinclude
+IFLAGS = -Isrc
 
 # Link flags for Linux
 LDFLAGS = -lGL -lGLU -lglut -lGLEW
@@ -65,6 +65,17 @@ GTEST_HEADERS = $(GTEST_DIR)/include/gtest/*.h $(GTEST_DIR)/include/gtest/intern
 GTEST_SRCS_ = $(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
 
 ####################################################################
+# Google Mock related variables
+####################################################################
+
+# Include Google Test headers
+GMOCK_IFLAGS = -I$(GMOCK_DIR)/include
+
+# Points to the root of Google Test, relative to where this file is.
+# Remember to tweak this if you move this file.
+GMOCK_DIR = ../googlemock
+
+####################################################################
 # Google Test build targets
 ####################################################################
 
@@ -85,6 +96,16 @@ gtest_main.a : gtest-all.o gtest_main.o
 	$(AR) $(ARFLAGS) $@ gtest-all.o gtest_main.o
 
 ####################################################################
+# Google Mock build targets
+####################################################################	
+
+gmock-all.o:
+	$(CXX) $(GTEST_IFLAGS) -I${GTEST_DIR} $(GMOCK_IFLAGS) -I${GMOCK_DIR} $(CXXFLAGS) -c ${GMOCK_DIR}/src/gmock-all.cc
+
+libgmock.a: gtest-all.o gmock-all.o
+	ar -rv libgmock.a gtest-all.o gmock-all.o
+
+####################################################################
 # Project build targets
 ####################################################################
 
@@ -95,9 +116,15 @@ all: tests $(EXECUTABLES) assets
 
 clean :
 	rm -Rf bin
-	rm -f $(TESTS) gtest.a gtest_main.a *.o
+	rm -f $(TESTS) gtest.a gtest_main.a libgmock.a *.o
 
-tests : $(TESTS)
+includes:
+	literati tangle -o src/. lit/include
+
+mocks:
+	literati tangle -o src/. lit/mocks
+
+tests : includes mocks $(TESTS)
 	$(addprefix ./,$(TESTS))
 
 assets:
@@ -117,6 +144,18 @@ Ball.hpp:
 Brick.hpp:
 	literati tangle -o src/. lit/include/$@.lit
 
+ComponentFeature.hpp:
+	literati tangle -o src/. lit/include/$@.lit
+
+ComposableObject.hpp:
+	literati tangle -o src/. lit/include/$@.lit
+
+Event.hpp:
+	literati tangle -o src/. lit/include/$@.lit
+
+EventInterface.hpp:
+	literati tangle -o src/. lit/include/$@.lit
+
 EventManager.hpp:
 	literati tangle -o src/. lit/include/$@.lit
 
@@ -132,10 +171,49 @@ Paddle.hpp:
 Score.hpp:
 	literati tangle -o src/. lit/include/$@.lit
 
+MockBall.hpp:
+	literati tangle -o src/. lit/mocks/$@.lit
+
+MockBrick.hpp:
+	literati tangle -o src/. lit/mocks/$@.lit
+
+MockComponentFeature.hpp:
+	literati tangle -o src/. lit/mocks/$@.lit
+
+MockComposableObject.hpp:
+	literati tangle -o src/. lit/mocks/$@.lit
+
+MockEventInterface.hpp:
+	literati tangle -o src/. lit/mocks/$@.lit
+
+MockEventManager.hpp:
+	literati tangle -o src/. lit/mocks/$@.lit
+
+MockInput.hpp:
+	literati tangle -o src/. lit/mocks/$@.lit
+
+MockPaddle.hpp:
+	literati tangle -o src/. lit/mocks/$@.lit
+
+MockScore.hpp:
+	literati tangle -o src/. lit/mocks/$@.lit
+
 Ball.cpp:
 	literati tangle -o src/. lit/src/$@.lit
 
 Brick.cpp:
+	literati tangle -o src/. lit/src/$@.lit
+
+ComponentFeature.cpp:
+	literati tangle -o src/. lit/src/$@.lit
+
+ComposableObject.cpp:
+	literati tangle -o src/. lit/src/$@.lit
+
+Event.cpp:
+	literati tangle -o src/. lit/src/$@.lit
+
+EventInterface.cpp:
 	literati tangle -o src/. lit/src/$@.lit
 
 EventManager.cpp:
@@ -162,6 +240,18 @@ Ball.o: Ball.hpp Ball.cpp
 Brick.o: Brick.hpp Brick.cpp
 	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/Brick.cpp
 
+ComponentFeature.o: ComponentFeature.hpp ComponentFeature.cpp
+	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/ComponentFeature.cpp
+
+ComposableObject.o: ComposableObject.hpp ComposableObject.cpp
+	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/ComposableObject.cpp
+
+Event.o: Event.hpp Event.cpp
+	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/Event.cpp
+
+EventInterface.o: EventInterface.hpp EventInterface.cpp
+	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/EventInterface.cpp
+
 EventManager.o: EventManager.hpp EventManager.cpp
 	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/EventManager.cpp
 
@@ -186,6 +276,12 @@ Ball_unittest.cpp:
 Brick_unittest.cpp:
 	literati tangle -o src/. lit/test/$@.lit
 
+ComposableObject_unittest.cpp:
+	literati tangle -o src/. lit/test/$@.lit
+
+EventInterface_unittest.cpp:
+	literati tangle -o src/. lit/test/$@.lit
+
 EventManager_unittest.cpp:
 	literati tangle -o src/. lit/test/$@.lit
 
@@ -199,37 +295,49 @@ Score_unittest.cpp:
 	literati tangle -o src/. lit/test/$@.lit
 
 Ball_unittest.o: Ball_unittest.cpp Ball.hpp $(GTEST_HEADERS)
-	$(CXX) $(GTEST_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/Ball_unittest.cpp -o $@
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/Ball_unittest.cpp -o $@
 
 Brick_unittest.o: Brick_unittest.cpp Brick.hpp $(GTEST_HEADERS)
-	$(CXX) $(GTEST_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/Brick_unittest.cpp -o $@
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/Brick_unittest.cpp -o $@
+
+ComposableObject_unittest.o: ComposableObject_unittest.cpp ComposableObject.hpp $(GTEST_HEADERS)
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/ComposableObject_unittest.cpp -o $@
+
+EventInterface_unittest.o: EventInterface_unittest.cpp EventInterface.hpp $(GTEST_HEADERS)
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/EventInterface_unittest.cpp -o $@
 
 EventManager_unittest.o: EventManager_unittest.cpp EventManager.hpp $(GTEST_HEADERS)
-	$(CXX) $(GTEST_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/EventManager_unittest.cpp -o $@
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/EventManager_unittest.cpp -o $@
 
 Input_unittest.o: Input_unittest.cpp Input.hpp $(GTEST_HEADERS)
-	$(CXX) $(GTEST_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/Input_unittest.cpp -o $@
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/Input_unittest.cpp -o $@
 
 Paddle_unittest.o: Paddle_unittest.cpp Paddle.hpp $(GTEST_HEADERS)
-	$(CXX) $(GTEST_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/Paddle_unittest.cpp -o $@
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/Paddle_unittest.cpp -o $@
 
 Score_unittest.o: Score_unittest.cpp Score.hpp $(GTEST_HEADERS)
-	$(CXX) $(GTEST_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/Score_unittest.cpp -o $@
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/Score_unittest.cpp -o $@
 
-Ball_unittest: Ball_unittest.o Ball.o gtest_main.a
-	$(CXX) $(GTEST_IFLAGS) $(CXXFLAGS) Ball.o Ball_unittest.o gtest_main.a -o $@
+Ball_unittest: Ball_unittest.o Ball.o gtest_main.a libgmock.a
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Ball.o Ball_unittest.o gtest_main.a libgmock.a -o $@
 
-Brick_unittest: Brick_unittest.o Brick.o gtest_main.a
-	$(CXX) $(GTEST_IFLAGS) $(CXXFLAGS) Brick.o Brick_unittest.o gtest_main.a -o $@
+Brick_unittest: Brick_unittest.o Brick.o gtest_main.a libgmock.a
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Brick.o Brick_unittest.o gtest_main.a libgmock.a -o $@
 
-EventManager_unittest: EventManager_unittest.o EventManager.o gtest_main.a
-	$(CXX) $(GTEST_IFLAGS) $(CXXFLAGS) EventManager.o EventManager_unittest.o gtest_main.a -o $@
+ComposableObject_unittest: ComposableObject_unittest.o ComposableObject.o gtest_main.a libgmock.a
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) ComposableObject.o ComposableObject_unittest.o gtest_main.a libgmock.a -o $@
 
-Input_unittest: Input_unittest.o Input.o gtest_main.a
-	$(CXX) $(GTEST_IFLAGS) $(CXXFLAGS) Input.o Input_unittest.o gtest_main.a -o $@
+EventInterface_unittest: EventInterface_unittest.o EventInterface.o gtest_main.a libgmock.a
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) EventInterface.o EventInterface_unittest.o gtest_main.a libgmock.a -o $@
 
-Paddle_unittest: Paddle_unittest.o Paddle.o gtest_main.a
-	$(CXX) $(GTEST_IFLAGS) $(CXXFLAGS) Paddle.o Paddle_unittest.o gtest_main.a -o $@
+EventManager_unittest: EventManager_unittest.o EventManager.o gtest_main.a libgmock.a
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) EventManager.o EventManager_unittest.o gtest_main.a libgmock.a -o $@
 
-Score_unittest: Score_unittest.o Score.o gtest_main.a
-	$(CXX) $(GTEST_IFLAGS) $(CXXFLAGS) Score.o Score_unittest.o gtest_main.a -o $@
+Input_unittest: Input_unittest.o Input.o gtest_main.a libgmock.a
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Input.o Input_unittest.o gtest_main.a libgmock.a -o $@
+
+Paddle_unittest: Paddle_unittest.o Paddle.o gtest_main.a libgmock.a
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Paddle.o Paddle_unittest.o gtest_main.a libgmock.a -o $@
+
+Score_unittest: Score_unittest.o Score.o gtest_main.a libgmock.a
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Score.o Score_unittest.o gtest_main.a libgmock.a -o $@

@@ -1,0 +1,27 @@
+== The class ==
+-
+class MockInput : public Input {
+  
+};
+-
+
+== Includes ==
+-
+#include "gmock/gmock.h"
+#include "Input.hpp"
+-
+
+== Include guard ==
+-
+#ifndef MOCK_INPUT_H
+#define MOCK_INPUT_H
+
+Includes.
+
+The class.
+
+#endif
+-
+
+== @MockInput.hpp ==
+Include guard.

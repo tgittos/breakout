@@ -1,0 +1,12 @@
+== Includes ==
+-
+#include "ComponentFeature.hpp"
+-
+
+== Wrapper ==
+-
+Includes.
+-
+
+== @ComponentFeature.cpp ==
+Wrapper.
