@@ -4,27 +4,46 @@ component feature declared in this test file. See the
 end of this document for more details.
 -
 TEST(ComposableObject, HasFeatureReturnsTrue) {
-  ConcreteComposableObject co = ConcreteComposableObject();
-  ASSERT_TRUE(co.HasFeature("ConcreteComponentFeature"));
+  ConcreteComponentFeature* ccf = new ConcreteComponentFeature();
+  ConcreteComposableObject co = ConcreteComposableObject(ccf);
+  ASSERT_TRUE(co.HasFeature(ccf->GetIdentifier()));
 }
 -
 
 == Has feature will return false when no feature present ==
 -
 TEST(ComposableObject, HasFeatureReturnsFalse) {
-  ConcreteComposableObject co = ConcreteComposableObject();
+  ConcreteComponentFeature* ccf = new ConcreteComponentFeature();
+  ConcreteComposableObject co = ConcreteComposableObject(ccf);
   ASSERT_FALSE(co.HasFeature("FoobarComponentFeature"));
 }
 -
 
-== Fake concreate composable object for tests ==
-This will add the ConcreateComponentFeature as a feature
-during construction.
+== Get feature will return a feature when it's present ==
+-
+TEST(ComposableObject, GetValidFeature) {
+  ConcreteComponentFeature* ccf = new ConcreteComponentFeature();
+  ConcreteComposableObject co = ConcreteComposableObject(ccf);
+  ASSERT_EQ(ccf, co.GetFeature("ConcreteComponentFeature"));
+}
+-
+
+== Get feature will return null when it's not present ==
+-
+TEST(ComposableObject, GetInvalidFeature) {
+  ConcreteComponentFeature* ccf = new ConcreteComponentFeature();
+  ConcreteComposableObject co = ConcreteComposableObject(ccf);
+  ASSERT_EQ(NULL, co.GetFeature("FoobarComponentFeature"));
+}
+-
+
+== Fake concrete composable object for tests ==
+This will add the ConcreteComponentFeature as a feature
+during construction, using Dependency Injection (DI)
 -
 class ConcreteComposableObject : public ComposableObject {
   public:
-  ConcreteComposableObject() {
-    ConcreteComponentFeature* ccf = new ConcreteComponentFeature();
+  ConcreteComposableObject(ConcreteComponentFeature* ccf) {
     AddFeature(ccf->GetIdentifier(), ccf);
   }
   ~ConcreteComposableObject() {
@@ -57,11 +76,15 @@ Includes.
 
 Fake concrete component feature for tests.
 
-Fake concreate composable object for tests.
+Fake concrete composable object for tests.
 
 Has feature will return true when feature present.
 
 Has feature will return false when no feature present.
+
+Get feature will return a feature when it's present.
+
+Get feature will return null when it's not present.
 -
 
 == @ComposableObject_unittest.cpp ==

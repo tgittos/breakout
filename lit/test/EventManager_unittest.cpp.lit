@@ -5,53 +5,72 @@ events to event subscribers.
 == Event manager initializes subscription list on construct ==
 -
 TEST(EventManager, InitializeList) {
-  EventManager em = EventManager();
-  ASSERT_EQ(0, em.Subscribers("MockEvent"));
+  ASSERT_EQ(0, EventManager::GetInstance().SubscriberCount("MockEvent"));
 }
 -
 
-== Classes can subscribe to events ==
--
-TEST(EventManager, EventSubscription) {
-  EventManager em = EventManager();
-  em.Subscribe("MockEvent", SomeHandler);
-  ASSERT_EQ(1, em.Subscribers("MockEvent"));
-}
--
-
-== Classes can dispatch events through the manager ==
+== Event subscription, dispatching and receiving works as intended ==
 -
 TEST(EventManager, EventDispatch) {
-  ASSERT_FALSE(true);
+  MockEventSubscriber mes = MockEventSubscriber();
+  ASSERT_EQ(0, mes.MyInteger);
+  EventManager::GetInstance().Dispatch("MockEvent", NULL);
+  ASSERT_EQ(1, mes.MyInteger);
 }
 -
 
-== Listeners recieve events ==
+== Event subscription notifications don't leak into other subscriptions ==
 -
-TEST(EventManager, ListenerReceive) {
-  ASSERT_FALSE(true);
+TEST(EventManager, NoLeakySubscriptions) {
+  MockEventSubscriber mes = MockEventSubscriber();
+  ASSERT_EQ(0, mes.MyInteger);
+  EventManager::GetInstance().Dispatch("MockEvent", NULL);
+  ASSERT_EQ(1, mes.MyInteger);
+  EventManager::GetInstance().Dispatch("MockEvent2", NULL);
+  ASSERT_EQ(2, mes.MyInteger);
 }
+-
+
+== Fake event subscriber for tests ==
+The MockEventInterface pointer is optional, because sometimes
+we want an invalid subscriber (one that doesn't support the
+event interface)
+-
+class MockEventSubscriber : public ComposableObject {
+  public:
+  int MyInteger;
+  MockEventSubscriber() {
+    MyInteger = 0;
+    EventManager::GetInstance().Subscribe("MockEvent", EventManager::Handler(this, static_cast<void (ComposableObject::*)(void*)>(&MockEventSubscriber::MockEventHandler)));
+    EventManager::GetInstance().Subscribe("MockEvent2", EventManager::Handler(this, static_cast<void (ComposableObject::*)(void*)>(&MockEventSubscriber::MockEvent2Handler)));
+  };
+  void MockEventHandler(void* data) {
+    MyInteger = 1;
+  }
+  void MockEvent2Handler(void* data) {
+    MyInteger++;
+  }
+};
 -
 
 == Includes ==
 -
 #include "gtest/gtest.h"
 #include "EventManager.hpp"
-#include "MockEvent.hpp"
-#include "MockEventInterface.hpp"
+#include "ComposableObject.hpp"
 -
 
 == Wrapper ==
 -
 Includes.
 
+Fake event subscriber for tests.
+
 Event manager initializes subscription list on construct.
 
-Classes can subscribe to events.
+Event subscription, dispatching and receiving works as intended.
 
-Classes can dispatch events through the manager.
-
-Listeners recieve events.
+Event subscription notifications don't leak into other subscriptions.
 -
 
 == @EventManager_unittest.cpp ==

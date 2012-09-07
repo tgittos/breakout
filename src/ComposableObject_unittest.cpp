@@ -12,8 +12,7 @@ class ConcreteComponentFeature : public ComponentFeature {
 
 class ConcreteComposableObject : public ComposableObject {
   public:
-  ConcreteComposableObject() {
-    ConcreteComponentFeature* ccf = new ConcreteComponentFeature();
+  ConcreteComposableObject(ConcreteComponentFeature* ccf) {
     AddFeature(ccf->GetIdentifier(), ccf);
   }
   ~ConcreteComposableObject() {
@@ -22,11 +21,25 @@ class ConcreteComposableObject : public ComposableObject {
 };
 
 TEST(ComposableObject, HasFeatureReturnsTrue) {
-  ConcreteComposableObject co = ConcreteComposableObject();
-  ASSERT_TRUE(co.HasFeature("ConcreteComponentFeature"));
+  ConcreteComponentFeature* ccf = new ConcreteComponentFeature();
+  ConcreteComposableObject co = ConcreteComposableObject(ccf);
+  ASSERT_TRUE(co.HasFeature(ccf->GetIdentifier()));
 }
 
 TEST(ComposableObject, HasFeatureReturnsFalse) {
-  ConcreteComposableObject co = ConcreteComposableObject();
+  ConcreteComponentFeature* ccf = new ConcreteComponentFeature();
+  ConcreteComposableObject co = ConcreteComposableObject(ccf);
   ASSERT_FALSE(co.HasFeature("FoobarComponentFeature"));
+}
+
+TEST(ComposableObject, GetValidFeature) {
+  ConcreteComponentFeature* ccf = new ConcreteComponentFeature();
+  ConcreteComposableObject co = ConcreteComposableObject(ccf);
+  ASSERT_EQ(ccf, co.GetFeature("ConcreteComponentFeature"));
+}
+
+TEST(ComposableObject, GetInvalidFeature) {
+  ConcreteComponentFeature* ccf = new ConcreteComponentFeature();
+  ConcreteComposableObject co = ConcreteComposableObject(ccf);
+  ASSERT_EQ(NULL, co.GetFeature("FoobarComponentFeature"));
 }

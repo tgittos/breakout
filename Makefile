@@ -7,7 +7,7 @@ EXECUTABLES = breakout
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = Ball_unittest Brick_unittest EventManager_unittest Input_unittest Paddle_unittest Score_unittest
+TESTS = Ball_unittest Brick_unittest EventManager_unittest Input_unittest Paddle_unittest Score_unittest ComposableObject_unittest
 
 ####################################################################
 # Base variables
@@ -153,9 +153,6 @@ ComposableObject.hpp:
 Event.hpp:
 	literati tangle -o src/. lit/include/$@.lit
 
-EventInterface.hpp:
-	literati tangle -o src/. lit/include/$@.lit
-
 EventManager.hpp:
 	literati tangle -o src/. lit/include/$@.lit
 
@@ -183,9 +180,6 @@ MockComponentFeature.hpp:
 MockComposableObject.hpp:
 	literati tangle -o src/. lit/mocks/$@.lit
 
-MockEventInterface.hpp:
-	literati tangle -o src/. lit/mocks/$@.lit
-
 MockEventManager.hpp:
 	literati tangle -o src/. lit/mocks/$@.lit
 
@@ -211,9 +205,6 @@ ComposableObject.cpp:
 	literati tangle -o src/. lit/src/$@.lit
 
 Event.cpp:
-	literati tangle -o src/. lit/src/$@.lit
-
-EventInterface.cpp:
 	literati tangle -o src/. lit/src/$@.lit
 
 EventManager.cpp:
@@ -249,9 +240,6 @@ ComposableObject.o: ComposableObject.hpp ComposableObject.cpp
 Event.o: Event.hpp Event.cpp
 	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/Event.cpp
 
-EventInterface.o: EventInterface.hpp EventInterface.cpp
-	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/EventInterface.cpp
-
 EventManager.o: EventManager.hpp EventManager.cpp
 	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/EventManager.cpp
 
@@ -279,9 +267,6 @@ Brick_unittest.cpp:
 ComposableObject_unittest.cpp:
 	literati tangle -o src/. lit/test/$@.lit
 
-EventInterface_unittest.cpp:
-	literati tangle -o src/. lit/test/$@.lit
-
 EventManager_unittest.cpp:
 	literati tangle -o src/. lit/test/$@.lit
 
@@ -302,9 +287,6 @@ Brick_unittest.o: Brick_unittest.cpp Brick.hpp $(GTEST_HEADERS)
 
 ComposableObject_unittest.o: ComposableObject_unittest.cpp ComposableObject.hpp $(GTEST_HEADERS)
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/ComposableObject_unittest.cpp -o $@
-
-EventInterface_unittest.o: EventInterface_unittest.cpp EventInterface.hpp $(GTEST_HEADERS)
-	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/EventInterface_unittest.cpp -o $@
 
 EventManager_unittest.o: EventManager_unittest.cpp EventManager.hpp $(GTEST_HEADERS)
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/EventManager_unittest.cpp -o $@
@@ -327,11 +309,8 @@ Brick_unittest: Brick_unittest.o Brick.o  gtest_main.a libgmock.a
 ComposableObject_unittest: ComposableObject_unittest.o ComposableObject.o ComponentFeature.o gtest_main.a libgmock.a
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) ComposableObject.o ComposableObject_unittest.o ComponentFeature.o gtest_main.a libgmock.a -o $@
 
-EventInterface_unittest: EventInterface_unittest.o EventInterface.o  gtest_main.a libgmock.a
-	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) EventInterface.o EventInterface_unittest.o  gtest_main.a libgmock.a -o $@
-
-EventManager_unittest: EventManager_unittest.o EventManager.o  gtest_main.a libgmock.a
-	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) EventManager.o EventManager_unittest.o  gtest_main.a libgmock.a -o $@
+EventManager_unittest: EventManager_unittest.o EventManager.o ComposableObject.o gtest_main.a libgmock.a
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) EventManager.o EventManager_unittest.o ComposableObject.o gtest_main.a libgmock.a -o $@
 
 Input_unittest: Input_unittest.o Input.o  gtest_main.a libgmock.a
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Input.o Input_unittest.o  gtest_main.a libgmock.a -o $@

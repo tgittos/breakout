@@ -1,14 +1,100 @@
+== Event manager ==
+A singleton object that will manage subscribing and dispatching
+exceptions through Event Interfaces on objects that are
+subscribing.
+
+== Get instance ==
+-
+static EventManager& GetInstance();
+-
+
+== Event handler function pointer ==
+An easy way to pass event handler pointers to methods.
+-
+struct Handler{
+  ComposableObject* object;
+  void (ComposableObject::*handlerPointer)(void*);
+
+  Handler(ComposableObject* o, void(ComposableObject::*h)(void*)):
+    object(o), handlerPointer(h) {}
+};
+-
+
+== Subscribe ==
+Subscribes to an event through the EventManager and registers
+a handler by the client so that when the
+manager dispatches events, the Event Interface knowns what
+to do with them.
+
+This is implemented with member function pointers, which
+will be discussed in greater detail in the cpp file.
+-
+void Subscribe(const char* eventIdentifier, Handler handler);
+-
+
+== Subscriber count ==
+How many objects are subscribed to a given event.
+-
+int SubscriberCount(const char* eventIdentifier);
+-
+
+== Get subscribers ==
+Get the subscribers for a given event.
+-
+std::list<Handler>* GetSubscribers(const char*);
+-
+
+== Dispatch ==
+Dispatch an event to all subscribers.
+-
+void Dispatch(const char* eventIdentifier, void* data);
+-
+
+== The map ==
+The map stores the subscriptions by the event identifiers
+-
+std::map<const char*, std::list<Handler>*> _eventSubscriptions;
+-
+
 == The class ==
+Private constructors and destructors for this singleton!
 -
 class EventManager {
-  
+  public:
+  Event handler function pointer.
+
+  Get instance.
+
+  Subscribe.
+
+  Subscriber count.
+
+  Dispatch.
+
+  private:
+  EventManager();
+  EventManager(EventManager const&); //copy constructor not implemented
+  void operator=(EventManager const&); //assignment not implemented
+
+  The map.
+  Get subscribers.
 };
+-
+
+== Includes ==
+-
+#include <map>
+#include <list>
+#include <exception>
+#include "ComposableObject.hpp"
 -
 
 == Include guard ==
 -
 #ifndef EVENT_MANAGER_H
 #define EVENT_MANAGER_H
+
+Includes.
 
 The class.
 

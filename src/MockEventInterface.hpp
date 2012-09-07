@@ -5,7 +5,8 @@
 #include "EventInterface.hpp"
 
 class MockEventInterface : public EventInterface {
-
+  public:
+  MOCK_CONST_METHOD0(GetIdentifier, char*());
 };
 
 #endif

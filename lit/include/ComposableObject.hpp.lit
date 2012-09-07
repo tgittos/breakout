@@ -24,17 +24,34 @@ one to determine what it supports and what it doesn't.
 bool HasFeature(const char* identifier);
 -
 
+== Get feature ==
+This public method will allow other objects to access
+the features this object supports.
+-
+ComponentFeature* GetFeature(const char* identifier);
+-
+
+== The map ==
+The map stores the features by their identifiers
+-
+std::map<const char*, ComponentFeature*> _componentFeatures;
+-
+
 == The class ==
 -
 class ComposableObject {
   public:
-  ComposableObject() {};
-  virtual ~ComposableObject() {};
+  ComposableObject();
+  virtual ~ComposableObject();
 
   Has feature?.
 
+  Get feature.
+
   protected:
-  Add feature. 
+  The map.
+
+  Add feature.
 };
 -
 
@@ -45,10 +62,18 @@ a reference, forward declare things we need instead
 class ComponentFeature;
 -
 
+== Includes ==
+For those files we can't forward declare, use includes
+-
+#include <map>
+-
+
 == Include guard ==
 -
 #ifndef COMPOSABLE_OBJECT_H
 #define COMPOSABLE_OBJECT_H
+
+Includes.
 
 Forward declarations.
 
