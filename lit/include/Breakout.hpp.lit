@@ -1,0 +1,19 @@
+== The class ==
+-
+class Breakout {
+  
+};
+-
+
+== Include guard ==
+-
+#ifndef BREAKOUT_H
+#define BREAKOUT_H
+
+The class.
+
+#endif
+-
+
+== @Breakout.hpp ==
+Include guard.

@@ -48,10 +48,10 @@ class ComposableObject {
 
   Get feature.
 
+  Add feature.
+
   protected:
   The map.
-
-  Add feature.
 };
 -
 

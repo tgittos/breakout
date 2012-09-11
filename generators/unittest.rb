@@ -8,7 +8,7 @@ class Unittest
   def self.generate(file)
     puts "Not overwriting file #{file}.cpp.lit" and return if File.exists? "#{PATH}/#{file}.cpp.lit"
 
-    File.open("#{PATH}/#{file}.hpp.lit", "w") do |f|
+    File.open("#{PATH}/#{file}.cpp.lit", "w") do |f|
       f.write <<-EOS
 == Includes ==
 -

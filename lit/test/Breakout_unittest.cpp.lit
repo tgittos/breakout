@@ -1,0 +1,23 @@
+== Breakout Unit Tests ==
+These are unit tests for the Breakout class.
+The Breakout class is responsible for running the
+game as a whole.
+
+Each of the tests should be relatively straight
+forward, so the documentation on them will not be
+as explanatory as the documentation on the code.
+
+== Includes ==
+-
+#include "gtest/gtest.h"
+#include "gmock/gmock.h"
+#include "MockBreakout.hpp"
+-
+
+== Wrapper ==
+-
+Includes.
+-
+
+== @Breakout.cpp ==
+Wrapper.

@@ -1,0 +1,126 @@
+== Dimension (Component Feature) ==
+The dimension feature will give objects
+both an X and Y location, and a width and height.
+
+== Get X ==
+Get the position on the x-axis.
+-
+float GetX();
+-
+
+== Set X ==
+Set the position on the x-axis.
+-
+void SetX(float x);
+-
+
+== Get Y ==
+Get the position on the y-axis.
+-
+float GetY();
+-
+
+== Set Y ==
+Set the position on the y-axis.
+-
+void SetY(float y);
+-
+
+== Get width ==
+Get the width of the owner.
+-
+float GetWidth();
+-
+
+== Set width ==
+Set the width of the owner.
+-
+void SetWidth(float width);
+-
+
+== Get height ==
+Get the height of the owner.
+-
+float GetHeight();
+-
+
+== Set height ==
+Set the height of the owner.
+-
+void SetHeight(float height);
+-
+
+== X ==
+-
+float _x;
+-
+
+== Y ==
+-
+float _y;
+-
+
+== Width ==
+-
+float _width;
+-
+
+== Height ==
+-
+float _height;
+-
+
+== Get identifier ==
+-
+const char* GetIdentifier() { return "Dimension"; }
+-
+
+== The class ==
+-
+class Dimension : public ComponentFeature {
+  public:
+  Dimension():
+    _x(0.f), _y(0.f), _width(0.f), _height(0.f){};
+  virtual ~Dimension(){};
+
+  Get identifier.
+
+  Get X.
+  Set X.
+
+  Get Y.
+  Set Y.
+
+  Get width.
+  Set width.
+
+  Get height.
+  Set height.
+
+  private:
+  X.
+  Y.
+  Width.
+  Height.
+};
+-
+
+== Includes ==
+-
+#include "ComponentFeature.hpp"
+-
+
+== Include guard ==
+-
+#ifndef DIMENSION_H
+#define DIMENSION_H
+
+Includes.
+
+The class.
+
+#endif
+-
+
+== @Dimension.hpp ==
+Include guard.

@@ -1,0 +1,104 @@
+== Dimension Unit Tests ==
+These are unit tests for the dimension feature that
+objects can include. They test that objects can
+set and get x and y positions and set and get widths
+and heights
+
+== Can set x position ==
+-
+TEST(DimensionTest, SetXPos) {
+  Dimension d;
+  d.SetX(100.f);
+}
+-
+
+== Can set y position ==
+-
+TEST(DimensionTest, SetYPos) {
+  Dimension d;
+  d.SetY(100.f);
+}
+-
+
+== Can get x position ==
+-
+TEST(DimensionTest, GetXPos) {
+  Dimension d;
+  d.SetX(100.f);
+  ASSERT_EQ(100.f, d.GetX());
+}
+-
+
+== Can get y position ==
+-
+TEST(DimensionTest, GetYPos) {
+  Dimension d;
+  d.SetY(100.f);
+  ASSERT_EQ(100.f, d.GetY());
+}
+-
+
+== Can set width ==
+-
+TEST(DimensionTest, SetWidth) {
+  Dimension d;
+  d.SetWidth(50.f);
+}
+-
+
+== Can set height ==
+-
+TEST(DimensionTest, SetHeight) {
+  Dimension d;
+  d.SetHeight(50.f);
+}
+-
+
+== Can get width ==
+-
+TEST(DimensionTest, GetWidth) {
+  Dimension d;
+  d.SetWidth(50.f);
+  ASSERT_EQ(50.f, d.GetWidth());
+}
+-
+
+== Can get height ==
+-
+TEST(DimensionTest, GetHeight) {
+  Dimension d;
+  d.SetHeight(50.f);
+  ASSERT_EQ(50.f, d.GetHeight());
+}
+-
+
+== Includes ==
+-
+#include "gtest/gtest.h"
+#include "gmock/gmock.h"
+#include "MockDimension.hpp"
+-
+
+== Wrapper ==
+-
+Includes.
+
+Can set x position.
+
+Can set y position.
+
+Can get x position.
+
+Can get y position.
+
+Can set width.
+
+Can set height.
+
+Can get width.
+
+Can get height.
+-
+
+== @Dimension_unittest.cpp ==
+Wrapper.

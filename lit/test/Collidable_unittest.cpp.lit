@@ -1,0 +1,128 @@
+== Collidable Unit Tests ==
+These are unit tests for the collidable feature that
+objects can include. They test that objects can
+collide with co-ordinates.
+
+== Collidable feature adds dimension feature to parent object if it hasn't got it ==
+-
+TEST(CollidableTest, AddDimensionWhenNeeded) {
+  ConcreteComposableObject o;
+  ASSERT_FALSE(o.HasFeature("Dimension"));
+  o.Init(false);
+  ASSERT_TRUE(o.HasFeature("Dimension"));
+}
+-
+
+== Collidable feature doesn't add dimension feature to parent object if it has got it ==
+-
+TEST(CollidableTest, DontAddDimensionWhenNotNeeded) {
+  ConcreteComposableObject o;
+  ASSERT_FALSE(o.HasFeature("Dimension"));
+  o.Init(true);
+  ASSERT_TRUE(o.HasFeature("Dimension"));
+}
+-
+
+== Collidable intersects with co-ordinates at it's position ==
+-
+TEST(CollidableTest, Intersection) {
+  ConcreteComposableObject o;
+  o.Init();
+  static_cast<Dimension*>(o.GetFeature("Dimension"))->SetX(100.f);
+  static_cast<Dimension*>(o.GetFeature("Dimension"))->SetY(100.f);
+  ASSERT_TRUE(static_cast<Collidable*>(o.GetFeature("Collidable"))->Intersects(100.f, 100.f));
+}
+-
+
+== Collidable doesn't intersect with co-ordinates far from it's position ==
+-
+TEST(CollidableTest, NoIntersection) {
+  ConcreteComposableObject o;
+  o.Init();
+  static_cast<Dimension*>(o.GetFeature("Dimension"))->SetX(0.f);
+  static_cast<Dimension*>(o.GetFeature("Dimension"))->SetY(0.f);
+  ASSERT_FALSE(static_cast<Collidable*>(o.GetFeature("Collidable"))->Intersects(100.f, 100.f));
+}
+-
+
+== Collidable takes into account objects width ==
+-
+TEST(CollidableTest, IntersectionWidth) {
+  ConcreteComposableObject o;
+  o.Init();
+  static_cast<Dimension*>(o.GetFeature("Dimension"))->SetX(100.f);
+  static_cast<Dimension*>(o.GetFeature("Dimension"))->SetY(100.f);
+  static_cast<Dimension*>(o.GetFeature("Dimension"))->SetWidth(50.f);
+  ASSERT_TRUE(static_cast<Collidable*>(o.GetFeature("Collidable"))->Intersects(120.f, 100.f));
+}
+-
+
+== Collidable takes into account objects height ==
+-
+TEST(CollidableTest, IntersectionHeight) {
+  ConcreteComposableObject o;
+  o.Init();
+  static_cast<Dimension*>(o.GetFeature("Dimension"))->SetX(100.f);
+  static_cast<Dimension*>(o.GetFeature("Dimension"))->SetY(100.f);
+  static_cast<Dimension*>(o.GetFeature("Dimension"))->SetHeight(50.f);
+  ASSERT_TRUE(static_cast<Collidable*>(o.GetFeature("Collidable"))->Intersects(100.f, 120.f));
+}
+-
+
+== Fake concrete composable object for tests ==
+This will add Collidable as a feature
+during construction, using Dependency Injection (DI)
+-
+class ConcreteComposableObject : public ComposableObject {
+  public:
+  ~ConcreteComposableObject(){}
+  void Init(bool addDimension = true) {
+    if (addDimension) {
+      Dimension* d = new Dimension();
+      AddFeature(d->GetIdentifier(), d);
+    }
+    Collidable* c = new Collidable(this);
+    AddFeature(c->GetIdentifier(), c);
+  }
+};
+-
+
+== Usings ==
+-
+using ::testing::A;
+using ::testing::Return;
+-
+
+== Includes ==
+-
+#include "gtest/gtest.h"
+#include "gmock/gmock.h"
+#include "ComposableObject.hpp"
+#include "MockComposableObject.hpp"
+#include "Collidable.hpp"
+#include "Dimension.hpp"
+-
+
+== Wrapper ==
+-
+Includes.
+
+Usings.
+
+Fake concrete composable object for tests.
+
+Collidable feature adds dimension feature to parent object if it hasn't got it.
+
+Collidable feature doesn't add dimension feature to parent object if it has got it.
+
+Collidable intersects with co-ordinates at it's position.
+
+Collidable doesn't intersect with co-ordinates far from it's position.
+
+Collidable takes into account objects width.
+
+Collidable takes into account objects height.
+-
+
+== @Collidable_unittest.cpp ==
+Wrapper.

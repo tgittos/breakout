@@ -7,7 +7,7 @@ EXECUTABLES = breakout
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = Ball_unittest Brick_unittest EventManager_unittest Input_unittest Paddle_unittest Score_unittest ComposableObject_unittest
+TESTS = Ball_unittest Brick_unittest EventManager_unittest Input_unittest Paddle_unittest Score_unittest ComposableObject_unittest Collidable_unittest Dimension_unittest
 
 ####################################################################
 # Base variables

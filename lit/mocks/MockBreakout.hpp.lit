@@ -1,0 +1,27 @@
+== The class ==
+-
+class MockBreakout : public Breakout {
+  
+};
+-
+
+== Includes ==
+-
+#include "gmock/gmock.h"
+#include "Breakout.hpp"
+-
+
+== Include guard ==
+-
+#ifndef MOCK_BREAKOUT_H
+#define MOCK_BREAKOUT_H
+
+Includes.
+
+The class.
+
+#endif
+-
+
+== @MockBreakout.hpp ==
+Include guard.

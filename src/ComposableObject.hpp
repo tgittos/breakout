@@ -14,10 +14,10 @@ class ComposableObject {
 
   ComponentFeature* GetFeature(const char* identifier);
 
+  void AddFeature(const char* identifier, ComponentFeature* feature);
+
   protected:
   std::map<const char*, ComponentFeature*> _componentFeatures;
-
-  void AddFeature(const char* identifier, ComponentFeature* feature);
 };
 
 #endif

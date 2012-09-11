@@ -1,0 +1,27 @@
+== The class ==
+-
+class MockDimension : public Dimension {
+  
+};
+-
+
+== Includes ==
+-
+#include "gmock/gmock.h"
+#include "Dimension.hpp"
+-
+
+== Include guard ==
+-
+#ifndef MOCK_DIMENSION_H
+#define MOCK_DIMENSION_H
+
+Includes.
+
+The class.
+
+#endif
+-
+
+== @MockDimension.hpp ==
+Include guard.

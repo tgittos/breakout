@@ -5,6 +5,12 @@ ComposableObject::ComposableObject() {
 }
 
 ComposableObject::~ComposableObject() {
+/*
+  std::map<const char*, ComponentFeature*>::iterator itr;
+  for (itr = _componentFeatures.begin(); itr != _componentFeatures.end(); ++itr) {
+    delete itr->second;
+  }
+*/
 }
 
 void ComposableObject::AddFeature(const char* identifier, ComponentFeature* feature) {

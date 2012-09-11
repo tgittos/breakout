@@ -7,7 +7,7 @@ EXECUTABLES = breakout
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = Ball_unittest Brick_unittest EventManager_unittest Input_unittest Paddle_unittest Score_unittest ComposableObject_unittest
+TESTS = Ball_unittest Brick_unittest EventManager_unittest Input_unittest Paddle_unittest Score_unittest ComposableObject_unittest Collidable_unittest Dimension_unittest
 
 ####################################################################
 # Base variables
@@ -141,13 +141,22 @@ breakout: includes Main.o Game.o
 Ball.hpp:
 	literati tangle -o src/. lit/include/$@.lit
 
+Breakout.hpp:
+	literati tangle -o src/. lit/include/$@.lit
+
 Brick.hpp:
+	literati tangle -o src/. lit/include/$@.lit
+
+Collidable.hpp:
 	literati tangle -o src/. lit/include/$@.lit
 
 ComponentFeature.hpp:
 	literati tangle -o src/. lit/include/$@.lit
 
 ComposableObject.hpp:
+	literati tangle -o src/. lit/include/$@.lit
+
+Dimension.hpp:
 	literati tangle -o src/. lit/include/$@.lit
 
 Event.hpp:
@@ -171,13 +180,22 @@ Score.hpp:
 MockBall.hpp:
 	literati tangle -o src/. lit/mocks/$@.lit
 
+MockBreakout.hpp:
+	literati tangle -o src/. lit/mocks/$@.lit
+
 MockBrick.hpp:
+	literati tangle -o src/. lit/mocks/$@.lit
+
+MockCollidable.hpp:
 	literati tangle -o src/. lit/mocks/$@.lit
 
 MockComponentFeature.hpp:
 	literati tangle -o src/. lit/mocks/$@.lit
 
 MockComposableObject.hpp:
+	literati tangle -o src/. lit/mocks/$@.lit
+
+MockDimension.hpp:
 	literati tangle -o src/. lit/mocks/$@.lit
 
 MockEventManager.hpp:
@@ -195,13 +213,22 @@ MockScore.hpp:
 Ball.cpp:
 	literati tangle -o src/. lit/src/$@.lit
 
+Breakout.cpp:
+	literati tangle -o src/. lit/src/$@.lit
+
 Brick.cpp:
+	literati tangle -o src/. lit/src/$@.lit
+
+Collidable.cpp:
 	literati tangle -o src/. lit/src/$@.lit
 
 ComponentFeature.cpp:
 	literati tangle -o src/. lit/src/$@.lit
 
 ComposableObject.cpp:
+	literati tangle -o src/. lit/src/$@.lit
+
+Dimension.cpp:
 	literati tangle -o src/. lit/src/$@.lit
 
 Event.cpp:
@@ -228,14 +255,23 @@ Score.cpp:
 Ball.o: Ball.hpp Ball.cpp
 	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/Ball.cpp
 
+Breakout.o: Breakout.hpp Breakout.cpp
+	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/Breakout.cpp
+
 Brick.o: Brick.hpp Brick.cpp
 	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/Brick.cpp
+
+Collidable.o: Collidable.hpp Collidable.cpp
+	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/Collidable.cpp
 
 ComponentFeature.o: ComponentFeature.hpp ComponentFeature.cpp
 	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/ComponentFeature.cpp
 
 ComposableObject.o: ComposableObject.hpp ComposableObject.cpp
 	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/ComposableObject.cpp
+
+Dimension.o: Dimension.hpp Dimension.cpp
+	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/Dimension.cpp
 
 Event.o: Event.hpp Event.cpp
 	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/Event.cpp
@@ -261,10 +297,19 @@ Score.o: Score.hpp Score.cpp
 Ball_unittest.cpp:
 	literati tangle -o src/. lit/test/$@.lit
 
+Breakout_unittest.cpp:
+	literati tangle -o src/. lit/test/$@.lit
+
 Brick_unittest.cpp:
 	literati tangle -o src/. lit/test/$@.lit
 
+Collidable_unittest.cpp:
+	literati tangle -o src/. lit/test/$@.lit
+
 ComposableObject_unittest.cpp:
+	literati tangle -o src/. lit/test/$@.lit
+
+Dimension_unittest.cpp:
 	literati tangle -o src/. lit/test/$@.lit
 
 EventManager_unittest.cpp:
@@ -282,11 +327,20 @@ Score_unittest.cpp:
 Ball_unittest.o: Ball_unittest.cpp Ball.hpp $(GTEST_HEADERS)
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/Ball_unittest.cpp -o $@
 
+Breakout_unittest.o: Breakout_unittest.cpp Breakout.hpp $(GTEST_HEADERS)
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/Breakout_unittest.cpp -o $@
+
 Brick_unittest.o: Brick_unittest.cpp Brick.hpp $(GTEST_HEADERS)
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/Brick_unittest.cpp -o $@
 
+Collidable_unittest.o: Collidable_unittest.cpp Collidable.hpp $(GTEST_HEADERS)
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/Collidable_unittest.cpp -o $@
+
 ComposableObject_unittest.o: ComposableObject_unittest.cpp ComposableObject.hpp $(GTEST_HEADERS)
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/ComposableObject_unittest.cpp -o $@
+
+Dimension_unittest.o: Dimension_unittest.cpp Dimension.hpp $(GTEST_HEADERS)
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/Dimension_unittest.cpp -o $@
 
 EventManager_unittest.o: EventManager_unittest.cpp EventManager.hpp $(GTEST_HEADERS)
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/EventManager_unittest.cpp -o $@
@@ -303,11 +357,20 @@ Score_unittest.o: Score_unittest.cpp Score.hpp $(GTEST_HEADERS)
 Ball_unittest: Ball_unittest.o Ball.o  gtest_main.a libgmock.a
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Ball.o Ball_unittest.o  gtest_main.a libgmock.a -o $@
 
+Breakout_unittest: Breakout_unittest.o Breakout.o  gtest_main.a libgmock.a
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Breakout.o Breakout_unittest.o  gtest_main.a libgmock.a -o $@
+
 Brick_unittest: Brick_unittest.o Brick.o  gtest_main.a libgmock.a
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Brick.o Brick_unittest.o  gtest_main.a libgmock.a -o $@
 
+Collidable_unittest: Collidable_unittest.o Collidable.o ComposableObject.o Dimension.o gtest_main.a libgmock.a
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Collidable.o Collidable_unittest.o ComposableObject.o Dimension.o gtest_main.a libgmock.a -o $@
+
 ComposableObject_unittest: ComposableObject_unittest.o ComposableObject.o ComponentFeature.o gtest_main.a libgmock.a
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) ComposableObject.o ComposableObject_unittest.o ComponentFeature.o gtest_main.a libgmock.a -o $@
+
+Dimension_unittest: Dimension_unittest.o Dimension.o  gtest_main.a libgmock.a
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Dimension.o Dimension_unittest.o  gtest_main.a libgmock.a -o $@
 
 EventManager_unittest: EventManager_unittest.o EventManager.o ComposableObject.o gtest_main.a libgmock.a
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) EventManager.o EventManager_unittest.o ComposableObject.o gtest_main.a libgmock.a -o $@

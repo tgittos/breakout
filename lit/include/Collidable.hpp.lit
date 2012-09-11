@@ -1,0 +1,63 @@
+== Collidable (Component Feature) ==
+The collidable feature allows an object to test
+intersection against co-ordinates. It is dependent
+on the dimension feature, which will give objects
+both an X and Y location, and a width and height.
+
+== The owner ==
+Store a reference to the object that this is being
+composed into, so that it can add the required
+Dimension feature if it is missing.
+-
+ComposableObject* _owner;
+-
+
+== Intersects ==
+Test whether this object intersects with the given
+co-ordinates.
+-
+bool Intersects(float x, float y);
+-
+
+== Get identifier ==
+See ComponentFeature for details
+-
+const char* GetIdentifier();
+- 
+
+== The class ==
+-
+class Collidable : public ComponentFeature {
+  public:
+  Collidable(ComposableObject* owner);
+  ~Collidable() {}
+
+  Get identifier.
+
+  Intersects.
+
+  private:
+  The owner.
+};
+-
+
+== Includes ==
+-
+#include "ComponentFeature.hpp"
+#include "ComposableObject.hpp"
+-
+
+== Include guard ==
+-
+#ifndef COLLIDABLE_H
+#define COLLIDABLE_H
+
+Includes.
+
+The class.
+
+#endif
+-
+
+== @Collidable.hpp ==
+Include guard.

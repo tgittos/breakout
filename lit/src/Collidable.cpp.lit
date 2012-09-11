@@ -1,0 +1,55 @@
+== Collidable ==
+See header for details on what this object is.
+The comments here will concern implementation details.
+
+== Intersects ==
+-
+bool Collidable::Intersects(float x, float y) {
+  Dimension* d = static_cast<Dimension*>(_owner->GetFeature("Dimension"));
+  assert(NULL != d);
+  return d->GetX() - d->GetWidth() / 2 <= x &&
+         d->GetX() + d->GetWidth() / 2 >= x &&
+         d->GetY() - d->GetHeight() / 2 <= y &&
+         d->GetY() + d->GetHeight() / 2 >= y;
+}
+-
+
+== Get identifier ==
+-
+const char* Collidable::GetIdentifier(){
+  return "Collidable"; 
+}
+-
+
+== Constructor ==
+Takes a reference to the owner.
+-
+Collidable::Collidable(ComposableObject* owner):
+  _owner(owner) {
+  if (!_owner->HasFeature("Dimension")) {
+    Dimension* dimension = new Dimension();
+    _owner->AddFeature(dimension->GetIdentifier(), dimension);
+  }
+}
+-
+
+== Includes ==
+-
+#include <assert.h>
+#include "Collidable.hpp"
+#include "Dimension.hpp"
+-
+
+== Wrapper ==
+-
+Includes.
+
+Constructor.
+
+Get identifier.
+
+Intersects.
+-
+
+== @Collidable.cpp ==
+Wrapper.

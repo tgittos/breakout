@@ -7,24 +7,42 @@ Each of the tests should be relatively straight
 forward, so the documentation on them will not be
 as explanatory as the documentation on the code.
 
-== Brick removes itself after it was hit ==
+== Brick has both Collidable and Dimension features ==
 -
-TEST(BrickTest, RemovesSelf) {
+TEST(BrickTest, FeatureTest) {
   ASSERT_FALSE(true);
 }
 -
 
-== Brick dispatches hit event with score ==
+== Can get score off of brick ==
 -
-TEST(BrickTest, DispatchesHitEvent) {
-  ASSERT_FALSE(true);
+TEST(BrickTest, BrickHasScore) {
+  Brick b = Brick(Brick::FIVE_POINTS);
+  ASSERT_EQ(5, b.GetPoints());
 }
 -
 
-== Unbreakable brick doesn't remove itself ==
+== Unbreakable brick has zero score ==
 -
-TEST(BrickTest, UnbreakableNoRemove) {
-  ASSERT_FALSE(true);
+TEST(BrickTest, UnbreakableBrickHasNoScore) {
+  Brick b = Brick(Brick::UNBREAKABLE);
+  ASSERT_EQ(0, b.GetPoints());
+}
+-
+
+== Unbreakable brick reports itself as thus ==
+-
+TEST(BrickTest, UnbreakableIsTrue) {
+  Brick b = Brick(Brick::UNBREAKABLE);
+  ASSERT_TRUE(b.IsUnbreakable());
+}
+-
+
+== Non-unbreakable brick doesn't report itself as an unbrekable brick ==
+-
+TEST(BrickTest, UnbreakableIsFalse) {
+  Brick b = Brick(Brick::FIVE_POINTS);
+  ASSERT_FALSE(b.IsUnbreakable());
 }
 -
 
@@ -38,9 +56,15 @@ TEST(BrickTest, UnbreakableNoRemove) {
 -
 Includes.
 
-Brick removes itself after it was hit.
+Brick has both Collidable and Dimension features.
 
-Brick dispatches hit event with score.
+Can get score off of brick.
+
+Unbreakable brick has zero score.
+
+Unbreakable brick reports itself as thus.
+
+Non-unbreakable brick doesn't report itself as an unbrekable brick.
 -
 
 == @Brick_unittest.cpp ==

@@ -1,6 +1,69 @@
+== Paddle ==
+The paddle class is a logical representation of a paddle.
+It can move left and right and idle.
+It has acceleration, x-position and y-position.
+
+== Move left ==
+Alter the paddle's accleration in the negative.
+-
+void MoveLeft(const float timestep);
+-
+
+== Move right ==
+Alter the paddle's acceleration in the positive.
+-
+void MoveRight(const float timestep);
+-
+
+== Idle ==
+Don't move either left or right, and apply deceleration.
+-
+void Idle(const float timestep);
+-
+
+== Get velocity ==
+This is mostly a test method, to ensure that moving
+results in the correct acceleration.
+-
+const float GetVelocity();
+-
+
+== Current velocity ==
+-
+float _velocity;
+-
+
+== Acceleration ==
+-
+static float const ACCELERATION = 4.f;
+-
+
+== Deceleration ==
+-
+static float const DECELERATION = 2.f;
+-
+
 == The class ==
 -
 class Paddle {
+
+  public:
+  Paddle():_velocity(0.f){};
+  ~Paddle(){};
+
+  Get velocity.
+
+  Move left.
+
+  Move right.
+
+  Idle.
+
+  private:
+  Acceleration.
+  Deceleration.
+
+  Current velocity.
   
 };
 -

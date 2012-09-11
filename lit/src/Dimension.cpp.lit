@@ -1,0 +1,88 @@
+== Dimension ==
+See header for details on what this object is.
+The comments here will concern implementation details.
+
+== Get X ==
+-
+float Dimension::GetX() {
+  return _x;
+}
+-
+
+== Set X ==
+-
+void Dimension::SetX(float x) {
+  _x = x;
+}
+-
+
+== Get Y ==
+-
+float Dimension::GetY() {
+  return _y;
+}
+-
+
+== Set Y ==
+-
+void Dimension::SetY(float y) {
+  _y = y;
+}
+-
+
+== Get width ==
+-
+float Dimension::GetWidth() {
+  return _width;
+}
+-
+
+== Set width ==
+-
+void Dimension::SetWidth(float width) {
+  _width = width;
+}
+-
+
+== Get height ==
+-
+float Dimension::GetHeight() {
+  return _height;
+}
+-
+
+== Set height ==
+-
+void Dimension::SetHeight(float height) {
+  _height = height;
+}
+-
+
+== Includes ==
+-
+#include "Dimension.hpp"
+-
+
+== Wrapper ==
+-
+Includes.
+
+Get X.
+
+Set X.
+
+Get Y.
+
+Set Y.
+
+Get width.
+
+Set width.
+
+Get height.
+
+Set height.
+-
+
+== @Dimension.cpp ==
+Wrapper.

@@ -1,3 +1,57 @@
+== Paddle ==
+See header for details on what this object is.
+The comments here will concern implementation details.
+
+== Move left ==
+-
+void Paddle::MoveLeft(const float timestep) {
+  if (_velocity > 0.f) {
+    _velocity = 0.f;
+  }
+  _velocity -= Paddle::ACCELERATION * timestep;
+}
+-
+
+== Move right ==
+-
+void Paddle::MoveRight(const float timestep) {
+  if (_velocity < 0.f) {
+    _velocity = 0.f;
+  }
+  _velocity += Paddle::ACCELERATION * timestep;
+}
+-
+
+== Idle ==
+-
+void Paddle::Idle(const float timestep) {
+  if (_velocity == 0.f) {
+    return;
+  }
+  // handle deceleration from movement left
+  if (_velocity < 0.f) {
+    _velocity += Paddle::DECELERATION * timestep;
+    if (_velocity > 0.f) {
+      _velocity = 0.f;
+    }
+  }
+  // handle deceleration from movement right
+  if (_velocity > 0.f) {
+    _velocity -= Paddle::DECELERATION * timestep;
+    if (_velocity < 0.f) {
+      _velocity = 0.f;
+    }
+  }
+}
+-
+
+== Get acceleration ==
+-
+const float Paddle::GetVelocity() {
+  return _velocity;
+}
+-
+
 == Includes ==
 -
 #include "Paddle.hpp"
@@ -6,6 +60,14 @@
 == Wrapper ==
 -
 Includes.
+
+Move left.
+
+Move right.
+
+Idle.
+
+Get acceleration.
 -
 
 == @Paddle.cpp ==

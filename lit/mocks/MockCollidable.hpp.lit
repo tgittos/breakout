@@ -1,0 +1,27 @@
+== The class ==
+-
+class MockCollidable : public Collidable {
+  
+};
+-
+
+== Includes ==
+-
+#include "gmock/gmock.h"
+#include "Collidable.hpp"
+-
+
+== Include guard ==
+-
+#ifndef MOCK_COLLIDABLE_H
+#define MOCK_COLLIDABLE_H
+
+Includes.
+
+The class.
+
+#endif
+-
+
+== @MockCollidable.hpp ==
+Include guard.
