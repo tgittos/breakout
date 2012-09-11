@@ -6,15 +6,18 @@ class Unittest
   EXCLUDE_FROM_ALL = true
 
   def self.generate(file)
-    puts "Not overwriting file #{file}.cpp.lit" and return if File.exists? "#{PATH}/#{file}.cpp.lit"
+    if File.exists? "#{PATH}/#{file}_unittest.cpp.lit"
+      puts "Not overwriting file #{PATH}/#{file}_unittest.cpp.lit"
+      return
+    end 
 
-    File.open("#{PATH}/#{file}.cpp.lit", "w") do |f|
+    File.open("#{PATH}/#{file}_unittest.cpp.lit", "w") do |f|
       f.write <<-EOS
 == Includes ==
 -
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
-#include "Mock#{file.split('_').first}.hpp"
+#include "Mock#{file}.hpp"
 -
 
 == Wrapper ==
@@ -22,7 +25,7 @@ class Unittest
 Includes.
 -
 
-== @#{file}.cpp ==
+== @#{file}_unittest.cpp ==
 Wrapper.
       EOS
     end

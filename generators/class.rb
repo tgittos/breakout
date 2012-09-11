@@ -6,7 +6,10 @@ class Klass
   EXCLUDE_FROM_ALL = false
 
   def self.generate(file)
-    puts "Not overwriting file #{file}.cpp.lit" and return if File.exists? "#{PATH}/#{file}.cpp.lit"
+    if File.exists? "#{PATH}/#{file}.cpp.lit"
+      puts "Not overwriting file #{PATH}/#{file}.cpp.lit"
+      return
+    end 
 
     File.open("#{PATH}/#{file}.cpp.lit", "w") do |f|
       f.write <<-EOS

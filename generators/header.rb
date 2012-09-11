@@ -6,7 +6,10 @@ class Header
   EXCLUDE_FROM_ALL = false
 
   def self.generate(file)
-    puts "Not overwriting file #{file}.hpp.lit" and return if File.exists? "#{PATH}/#{file}.hpp.lit"
+    if File.exists? "#{PATH}/#{file}.hpp.lit"
+      puts "Not overwriting file #{PATH}/#{file}.hpp.lit"
+      return
+    end 
 
     File.open("#{PATH}/#{file}.hpp.lit", "w") do |f|
       f.write <<-EOS
