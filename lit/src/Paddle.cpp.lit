@@ -2,6 +2,16 @@
 See header for details on what this object is.
 The comments here will concern implementation details.
 
+== Constructor ==
+Add the dimension and collidable features.
+-
+Paddle::Paddle():
+  _velocity(0.f) {
+  AddFeature(new Dimension());
+  AddFeature(new Collidable(this));
+};
+-
+
 == Move left ==
 -
 void Paddle::MoveLeft(const float timestep) {
@@ -55,11 +65,15 @@ const float Paddle::GetVelocity() {
 == Includes ==
 -
 #include "Paddle.hpp"
+#include "Dimension.hpp"
+#include "Collidable.hpp"
 -
 
 == Wrapper ==
 -
 Includes.
+
+Constructor.
 
 Move left.
 

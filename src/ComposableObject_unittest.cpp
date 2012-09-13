@@ -4,16 +4,17 @@
 #include "ComponentFeature.hpp"
 
 class ConcreteComponentFeature : public ComponentFeature {
-  public:
-  virtual const char* GetIdentifier() {
-    return "ConcreteComponentFeature";
-  }
 };
 
 class ConcreteComposableObject : public ComposableObject {
   public:
-  ConcreteComposableObject(ConcreteComponentFeature* ccf) {
-    AddFeature(ccf->GetIdentifier(), ccf);
+  ConcreteComposableObject(ConcreteComponentFeature* ccf = NULL) {
+    if(NULL != ccf) {
+      AddFeature(ccf);
+    }
+  }
+  void AddConcreteComponentFeature() {
+    return AddFeature(new ConcreteComponentFeature());
   }
   ~ConcreteComposableObject() {
     // iterate over features and delete the memory for them
@@ -23,23 +24,21 @@ class ConcreteComposableObject : public ComposableObject {
 TEST(ComposableObject, HasFeatureReturnsTrue) {
   ConcreteComponentFeature* ccf = new ConcreteComponentFeature();
   ConcreteComposableObject co = ConcreteComposableObject(ccf);
-  ASSERT_TRUE(co.HasFeature(ccf->GetIdentifier()));
+  ASSERT_TRUE(co.HasFeature<ConcreteComponentFeature>());
 }
 
 TEST(ComposableObject, HasFeatureReturnsFalse) {
-  ConcreteComponentFeature* ccf = new ConcreteComponentFeature();
-  ConcreteComposableObject co = ConcreteComposableObject(ccf);
-  ASSERT_FALSE(co.HasFeature("FoobarComponentFeature"));
+  ConcreteComposableObject co = ConcreteComposableObject();
+  ASSERT_FALSE(co.HasFeature<ConcreteComponentFeature>());
 }
 
 TEST(ComposableObject, GetValidFeature) {
   ConcreteComponentFeature* ccf = new ConcreteComponentFeature();
   ConcreteComposableObject co = ConcreteComposableObject(ccf);
-  ASSERT_EQ(ccf, co.GetFeature("ConcreteComponentFeature"));
+  ASSERT_EQ(ccf, co.GetFeature<ConcreteComponentFeature>());
 }
 
 TEST(ComposableObject, GetInvalidFeature) {
-  ConcreteComponentFeature* ccf = new ConcreteComponentFeature();
-  ConcreteComposableObject co = ConcreteComposableObject(ccf);
-  ASSERT_EQ(NULL, co.GetFeature("FoobarComponentFeature"));
+  ConcreteComposableObject co = ConcreteComposableObject();
+  ASSERT_EQ(NULL, co.GetFeature<ConcreteComponentFeature>());
 }

@@ -5,8 +5,6 @@ class ComponentFeature {
   public:
   ComponentFeature() {};
   virtual ~ComponentFeature() {};
-
-  virtual const char* GetIdentifier() =0;
 };
 
 #endif

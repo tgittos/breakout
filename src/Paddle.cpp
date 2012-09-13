@@ -1,4 +1,12 @@
 #include "Paddle.hpp"
+#include "Dimension.hpp"
+#include "Collidable.hpp"
+
+Paddle::Paddle():
+  _velocity(0.f) {
+  AddFeature(new Dimension());
+  AddFeature(new Collidable(this));
+};
 
 void Paddle::MoveLeft(const float timestep) {
   if (_velocity > 0.f) {

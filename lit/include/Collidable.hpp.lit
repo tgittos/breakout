@@ -19,20 +19,12 @@ co-ordinates.
 bool Intersects(float x, float y);
 -
 
-== Get identifier ==
-See ComponentFeature for details
--
-const char* GetIdentifier();
-- 
-
 == The class ==
 -
 class Collidable : public ComponentFeature {
   public:
   Collidable(ComposableObject* owner);
   ~Collidable() {}
-
-  Get identifier.
 
   Intersects.
 

@@ -1,10 +1,12 @@
 #ifndef PADDLE_H
 #define PADDLE_H
 
-class Paddle {
+#include "ComposableObject.hpp"
+
+class Paddle : public ComposableObject {
 
   public:
-  Paddle():_velocity(0.f){};
+  Paddle();
   ~Paddle(){};
 
   const float GetVelocity();

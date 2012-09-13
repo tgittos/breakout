@@ -45,10 +45,10 @@ static float const DECELERATION = 2.f;
 
 == The class ==
 -
-class Paddle {
+class Paddle : public ComposableObject {
 
   public:
-  Paddle():_velocity(0.f){};
+  Paddle();
   ~Paddle(){};
 
   Get velocity.
@@ -68,10 +68,17 @@ class Paddle {
 };
 -
 
+== Includes ==
+-
+#include "ComposableObject.hpp"
+-
+
 == Include guard ==
 -
 #ifndef PADDLE_H
 #define PADDLE_H
+
+Includes.
 
 The class.
 

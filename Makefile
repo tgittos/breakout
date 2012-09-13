@@ -363,14 +363,14 @@ Breakout_unittest: Breakout_unittest.o Breakout.o  gtest_main.a libgmock.a
 Brick_unittest: Brick_unittest.o Brick.o  gtest_main.a libgmock.a
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Brick.o Brick_unittest.o  gtest_main.a libgmock.a -o $@
 
-Collidable_unittest: Collidable_unittest.o Collidable.o ComposableObject.o Dimension.o gtest_main.a libgmock.a
-	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Collidable.o Collidable_unittest.o ComposableObject.o Dimension.o gtest_main.a libgmock.a -o $@
+Collidable_unittest: Collidable_unittest.o Collidable.o Dimension.o ComponentFeature.o ComposableObject.o gtest_main.a libgmock.a
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Collidable.o Collidable_unittest.o Dimension.o ComponentFeature.o ComposableObject.o gtest_main.a libgmock.a -o $@
 
 ComposableObject_unittest: ComposableObject_unittest.o ComposableObject.o ComponentFeature.o gtest_main.a libgmock.a
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) ComposableObject.o ComposableObject_unittest.o ComponentFeature.o gtest_main.a libgmock.a -o $@
 
-Dimension_unittest: Dimension_unittest.o Dimension.o  gtest_main.a libgmock.a
-	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Dimension.o Dimension_unittest.o  gtest_main.a libgmock.a -o $@
+Dimension_unittest: Dimension_unittest.o Dimension.o ComponentFeature.o gtest_main.a libgmock.a
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Dimension.o Dimension_unittest.o ComponentFeature.o gtest_main.a libgmock.a -o $@
 
 EventManager_unittest: EventManager_unittest.o EventManager.o ComposableObject.o gtest_main.a libgmock.a
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) EventManager.o EventManager_unittest.o ComposableObject.o gtest_main.a libgmock.a -o $@
@@ -378,8 +378,8 @@ EventManager_unittest: EventManager_unittest.o EventManager.o ComposableObject.o
 Input_unittest: Input_unittest.o Input.o  gtest_main.a libgmock.a
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Input.o Input_unittest.o  gtest_main.a libgmock.a -o $@
 
-Paddle_unittest: Paddle_unittest.o Paddle.o  gtest_main.a libgmock.a
-	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Paddle.o Paddle_unittest.o  gtest_main.a libgmock.a -o $@
+Paddle_unittest: Paddle_unittest.o Paddle.o Dimension.o Collidable.o ComposableObject.o gtest_main.a libgmock.a
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Paddle.o Paddle_unittest.o Dimension.o Collidable.o ComposableObject.o gtest_main.a libgmock.a -o $@
 
 Score_unittest: Score_unittest.o Score.o  gtest_main.a libgmock.a
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Score.o Score_unittest.o  gtest_main.a libgmock.a -o $@

@@ -1,18 +1,9 @@
-== Get identifier ==
-Given that features are stored in a hash map, each
-feature needs a unique identifiable string.
--
-virtual const char* GetIdentifier() =0;
--
-
 == The class ==
 -
 class ComponentFeature {
   public:
   ComponentFeature() {};
   virtual ~ComponentFeature() {};
-
-  Get identifier.
 };
 -
 

@@ -4,29 +4,8 @@ The comments here will concern implementation details.
 
 == Add feature ==
 -
-void ComposableObject::AddFeature(const char* identifier, ComponentFeature* feature) {
-  _componentFeatures.insert(std::pair<const char*, ComponentFeature*>(identifier, feature));
-}
--
-
-== Has feature? ==
--
-bool ComposableObject::HasFeature(const char* identifier) {
-  std::map<const char*, ComponentFeature*>::iterator itr = _componentFeatures.find(identifier);
-  return _componentFeatures.end() != itr;
-}
--
-
-== Get feature ==
--
-ComponentFeature* ComposableObject::GetFeature(const char* identifier) {
-  std::map<const char*, ComponentFeature*>::iterator itr = _componentFeatures.find(identifier);
-  if(_componentFeatures.end() == itr)
-  {
-    return NULL;
-  } else {
-    return itr->second;
-  }
+void ComposableObject::AddFeature(ComponentFeature* feature) {
+  _componentFeatures.push_back(feature);
 }
 -
 
@@ -36,7 +15,7 @@ Initializes it onto the stack, so it should go out of
 memory when the object is destroyed?
 -
 ComposableObject::ComposableObject() {
-  std::map<const char*, ComponentFeature*> _componentFeatures = std::map<const char*, ComponentFeature*>(); 
+  std::list<ComponentFeature*> _componentFeatures;
 }
 -
 
@@ -55,6 +34,7 @@ ComposableObject::~ComposableObject() {
 
 == Includes ==
 -
+#include <cassert>
 #include "ComposableObject.hpp"
 -
 
@@ -67,10 +47,6 @@ Constructor.
 Destructor.
 
 Add feature.
-
-Has feature?.
-
-Get feature.
 -
 
 == @ComposableObject.cpp ==

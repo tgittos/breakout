@@ -14,27 +14,48 @@ for the feature.
 This protected method will allow the object to add a feature
 to itself.
 -
-void AddFeature(const char* identifier, ComponentFeature* feature);
+void AddFeature(ComponentFeature* feature);
 -
 
 == Has feature? ==
 This public method will allow other objects to query this
 one to determine what it supports and what it doesn't.
+Due to C++ template funkiness, I have to put the definition
+of a templated function in the header, not in the body.
 -
-bool HasFeature(const char* identifier);
+template<class T>
+bool HasFeature() {
+  return NULL != GetFeature<T>();
+}
 -
 
 == Get feature ==
 This public method will allow other objects to access
 the features this object supports.
+Due to C++ template funkiness, I have to put the definition
+of a templated function in the header, not in the body.
+
+The first line is an assert that will verify if the class
+passed is a ComponentFeature. If it isn't, the program
+will abort.
 -
-ComponentFeature* GetFeature(const char* identifier);
+template<class T>
+T* GetFeature() {
+  T* ptr = NULL;
+  for(std::list<ComponentFeature*>::iterator itr = _componentFeatures.begin(); itr != _componentFeatures.end(); ++itr) {
+    ptr = dynamic_cast<T*>(*itr);
+    if (NULL != ptr) {
+      break;
+    }
+  }
+  return ptr;
+}
 -
 
-== The map ==
-The map stores the features by their identifiers
+== The list ==
+The list stores the features by their identifiers
 -
-std::map<const char*, ComponentFeature*> _componentFeatures;
+std::list<ComponentFeature*> _componentFeatures;
 -
 
 == The class ==
@@ -51,7 +72,7 @@ class ComposableObject {
   Add feature.
 
   protected:
-  The map.
+  The list.
 };
 -
 
@@ -65,7 +86,7 @@ class ComponentFeature;
 == Includes ==
 For those files we can't forward declare, use includes
 -
-#include <map>
+#include <list>
 -
 
 == Include guard ==

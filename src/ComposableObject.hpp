@@ -1,7 +1,7 @@
 #ifndef COMPOSABLE_OBJECT_H
 #define COMPOSABLE_OBJECT_H
 
-#include <map>
+#include <list>
 
 class ComponentFeature;
 
@@ -10,14 +10,27 @@ class ComposableObject {
   ComposableObject();
   virtual ~ComposableObject();
 
-  bool HasFeature(const char* identifier);
+  template<class T>
+  bool HasFeature() {
+    return NULL != GetFeature<T>();
+  }
 
-  ComponentFeature* GetFeature(const char* identifier);
+  template<class T>
+  T* GetFeature() {
+    T* ptr = NULL;
+    for(std::list<ComponentFeature*>::iterator itr = _componentFeatures.begin(); itr != _componentFeatures.end(); ++itr) {
+      ptr = dynamic_cast<T*>(*itr);
+      if (NULL != ptr) {
+        break;
+      }
+    }
+    return ptr;
+  }
 
-  void AddFeature(const char* identifier, ComponentFeature* feature);
+  void AddFeature(ComponentFeature* feature);
 
   protected:
-  std::map<const char*, ComponentFeature*> _componentFeatures;
+  std::list<ComponentFeature*> _componentFeatures;
 };
 
 #endif

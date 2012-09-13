@@ -9,8 +9,6 @@ class Collidable : public ComponentFeature {
   Collidable(ComposableObject* owner);
   ~Collidable() {}
 
-  const char* GetIdentifier();
-
   bool Intersects(float x, float y);
 
   private:

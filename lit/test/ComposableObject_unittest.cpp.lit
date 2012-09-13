@@ -1,3 +1,18 @@
+== Cannot add a feature twice ==
+Because we store features in a list, we need to make
+sure we'll get a run time error if we try and add
+a feature twice.
+
+I HAVE REMOVED THIS TEST BECAUSE THIS FUNCTIONALY
+WOULD UNREASONABLY COMPLICATE THE CODE.
+-
+TEST(ComposableObject, CannotAddFeatureTwice) {
+  ConcreteComponentFeature* ccf = new ConcreteComponentFeature();
+  ConcreteComposableObject co = ConcreteComposableObject(ccf);
+  ASSERT_EXIT(co.AddConcreteComponentFeature(), ::testing::ExitedWithCode(1), "Cannot add feature twice");
+}
+-
+
 == Has feature will return true when feature present ==
 This uses a fake composable object and a fake concrete 
 component feature declared in this test file. See the 
@@ -6,16 +21,15 @@ end of this document for more details.
 TEST(ComposableObject, HasFeatureReturnsTrue) {
   ConcreteComponentFeature* ccf = new ConcreteComponentFeature();
   ConcreteComposableObject co = ConcreteComposableObject(ccf);
-  ASSERT_TRUE(co.HasFeature(ccf->GetIdentifier()));
+  ASSERT_TRUE(co.HasFeature<ConcreteComponentFeature>());
 }
 -
 
 == Has feature will return false when no feature present ==
 -
 TEST(ComposableObject, HasFeatureReturnsFalse) {
-  ConcreteComponentFeature* ccf = new ConcreteComponentFeature();
-  ConcreteComposableObject co = ConcreteComposableObject(ccf);
-  ASSERT_FALSE(co.HasFeature("FoobarComponentFeature"));
+  ConcreteComposableObject co = ConcreteComposableObject();
+  ASSERT_FALSE(co.HasFeature<ConcreteComponentFeature>());
 }
 -
 
@@ -24,16 +38,15 @@ TEST(ComposableObject, HasFeatureReturnsFalse) {
 TEST(ComposableObject, GetValidFeature) {
   ConcreteComponentFeature* ccf = new ConcreteComponentFeature();
   ConcreteComposableObject co = ConcreteComposableObject(ccf);
-  ASSERT_EQ(ccf, co.GetFeature("ConcreteComponentFeature"));
+  ASSERT_EQ(ccf, co.GetFeature<ConcreteComponentFeature>());
 }
 -
 
 == Get feature will return null when it's not present ==
 -
 TEST(ComposableObject, GetInvalidFeature) {
-  ConcreteComponentFeature* ccf = new ConcreteComponentFeature();
-  ConcreteComposableObject co = ConcreteComposableObject(ccf);
-  ASSERT_EQ(NULL, co.GetFeature("FoobarComponentFeature"));
+  ConcreteComposableObject co = ConcreteComposableObject();
+  ASSERT_EQ(NULL, co.GetFeature<ConcreteComponentFeature>());
 }
 -
 
@@ -43,8 +56,13 @@ during construction, using Dependency Injection (DI)
 -
 class ConcreteComposableObject : public ComposableObject {
   public:
-  ConcreteComposableObject(ConcreteComponentFeature* ccf) {
-    AddFeature(ccf->GetIdentifier(), ccf);
+  ConcreteComposableObject(ConcreteComponentFeature* ccf = NULL) {
+    if(NULL != ccf) {
+      AddFeature(ccf);
+    }
+  }
+  void AddConcreteComponentFeature() {
+    return AddFeature(new ConcreteComponentFeature());
   }
   ~ConcreteComposableObject() {
     // iterate over features and delete the memory for them
@@ -55,10 +73,6 @@ class ConcreteComposableObject : public ComposableObject {
 == Fake concrete component feature for tests ==
 -
 class ConcreteComponentFeature : public ComponentFeature {
-  public:
-  virtual const char* GetIdentifier() {
-    return "ConcreteComponentFeature";
-  }
 };
 -
 

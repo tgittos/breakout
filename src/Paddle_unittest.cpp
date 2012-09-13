@@ -1,5 +1,7 @@
 #include "gtest/gtest.h"
 #include "Paddle.hpp"
+#include "Dimension.hpp"
+#include "Collidable.hpp"
 
 TEST(PaddleTest, MoveLeftNegativeAcceleration) {
   Paddle p = Paddle();
@@ -40,4 +42,10 @@ TEST(PaddleTest, InstantaneousDirectionChange) {
   ASSERT_EQ(acceleration, p.GetVelocity());
   p.MoveLeft(1.f);
   ASSERT_EQ(-acceleration, p.GetVelocity());
+}
+
+TEST(PaddleTest, FeatureTest) {
+  Paddle p;
+  ASSERT_TRUE(p.HasFeature<Dimension>());
+  ASSERT_TRUE(p.HasFeature<Collidable>());
 }

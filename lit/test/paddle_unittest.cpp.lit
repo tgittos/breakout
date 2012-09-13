@@ -68,7 +68,9 @@ TEST(PaddleTest, InstantaneousDirectionChange) {
 == Paddle has both Collidable and Dimension features ==
 -
 TEST(PaddleTest, FeatureTest) {
-  ASSERT_FALSE(true);
+  Paddle p;
+  ASSERT_TRUE(p.HasFeature<Dimension>());
+  ASSERT_TRUE(p.HasFeature<Collidable>());
 }
 -
 
@@ -76,6 +78,8 @@ TEST(PaddleTest, FeatureTest) {
 -
 #include "gtest/gtest.h"
 #include "Paddle.hpp"
+#include "Dimension.hpp"
+#include "Collidable.hpp"
 -
 
 == Wrapper ==

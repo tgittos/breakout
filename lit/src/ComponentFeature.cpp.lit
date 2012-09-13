@@ -1,3 +1,7 @@
+== Component Feature ==
+See header for details on what this object is.
+The comments here will concern implementation details.
+
 == Includes ==
 -
 #include "ComponentFeature.hpp"
