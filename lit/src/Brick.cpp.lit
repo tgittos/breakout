@@ -1,11 +1,46 @@
+== Brick ==
+See header for details on what this object is.
+The comments here will concern implementation details.
+
+== Get points ==
+-
+int Brick::GetPoints() {
+  return (int)_type;
+}
+-
+
+== Is unbreakable? ==
+-
+bool Brick::IsUnbreakable() {
+  return _type == Brick::UNBREAKABLE;
+}
+-
+
+== Constructor ==
+-
+Brick::Brick(BrickType type):
+  _type(type) {
+  AddFeature(new Dimension());
+  AddFeature(new Collidable(this));  
+};
+-
+
 == Includes ==
 -
 #include "Brick.hpp"
+#include "Dimension.hpp"
+#include "Collidable.hpp"
 -
 
 == Wrapper ==
 -
 Includes.
+
+Constructor.
+
+Get points.
+
+Is unbreakable?.
 -
 
 == @Brick.cpp ==

@@ -1,8 +1,12 @@
 #include "gtest/gtest.h"
 #include "Brick.hpp"
+#include "Dimension.hpp"
+#include "Collidable.hpp"
 
 TEST(BrickTest, FeatureTest) {
-  ASSERT_FALSE(true);
+  Brick b = Brick(Brick::UNBREAKABLE);
+  ASSERT_TRUE(b.HasFeature<Dimension>());
+  ASSERT_TRUE(b.HasFeature<Collidable>());
 }
 
 TEST(BrickTest, BrickHasScore) {

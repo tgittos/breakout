@@ -1,14 +1,66 @@
+== Brick ==
+The brick class is the logical representation of
+a brick in the game. Bricks have a score/type,
+and a position, as well as being collidable.
+
+== Brick types/scores ==
+The different types of bricks available
+-
+enum BrickType {
+  UNBREAKABLE = 0,
+  ONE_POINT = 1,
+  THREE_POINTS = 3,
+  FIVE_POINTS = 5,
+  SEVEN_POINTS = 7
+};
+-
+
+== Get points ==
+Get the integer point value from the type of the
+brick.
+-
+int GetPoints();
+-
+
+== Is unbreakable? ==
+Checks if the brick is an unbreakable brick
+-
+bool IsUnbreakable();
+-
+
+== My type ==
+The type of brick that this brick is.
+-
+BrickType _type;
+-
+
 == The class ==
 -
-class Brick {
-  
+class Brick : public ComposableObject {
+  public:
+    Brick types/scores.
+
+    Brick(BrickType type);
+
+    Get points.
+    Is unbreakable?.
+
+  private:
+    My type.
 };
+-
+
+== Includes ==
+-
+#include "ComposableObject.hpp"
 -
 
 == Include guard ==
 -
 #ifndef BRICK_H
 #define BRICK_H
+
+Includes.
 
 The class.
 

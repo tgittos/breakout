@@ -360,8 +360,8 @@ Ball_unittest: Ball_unittest.o Ball.o  gtest_main.a libgmock.a
 Breakout_unittest: Breakout_unittest.o Breakout.o  gtest_main.a libgmock.a
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Breakout.o Breakout_unittest.o  gtest_main.a libgmock.a -o $@
 
-Brick_unittest: Brick_unittest.o Brick.o  gtest_main.a libgmock.a
-	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Brick.o Brick_unittest.o  gtest_main.a libgmock.a -o $@
+Brick_unittest: Brick_unittest.o Brick.o Dimension.o Collidable.o ComposableObject.o gtest_main.a libgmock.a
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Brick.o Brick_unittest.o Dimension.o Collidable.o ComposableObject.o gtest_main.a libgmock.a -o $@
 
 Collidable_unittest: Collidable_unittest.o Collidable.o Dimension.o ComponentFeature.o ComposableObject.o gtest_main.a libgmock.a
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Collidable.o Collidable_unittest.o Dimension.o ComponentFeature.o ComposableObject.o gtest_main.a libgmock.a -o $@
