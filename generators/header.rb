@@ -16,14 +16,22 @@ class Header
 == The class ==
 -
 class #{file} {
-  
+  public:
+  #{file}(){};
+  ~#{file}(){};
 };
+-
+
+== Includes ==
+-
 -
 
 == Include guard ==
 -
 #ifndef #{file.underscore.upcase}_H
 #define #{file.underscore.upcase}_H
+
+Includes.
 
 The class.
 

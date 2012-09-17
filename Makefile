@@ -7,7 +7,7 @@ EXECUTABLES = breakout
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = Ball_unittest Brick_unittest EventManager_unittest Input_unittest Paddle_unittest Score_unittest ComposableObject_unittest Collidable_unittest Dimension_unittest
+TESTS = Ball_unittest Brick_unittest EventManager_unittest Paddle_unittest Score_unittest ComposableObject_unittest Collidable_unittest Dimension_unittest
 
 ####################################################################
 # Base variables
@@ -125,7 +125,7 @@ mocks:
 	literati tangle -o src/. lit/mocks
 
 tests : includes mocks $(TESTS)
-	$(addprefix ./,$(TESTS))
+	$(subst $(eval) , && ,$(addprefix ./,$(TESTS)))
 
 assets:
 	mkdir -p bin/assets
@@ -354,8 +354,8 @@ Paddle_unittest.o: Paddle_unittest.cpp Paddle.hpp $(GTEST_HEADERS)
 Score_unittest.o: Score_unittest.cpp Score.hpp $(GTEST_HEADERS)
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/Score_unittest.cpp -o $@
 
-Ball_unittest: Ball_unittest.o Ball.o  gtest_main.a libgmock.a
-	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Ball.o Ball_unittest.o  gtest_main.a libgmock.a -o $@
+Ball_unittest: Ball_unittest.o Ball.o Dimension.o ComposableObject.o Collidable.o gtest_main.a libgmock.a
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Ball.o Ball_unittest.o Dimension.o ComposableObject.o Collidable.o gtest_main.a libgmock.a -o $@
 
 Breakout_unittest: Breakout_unittest.o Breakout.o  gtest_main.a libgmock.a
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Breakout.o Breakout_unittest.o  gtest_main.a libgmock.a -o $@

@@ -1,14 +1,96 @@
+== Ball ==
+The ball class is a logical representation of the ball
+in Breakout. It has the Dimension and Collidable
+features, and can also reflect from a bearing.
+
+== Reflect ==
+Reflect for a given reflection surface
+-
+void Reflect(Collidable::IntersectionSurface surfaceAngle);
+-
+
+== Speed up ==
+At certain intervals in the game, the ball will speed
+up. This method will increase the speed by a known
+increment.
+-
+void SpeedUp();
+-
+
+== Set heading ==
+Set the ball's heading. Mostly used in testing.
+-
+void SetHeading(float h);
+-
+
+== Get heading ==
+Get the heading of the ball. Mostly used in testing.
+-
+float GetHeading();
+-
+
+== Get speed ==
+Get the speed of the ball. Mostly used in testing.
+-
+float GetSpeed();
+-
+
+== Heading ==
+The ball's current heading
+-
+float _heading;
+-
+
+== Speed ==
+-
+float _speed;
+-
+
+== Speed increment ==
+-
+const float SPEED_INCREMENT;
+-
+
+== Oscillation fudge ==
+-
+const float OSCILLATION_FUDGE;
+-
+
 == The class ==
 -
-class Ball {
+class Ball : public ComposableObject {
+  public:
+  Ball();
+  ~Ball(){};
+
+  Set heading.
+  Get heading.
+  Get speed.
+
+  Reflect.
+  Speed up.
+
+  private:
+  Speed increment.
+  Oscillation fudge.
   
+  Heading.
+  Speed.
 };
+-
+
+== Includes ==
+-
+#include "ComposableObject.hpp"
+#include "Collidable.hpp"
 -
 
 == Include guard ==
 -
 #ifndef BALL_H
 #define BALL_H
+
+Includes.
 
 The class.
 

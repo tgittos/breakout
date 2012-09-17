@@ -40,7 +40,7 @@ TEST(CollidableTest, Intersection) {
   o.Init();
   o.GetFeature<Dimension>()->SetX(100.f);
   o.GetFeature<Dimension>()->SetY(100.f);
-  ASSERT_TRUE(o.GetFeature<Collidable>()->Intersects(100.f, 100.f));
+  ASSERT_NE(Collidable::NONE, o.GetFeature<Collidable>()->Intersects(100.f, 100.f));
 }
 
 TEST(CollidableTest, NoIntersection) {
@@ -48,7 +48,7 @@ TEST(CollidableTest, NoIntersection) {
   o.Init();
   o.GetFeature<Dimension>()->SetX(0.f);
   o.GetFeature<Dimension>()->SetY(0.f);
-  ASSERT_FALSE(o.GetFeature<Collidable>()->Intersects(100.f, 100.f));
+  ASSERT_EQ(Collidable::NONE, o.GetFeature<Collidable>()->Intersects(100.f, 100.f));
 }
 
 TEST(CollidableTest, IntersectionWidth) {
@@ -57,7 +57,7 @@ TEST(CollidableTest, IntersectionWidth) {
   o.GetFeature<Dimension>()->SetX(100.f);
   o.GetFeature<Dimension>()->SetY(100.f);
   o.GetFeature<Dimension>()->SetWidth(50.f);
-  ASSERT_TRUE(o.GetFeature<Collidable>()->Intersects(120.f, 100.f));
+  ASSERT_NE(Collidable::NONE, o.GetFeature<Collidable>()->Intersects(120.f, 100.f));
 }
 
 TEST(CollidableTest, IntersectionHeight) {
@@ -66,5 +66,19 @@ TEST(CollidableTest, IntersectionHeight) {
   o.GetFeature<Dimension>()->SetX(100.f);
   o.GetFeature<Dimension>()->SetY(100.f);
   o.GetFeature<Dimension>()->SetHeight(50.f);
-  ASSERT_TRUE(o.GetFeature<Collidable>()->Intersects(100.f, 120.f));
+  ASSERT_NE(Collidable::NONE, o.GetFeature<Collidable>()->Intersects(100.f, 120.f));
+}
+
+TEST(CollidableTest, SurfaceReturned) {
+  ConcreteComposableObject o;
+  o.Init();
+  o.GetFeature<Dimension>()->SetWidth(100.f);
+  o.GetFeature<Dimension>()->SetHeight(100.f);
+  o.GetFeature<Dimension>()->SetX(100.f);
+  o.GetFeature<Dimension>()->SetY(100.f);
+
+  ASSERT_EQ(Collidable::LEFT, o.GetFeature<Collidable>()->Intersects(100.f, 150.f));
+  ASSERT_EQ(Collidable::TOP, o.GetFeature<Collidable>()->Intersects(150.f, 100.f));
+  ASSERT_EQ(Collidable::RIGHT, o.GetFeature<Collidable>()->Intersects(200.f, 150.f));
+  ASSERT_EQ(Collidable::BOTTOM, o.GetFeature<Collidable>()->Intersects(150.f, 200.f));
 }

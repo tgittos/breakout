@@ -1,11 +1,84 @@
+== Ball ==
+See header for details on what this object is.
+The comments here will concern implementation details.
+
+== Reflect ==
+-
+void Ball::Reflect(Collidable::IntersectionSurface surfaceAngle) {
+  float newHeading = fmodf(360 + 2.f * surfaceAngle - _heading, 360.f);
+  if (abs(newHeading - _heading) == 180) {
+    // fudge the newHeading to prevent oscillation
+    srand(time(NULL)); // seed the random number
+    if (rand() < 0.5) {
+      newHeading += OSCILLATION_FUDGE;
+    } else {
+      newHeading -= OSCILLATION_FUDGE;
+    }
+  }
+  _heading = newHeading;
+}
+-
+
+== Speed up ==
+-
+void Ball::SpeedUp() {
+  _speed += SPEED_INCREMENT;
+}
+-
+
+== Set heading ==
+-
+void Ball::SetHeading(float h) {
+  _heading = h;
+}
+-
+
+== Get heading ==
+-
+float Ball::GetHeading() {
+  return _heading;
+}
+-
+
+== Get speed ==
+-
+float Ball::GetSpeed() {
+  return _speed;
+}
+-
+
+== Constructor ==
+-
+Ball::Ball():
+  SPEED_INCREMENT(20.f), OSCILLATION_FUDGE(20.f), _heading(0.f), _speed(230.f) {
+  AddFeature(new Dimension());
+  AddFeature(new Collidable(this));
+}
+-
+
 == Includes ==
 -
+#include <math.h>
+#include <time.h>
 #include "Ball.hpp"
+#include "Dimension.hpp"
 -
 
 == Wrapper ==
 -
 Includes.
+
+Constructor.
+
+Set heading.
+
+Get heading.
+
+Get speed.
+
+Reflect.
+
+Speed up.
 -
 
 == @Ball.cpp ==

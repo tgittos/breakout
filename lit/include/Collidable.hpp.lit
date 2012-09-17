@@ -12,17 +12,37 @@ Dimension feature if it is missing.
 ComposableObject* _owner;
 -
 
+== Intersection surfaces ==
+When an intersection test occurs, return the surface
+that the intersection occured with.
+
+The value of the surface is it's rotation, so that we
+can feed that to the reflection algorithm and it can
+calculate how to reflect the ball based on the surface's
+rotation.
+-
+enum IntersectionSurface {
+  NONE = -1,
+  LEFT = 0,
+  TOP = 90,
+  RIGHT = 180,
+  BOTTOM = 270
+};
+-
+
 == Intersects ==
 Test whether this object intersects with the given
 co-ordinates.
 -
-bool Intersects(float x, float y);
+IntersectionSurface Intersects(float x, float y);
 -
 
 == The class ==
 -
 class Collidable : public ComponentFeature {
   public:
+  Intersection surfaces.
+
   Collidable(ComposableObject* owner);
   ~Collidable() {}
 
