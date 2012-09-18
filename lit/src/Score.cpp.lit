@@ -1,3 +1,30 @@
+== The score ==
+See header for details on what this object is.
+The comments here will concern implementation details.
+
+== Get score ==
+-
+int Score::GetScore() { 
+  return _score;
+}
+-
+
+== Increment ==
+Coerce the BrickType enum to an integer and increment
+the score by that.
+-
+void Score::Increment(Brick::BrickType type) {
+  _score += (int)type;
+}
+-
+
+== Constructor ==
+-
+Score::Score():
+  _score(0) {
+}
+-
+
 == Includes ==
 -
 #include "Score.hpp"
@@ -6,6 +33,12 @@
 == Wrapper ==
 -
 Includes.
+
+Constructor.
+
+Get score.
+
+Increment.
 -
 
 == @Score.cpp ==

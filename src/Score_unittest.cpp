@@ -1,10 +1,14 @@
 #include "gtest/gtest.h"
 #include "Score.hpp"
 
-TEST(ScoreTest, ListensForBrickHitEvents) {
-  ASSERT_FALSE(true);
+
+TEST(ScoreTest, ValidInitialization) {
+  Score s;
+  ASSERT_EQ(0, s.GetScore());
 }
 
-TEST(ScoreTest, IncrementsScore) {
-  ASSERT_FALSE(true);
+TEST(ScoreTest, ListensForBrickHitEvents) {
+  Score s;
+  s.Increment(Brick::FIVE_POINTS);
+  ASSERT_EQ(5, s.GetScore());
 }

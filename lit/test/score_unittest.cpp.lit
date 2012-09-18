@@ -7,33 +7,41 @@ Each of the tests should be relatively straight
 forward, so the documentation on them will not be
 as explanatory as the documentation on the code.
 
-== Score listens to brick hit events ==
+== Score is initialized to 0 ==
 -
-TEST(ScoreTest, ListensForBrickHitEvents) {
-  ASSERT_FALSE(true);
+TEST(ScoreTest, ValidInitialization) {
+  Score s;
+  ASSERT_EQ(0, s.GetScore());
 }
 -
 
-== Score increments by brick value when handling brick hit events ==
+== Can increment score by brick point value ==
 -
-TEST(ScoreTest, IncrementsScore) {
-  ASSERT_FALSE(true);
+TEST(ScoreTest, ListensForBrickHitEvents) {
+  Score s;
+  s.Increment(Brick::FIVE_POINTS);
+  ASSERT_EQ(5, s.GetScore());
 }
 -
 
 == Includes ==
+I've included ComposableObject and Coollidable headers
+because the Brick class needs them, and if they're
+included here the makefile generator will properly
+create a rule to build this test.
 -
 #include "gtest/gtest.h"
 #include "Score.hpp"
+
 -
 
 == Wrapper ==
 -
 Includes.
 
-Score listens to brick hit events.
+Score is initialized to 0.
 
-Score increments by brick value when handling brick hit events.
+Can increment score by brick point value.
 -
 
 == @Score_unittest.cpp ==

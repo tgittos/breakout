@@ -1,14 +1,52 @@
+== The score ==
+The score class is simple - it just needs to keep
+track of the score.
+
+== Get score ==
+-
+int GetScore();
+-
+
+== Increment ==
+Values are fixed based on brick definitions. This
+way we can implement new types in the brick and the
+score doesn't care.
+-
+void Increment(Brick::BrickType type);
+-
+
+== The score ==
+-
+int _score;
+-
+
 == The class ==
 -
 class Score {
-  
+  public:
+  Score();
+  ~Score(){};
+
+  Get score.
+
+  Increment.
+
+  private:
+  The score.
 };
+-
+
+== Includes ==
+-
+#include "Brick.hpp"
 -
 
 == Include guard ==
 -
 #ifndef SCORE_H
 #define SCORE_H
+
+Includes.
 
 The class.
 

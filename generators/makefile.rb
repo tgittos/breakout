@@ -73,21 +73,11 @@ class Makefile
     test_binaries = Dir.entries("lit/test").reject{|f| f =~ /^\./}.collect do |f|
       # examine the cpp file to find includes that we don't already know about
       # and add them as both dependencies and sources to the compile
-      test_includes = ["lit/src/#{get_game_name(get_name f)}.cpp.lit",
-                       "lit/include/#{get_game_name(get_name f)}.hpp.lit",
-                       "lit/test/#{f}"].collect do |file|
-        next unless File.exists? file 
-        IO.readlines(file).collect do |l|
-          matches = l.gsub(/\n/,'').match(/^#include\s["']([^",]+)["']$/)
-          matches.captures.first if matches
-        end.reject{|i| ["gtest/gtest.h", "gmock/gmock.h", "#{get_game_name f}.hpp", "Mock#{get_game_name f}.hpp"].include? i}
-          .reject{|i| i =~ /^Mock/ }
-          .reject{|i| i =~ /^SFML/ }
-      end.flatten.uniq.compact
+      test_includes = extract_dependencies(f).reject{|i| i == "#{get_name f}.o" }
 
       <<-EOS
-#{get_name f}: #{get_name f}.o #{get_game_name(get_name f)}.o #{test_includes.map{|i| "#{i.split('.').first}.o"}.join(" ")} gtest_main.a libgmock.a
-\t$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) #{get_game_name(get_name f)}.o #{get_name f}.o #{test_includes.map{|i| "#{i.split('.').first}.o"}.join(" ")} gtest_main.a libgmock.a -o $@
+#{get_name f}: #{get_name f}.o #{test_includes.map{|i| "#{i.split('.').first}.o"}.join(" ")} gtest_main.a libgmock.a
+\t$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) #{get_name f}.o #{test_includes.map{|i| "#{i.split('.').first}.o"}.join(" ")} gtest_main.a libgmock.a -o $@
       EOS
     end
 
@@ -125,6 +115,23 @@ class Makefile
     result = @includes_list.select{|i| i =~ /^#{f}/}.first
     return "#{get_name(result)}.hpp" if result
     return ""
+  end
+
+  def self.extract_dependencies(file, found = [])
+    includes = ["lit/src/#{get_game_name(get_name file)}.cpp.lit",
+                "lit/include/#{get_game_name(get_name file)}.hpp.lit",
+                "lit/test/#{file}"].collect do |file|
+      next unless File.exists? file 
+      IO.readlines(file).collect do |l|
+        matches = l.gsub(/\n/,'').match(/^#include\s["']([^",]+)["']$/)
+        matches.captures.first if matches
+      end
+        .reject{|i| found.include? i }
+        .reject{|i| ["gtest/gtest.h", "gmock/gmock.h", "#{get_game_name file}.hpp", "Mock#{get_game_name file}.hpp"].include? i}
+        .reject{|i| i =~ /^Mock/ }
+        .reject{|i| i =~ /^SFML/ }
+    end.flatten.uniq.compact
+    includes.each_with_object([]){|i, memo| memo.concat([i].concat(extract_dependencies(i, includes)))}.uniq
   end
 
 end
