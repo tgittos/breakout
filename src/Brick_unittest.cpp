@@ -9,6 +9,12 @@ TEST(BrickTest, FeatureTest) {
   ASSERT_TRUE(b.HasFeature<Collidable>());
 }
 
+TEST(BrickTest, WidthHeightSet) {
+  Brick b = Brick(Brick::UNBREAKABLE);
+  ASSERT_EQ(Brick::BRICK_WIDTH, b.GetFeature<Dimension>()->GetWidth());
+  ASSERT_EQ(Brick::BRICK_HEIGHT, b.GetFeature<Dimension>()->GetHeight());
+}
+
 TEST(BrickTest, BrickHasScore) {
   Brick b = Brick(Brick::FIVE_POINTS);
   ASSERT_EQ(5, b.GetPoints());

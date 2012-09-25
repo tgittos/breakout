@@ -15,6 +15,16 @@ enum BrickType {
 };
 -
 
+== The height of a brick ==
+-
+static const int BRICK_HEIGHT = 25;
+-
+
+== The width of a brick ==
+-
+static const int BRICK_WIDTH = 50;
+-
+
 == Get points ==
 Get the integer point value from the type of the
 brick.
@@ -39,6 +49,8 @@ BrickType _type;
 class Brick : public ComposableObject {
   public:
     Brick types/scores.
+    The height of a brick.
+    The width of a brick.
 
     Brick(BrickType type);
 

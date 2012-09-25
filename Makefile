@@ -7,7 +7,7 @@ EXECUTABLES = breakout
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = Ball_unittest Brick_unittest EventManager_unittest Paddle_unittest Score_unittest ComposableObject_unittest Collidable_unittest Dimension_unittest
+TESTS = Ball_unittest Brick_unittest EventManager_unittest Paddle_unittest Score_unittest ComposableObject_unittest Collidable_unittest Dimension_unittest Level_unittest
 
 ####################################################################
 # Base variables
@@ -171,6 +171,9 @@ Game.hpp:
 Input.hpp:
 	literati tangle -o src/. lit/include/$@.lit
 
+Level.hpp:
+	literati tangle -o src/. lit/include/$@.lit
+
 Paddle.hpp:
 	literati tangle -o src/. lit/include/$@.lit
 
@@ -202,6 +205,9 @@ MockEventManager.hpp:
 	literati tangle -o src/. lit/mocks/$@.lit
 
 MockInput.hpp:
+	literati tangle -o src/. lit/mocks/$@.lit
+
+MockLevel.hpp:
 	literati tangle -o src/. lit/mocks/$@.lit
 
 MockPaddle.hpp:
@@ -241,6 +247,9 @@ Game.cpp:
 	literati tangle -o src/. lit/src/$@.lit
 
 Input.cpp:
+	literati tangle -o src/. lit/src/$@.lit
+
+Level.cpp:
 	literati tangle -o src/. lit/src/$@.lit
 
 Main.cpp:
@@ -285,6 +294,9 @@ Game.o: Game.hpp Game.cpp
 Input.o: Input.hpp Input.cpp
 	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/Input.cpp
 
+Level.o: Level.hpp Level.cpp
+	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/Level.cpp
+
 Main.o:  Main.cpp
 	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/Main.cpp
 
@@ -318,6 +330,9 @@ EventManager_unittest.cpp:
 Input_unittest.cpp:
 	literati tangle -o src/. lit/test/$@.lit
 
+Level_unittest.cpp:
+	literati tangle -o src/. lit/test/$@.lit
+
 Paddle_unittest.cpp:
 	literati tangle -o src/. lit/test/$@.lit
 
@@ -348,6 +363,9 @@ EventManager_unittest.o: EventManager_unittest.cpp EventManager.hpp $(GTEST_HEAD
 Input_unittest.o: Input_unittest.cpp Input.hpp $(GTEST_HEADERS)
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/Input_unittest.cpp -o $@
 
+Level_unittest.o: Level_unittest.cpp Level.hpp $(GTEST_HEADERS)
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/Level_unittest.cpp -o $@
+
 Paddle_unittest.o: Paddle_unittest.cpp Paddle.hpp $(GTEST_HEADERS)
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/Paddle_unittest.cpp -o $@
 
@@ -377,6 +395,9 @@ EventManager_unittest: EventManager_unittest.o EventManager.o ComposableObject.o
 
 Input_unittest: Input_unittest.o Input.o gtest_main.a libgmock.a
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Input_unittest.o Input.o gtest_main.a libgmock.a -o $@
+
+Level_unittest: Level_unittest.o Level.o Brick.o ComposableObject.o Collidable.o ComponentFeature.o Dimension.o gtest_main.a libgmock.a
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Level_unittest.o Level.o Brick.o ComposableObject.o Collidable.o ComponentFeature.o Dimension.o gtest_main.a libgmock.a -o $@
 
 Paddle_unittest: Paddle_unittest.o Paddle.o Dimension.o ComponentFeature.o Collidable.o ComposableObject.o gtest_main.a libgmock.a
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Paddle_unittest.o Paddle.o Dimension.o ComponentFeature.o Collidable.o ComposableObject.o gtest_main.a libgmock.a -o $@

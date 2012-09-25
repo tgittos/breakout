@@ -1,3 +1,26 @@
+== Breakout ==
+The Breakout class encapsulates the logic of actually
+running the game. It contains the main game loop, and
+will hold a reference to the board.
+
+== The game loop ==
+The heart of the game is the game loop. The game loop
+will increment the state of the game based on the time
+passed.
+
+It will get the position of the ball and check if it
+intersects with either the paddle or any brick. If it
+does intersect with something, it will bounce. If it
+intersected with a brick, it will tell the level to
+remove the brick and increment the score by the label.
+
+If the ball falls off the screen, then we will decrement
+the number of balls available and reset the ball.
+
+At the end of the loop, we will check to see if there
+are any bricks left, and if not, we'll declare the game
+won.
+
 == The class ==
 -
 class Breakout {

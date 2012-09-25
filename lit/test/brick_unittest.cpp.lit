@@ -16,6 +16,15 @@ TEST(BrickTest, FeatureTest) {
 }
 -
 
+== Correct width and height is set on construction ==
+-
+TEST(BrickTest, WidthHeightSet) {
+  Brick b = Brick(Brick::UNBREAKABLE);
+  ASSERT_EQ(Brick::BRICK_WIDTH, b.GetFeature<Dimension>()->GetWidth());
+  ASSERT_EQ(Brick::BRICK_HEIGHT, b.GetFeature<Dimension>()->GetHeight());
+}
+-
+
 == Can get score off of brick ==
 -
 TEST(BrickTest, BrickHasScore) {
@@ -61,6 +70,8 @@ TEST(BrickTest, UnbreakableIsFalse) {
 Includes.
 
 Brick has both Collidable and Dimension features.
+
+Correct width and height is set on construction.
 
 Can get score off of brick.
 

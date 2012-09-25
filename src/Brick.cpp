@@ -2,9 +2,16 @@
 #include "Dimension.hpp"
 #include "Collidable.hpp"
 
+const int Brick::BRICK_WIDTH;
+const int Brick::BRICK_HEIGHT;
+
 Brick::Brick(BrickType type):
   _type(type) {
-  AddFeature(new Dimension());
+  Dimension* d = new Dimension();
+  d->SetWidth(Brick::BRICK_WIDTH);
+  d->SetHeight(Brick::BRICK_HEIGHT);
+
+  AddFeature(d);
   AddFeature(new Collidable(this));
 };
 

@@ -17,12 +17,27 @@ bool Brick::IsUnbreakable() {
 -
 
 == Constructor ==
+Set the width/height of the brick based off of
+the constants declared in the class.
 -
 Brick::Brick(BrickType type):
   _type(type) {
-  AddFeature(new Dimension());
-  AddFeature(new Collidable(this));  
+  Dimension* d = new Dimension();
+  d->SetWidth(Brick::BRICK_WIDTH);
+  d->SetHeight(Brick::BRICK_HEIGHT);
+
+  AddFeature(d);
+  AddFeature(new Collidable(this));
 };
+-
+
+== Declare constants ==
+C++ is a little weird sometimes, static constants
+need to be defined in the .cpp file even though
+it's already in the head.
+-
+const int Brick::BRICK_WIDTH;
+const int Brick::BRICK_HEIGHT;
 -
 
 == Includes ==
@@ -35,6 +50,8 @@ Brick::Brick(BrickType type):
 == Wrapper ==
 -
 Includes.
+
+Declare constants.
 
 Constructor.
 

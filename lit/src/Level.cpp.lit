@@ -1,0 +1,233 @@
+== Level ==
+See header for details on what this object is.
+The comments here will concern implementation details.
+
+== Intersect ==
+Brick co-ordinates are local to the level, where as
+the co-ordinates passed into this intersection
+method will be global, so we need to translate them.
+-
+Collidable::IntersectionSurface Level::Intersect(int x, int y) {
+  Dimension* d = GetFeature<Dimension>();
+  int realX = x - d->GetX();
+  int realY = y - d->GetY();
+  for(int i = 0; i < _totalBricks; i++) {
+    Brick* b = _grid[i];
+    Collidable::IntersectionSurface s = b->GetFeature<Collidable>()->Intersects(realX, realY);
+    if (Collidable::NONE != s) {
+      delete b;
+      _grid[i] = NULL;
+      return s;
+    }
+  }
+  return Collidable::NONE;
+}
+-
+
+== Load level ==
+Loads the string from the disk. Split the string on the
+new line character, and then for every line, split the
+string on the comma ',' character.
+For every brick, parse the value in the file to an integer,
+and then cast that as a brick type to construct a new brick
+and assign the pointer to the grid at the right index.
+-
+void Level::LoadFromFile(const char* path) {
+  std::vector<std::string> level = ReadFile(path);
+  for (size_t i = 0; i < level.size(); i++) {
+    std::vector<std::string> bricks;
+    std::string lineDelimiter(",");
+    Split(bricks, level[i], lineDelimiter);
+    for (size_t j = 0; j < bricks.size(); j++) {
+      int brickValue;
+      std::stringstream conversionStream(bricks[j]);
+      conversionStream >> brickValue;
+      Brick* b = new Brick((Brick::BrickType)brickValue);
+      b->GetFeature<Dimension>()->SetX(j * Brick::BRICK_WIDTH);
+      b->GetFeature<Dimension>()->SetY(i * Brick::BRICK_HEIGHT);
+      _grid[i * BRICKS_PER_ROW + j] = b;
+    }
+  }
+}
+-
+
+== Read file ==
+-
+std::vector<std::string> Level::ReadFile(const char* path) {
+  std::vector<std::string> strings;
+  std::ifstream fileStream(path);
+  if (fileStream.is_open()){
+    while (fileStream.good()) {
+      std::string theString;
+      std::getline(fileStream, theString);
+      strings.push_back(theString);
+    }
+    fileStream.close();
+  }
+  return strings;
+}
+-
+
+== Split string ==
+Split a string on a given delimiter. This destroys the
+string.
+Details: http://stackoverflow.com/a/325000
+-
+void Level::Split(std::vector<std::string>& returnVector, const std::string& theString, std::string& delimiter) {
+  size_t start = 0, end = 0;
+  while(end != std::string::npos) {
+    end = theString.find(delimiter, start);
+    returnVector.push_back(theString.substr(start, (end == std::string::npos) ? std::string::npos : end - start));
+    start = ((end > (std::string::npos - delimiter.size())) ? std::string::npos : end + delimiter.size());
+  }
+}
+-
+
+
+== Save level ==
+Serialize the level to a string, and write the
+string to a file. 
+We can't use an std::stringstream to write the
+entire serialized level, because it swallows new
+line characters. So we need to use a string.
+But we are trying to write integers, so we need
+to use a std::stringstream for conversion.
+The solution is to level time we write a brick,
+use a std::stringstream to convert the value to a
+string, and append it to the serialized level, and
+append new lines where appropriate. Then write out
+that string.
+-
+void Level::SaveToFile(const char* path) {
+  std::string levelString;
+  std::stringstream ss;
+  for (int i = 1; i <= _totalBricks; i++) {
+    ss.str("");
+    ss << _grid[i-1]->GetPoints();
+    levelString += ss.str();
+    if (i != _totalBricks) {
+      if (0 == i % BRICKS_PER_ROW) {
+        levelString += "\n";
+      } else {
+        levelString += ",";
+      }
+    }
+  }
+  WriteFile(path, levelString);
+}
+-
+
+== Write file ==
+-
+void Level::WriteFile(const char* path, std::string content) {
+  std::ofstream fileStream(path);
+  if (fileStream.is_open()) {
+    fileStream << content;
+    fileStream.close();
+  }
+}
+-
+
+== Add a brick to the grid ==
+-
+void Level::AddBrick(int row, int col, Brick* newBrick) {
+  _grid[row * BRICKS_PER_ROW + col] = newBrick;
+}
+-
+
+== Delete a brick from the grid ==
+-
+void Level::DeleteBrick(int row, int col) {
+  delete _grid[row * BRICKS_PER_ROW + col];
+  _grid[row * BRICKS_PER_ROW + col] = NULL;
+}
+-
+
+== Change a brick's type ==
+-
+void Level::ChangeBrick(int row, int col, Brick::BrickType newType) {
+  DeleteBrick(row, col);
+  AddBrick(row, col, new Brick(newType));
+}
+-
+
+== Get grid ==
+Return a pointer to the grid array, which will be
+a pointer to a pointer.
+-
+Brick** Level::GetGrid() {
+  return _grid;
+}
+-
+
+== Get total bricks ==
+-
+int Level::GetTotalBricks() {
+  return _totalBricks;
+}
+-
+
+== Constructor ==
+Initialize the grid and add the dimension feature.
+-
+Level::Level():
+  _totalBricks(0) {
+  for(int i = 0; i < ROWS * BRICKS_PER_ROW; i++) {
+    _grid[i] = NULL;
+    _totalBricks++;
+  }
+  AddFeature(new Dimension());
+}
+-
+
+== Destructor ==
+Destroy the grid.
+-
+Level::~Level() {
+  
+}
+-
+
+== Includes ==
+-
+#include <iostream>
+#include <sstream>
+#include <fstream>
+#include "Level.hpp"
+#include "Dimension.hpp"
+#include "Collidable.hpp"
+-
+
+== Wrapper ==
+-
+Includes.
+
+Constructor.
+
+Destructor.
+
+Intersect.
+
+Load level.
+
+Save level.
+
+Add a brick to the grid.
+
+Delete a brick from the grid.
+
+Change a brick's type.
+
+Get grid.
+
+Get total bricks.
+
+Read file.
+
+Write file.
+
+Split string.
+-
+
+== @Level.cpp ==
+Wrapper.

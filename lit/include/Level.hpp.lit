@@ -1,0 +1,179 @@
+== Level ==
+The level represents a brick layout that the player
+plays the game in. It is essentially a collection of
+bricks, and has methods for querying a collection of
+bricks, methods to add and remove a brick in the grid
+and methods to load and save levels.
+
+The level saving functionality is going be used only
+in the editor.
+
+== Intersect ==
+Checks if a co-ordinate intersects with a brick in
+the grid. If it intersects, it removes the brick, and
+returns the side that it intersected with.
+-
+Collidable::IntersectionSurface Intersect(int x, int y);
+-
+
+== Load level ==
+Load a brick map into memory from a file.
+-
+void LoadFromFile(const char* path);
+-
+
+== Read file from disk ==
+Given a path, read the file from the disk and return
+the contents as a vector of strings.
+-
+std::vector<std::string> ReadFile(const char* path);
+-
+
+== Split string ==
+Split a string on a given delimiter. This destroys the
+string.
+-
+void Split(std::vector<std::string>& returnVector, const std::string& string, std::string& delimiter);
+-
+
+== Save level ==
+Save a brick map in memory to a file.
+-
+void SaveToFile(const char* path);
+-
+
+== Write file to disk ==
+Given a path and a string, write the string to the
+disk as a file.
+-
+void WriteFile(const char* path, std::string content);
+-
+
+== Add a brick to the grid ==
+Given a cell identity, add a brick to the grid of
+the specified type.
+
+This method is used in the editor only.
+-
+void AddBrick(int row, int col, Brick* newBrick);
+-
+
+== Delete a brick from the grid ==
+Given a cell identity, remove a brick from the
+grid.
+
+This method is used in the editor only.
+-
+void DeleteBrick(int row, int col);
+-
+
+== Change a brick's type ==
+Given a cell identify and a brick type, change the
+value of the brick.
+
+This method is used in the editor only.
+-
+void ChangeBrick(int row, int col, Brick::BrickType newType);
+-
+
+== Get grid ==
+Return a reference to the grid, used in rendering.
+-
+Brick** GetGrid();
+-
+
+== Get total bricks ==
+Return the count of all bricks. Used to traverse the
+grid during rendering.
+-
+int GetTotalBricks();
+-
+
+== The grid ==
+The grid is implemented as a flat array of Brick
+pointers. We use a constant that defines how many
+bricks to a row to translate 2D queries to 1D queries.
+-
+Brick* _grid[ROWS * BRICKS_PER_ROW];
+-
+
+== Bricks to a row ==
+15 bricks to a row
+-
+static const int BRICKS_PER_ROW = 15;
+-
+
+== Rows to a grid ==
+8 rows to the grid
+-
+static const int ROWS = 8;
+-
+
+== Total bricks ==
+-
+int _totalBricks;
+-
+
+== The class ==
+-
+class Level : public ComposableObject{
+  public:
+  Bricks to a row.
+  Rows to a grid.
+
+  Level();
+  ~Level();
+
+  Get total bricks.
+
+  Get grid.
+
+  Intersect.
+
+  Load level.
+  Save level.
+
+  Add a brick to the grid.
+  Delete a brick from the grid.
+  Change a brick's type.
+
+  private:
+  The grid.
+  Total bricks.
+
+  Read file from disk.
+  Write file to disk.
+  Split string.
+};
+-
+
+
+== Forward declarations ==
+-
+-
+
+== Includes ==
+-
+#include <string>
+#include <vector>
+#include "Brick.hpp"
+#include "ComposableObject.hpp"
+#include "Collidable.hpp"
+-
+
+== Include guard ==
+-
+#ifndef LEVEL_H
+#define LEVEL_H
+
+Includes.
+
+Forward declarations.
+
+The class.
+
+#endif
+-
+
+== @Level.hpp ==
+Include guard.

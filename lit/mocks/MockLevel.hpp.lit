@@ -1,0 +1,27 @@
+== The class ==
+-
+class MockLevel : public Level {
+  
+};
+-
+
+== Includes ==
+-
+#include "gmock/gmock.h"
+#include "Level.hpp"
+-
+
+== Include guard ==
+-
+#ifndef MOCK_LEVEL_H
+#define MOCK_LEVEL_H
+
+Includes.
+
+The class.
+
+#endif
+-
+
+== @MockLevel.hpp ==
+Include guard.

@@ -12,6 +12,8 @@ class Brick : public ComposableObject {
       FIVE_POINTS = 5,
       SEVEN_POINTS = 7
     };
+    static const int BRICK_HEIGHT = 25;
+    static const int BRICK_WIDTH = 50;
 
     Brick(BrickType type);
 
