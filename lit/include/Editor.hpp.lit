@@ -1,0 +1,164 @@
+== Editor class header ==
+The editor will allow anyone to create and edit
+game levels.
+
+A lot of the rendering code will be shared, so
+this will essentially be a container for views
+and will act as a controller in a traditional
+MVC architecture.
+
+== State enumeration ==
+Details on why the editor is state driven can be
+found in Game.hpp.lit
+-
+enum EditorState { 
+  Uninitialized, 
+  Exiting 
+};
+-
+
+== Editor state variable ==
+The current state the editor is in.
+-
+static EditorState _editorState;
+-
+
+== Window reference variable ==
+In addition to the game state variable, we need to hold
+a reference to the SFML window
+-
+static sf::RenderWindow _mainWindow;
+-
+
+== Screen width and height ==
+-
+const static int SCREEN_WIDTH = 1024;
+const static int SCREEN_HEIGHT = 768;
+-
+
+== Start the editor ==
+-
+static void Start();
+-
+
+== Exit poller method ==
+This method is used inside the class to determine if the
+app has been called to shut down.
+-
+static bool IsExiting();
+-
+
+== Editor loop method ==
+Start the editor loop.
+-
+static void EditorLoop();
+-
+
+== Load level ==
+-
+static void LoadLevel(const char* path);
+-
+
+== Save level ==
+-
+static void SaveLevel(const char* path);
+-
+
+== New level ==
+-
+static void NewLevel(const char* path);
+-
+
+== Select brick type ==
+-
+static void SelectBrickType(Brick::BrickType type);
+-
+
+== Add brick ==
+-
+static void AddBrick(int x, int y);
+-
+
+== Remove brick ==
+-
+static void RemoveBrick(int x, int y);
+-
+
+== Replace brick ==
+-
+static void ReplaceBrick(int x, int y);
+-
+
+== Render buttons ==
+-
+-
+
+== Current brick type ==
+-
+static Brick::BrickType _currentType;
+-
+
+== Current level ==
+-
+static Level* _currentLevel;
+-
+
+== The class ==
+-
+class Editor {
+  public:
+  Start the editor.
+
+  Load level.
+  Save level.
+  New level.
+
+  Select brick type.
+  
+  Add brick.
+  Remove brick.
+  Replace brick.
+
+  private:
+  State enumeration.
+  Screen width and height.
+
+  Editor state variable.
+  Window reference variable.
+  Current brick type.
+  Current level.
+
+  Render buttons.
+  Exit poller method.
+  Editor loop method.
+};
+-
+
+== Forward declarations ==
+-
+class Level;
+-
+
+== Includes ==
+-
+#include "SFML/Window.hpp"
+#include "SFML/Graphics.hpp"
+#include "Brick.hpp"
+-
+
+== Include guard ==
+-
+#ifndef EDITOR_H
+#define EDITOR_H
+
+Includes.
+
+Forward declarations.
+
+The class.
+
+#endif
+-
+
+== @Editor.hpp ==
+Include guard.

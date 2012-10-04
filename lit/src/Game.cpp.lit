@@ -22,8 +22,7 @@ Set the game state to playing, and then as long as we're not
 exiting, run the game loop.
 Once we've exited the game loop, close the window.
 -
-void Game::Start(void)
-{
+void Game::Start(void) {
   if(_gameState != Uninitialized)
     return;
 

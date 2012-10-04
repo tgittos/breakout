@@ -1,0 +1,21 @@
+== Main editor application entry ==
+This is essentially just the entry point for the editor 
+application, and a way to bootstrap the editor.
+
+== Bootstrap the editor ==
+-
+int main(int argc, char** argv)
+{
+  Editor::Start();
+  return 0;
+}
+-
+
+== Includes ==
+-
+#include "Editor.hpp"
+-
+
+== @EditorMain.cpp ==
+Includes.
+Bootstrap the editor.

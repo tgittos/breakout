@@ -3,7 +3,7 @@
 ####################################################################
 
 # The game binary
-EXECUTABLES = breakout
+EXECUTABLES = breakout editor
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
@@ -134,6 +134,10 @@ assets:
 breakout: includes Main.o Game.o
 	mkdir -p bin
 	$(CXX) Main.o Game.o $(IFLAGS) $(LDFLAGS) $(CXXFLAGS) -o bin/$@
+
+editor: includes EditorMain.o Editor.o
+	mkdir -p bin
+	$(CXX) EditorMain.o Editor.o $(IFLAGS) $(LDFLAGS) $(CXXFLAGS) -o bin/$@
 
 ####################################################################
 # Auto generated build targets

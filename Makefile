@@ -3,7 +3,7 @@
 ####################################################################
 
 # The game binary
-EXECUTABLES = breakout
+EXECUTABLES = breakout editor
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
@@ -135,6 +135,10 @@ breakout: includes Main.o Game.o
 	mkdir -p bin
 	$(CXX) Main.o Game.o $(IFLAGS) $(LDFLAGS) $(CXXFLAGS) -o bin/$@
 
+editor: includes EditorMain.o Editor.o
+	mkdir -p bin
+	$(CXX) EditorMain.o Editor.o $(IFLAGS) $(LDFLAGS) $(CXXFLAGS) -o bin/$@
+
 ####################################################################
 # Auto generated build targets
 ####################################################################
@@ -159,6 +163,9 @@ ComposableObject.hpp:
 Dimension.hpp:
 	literati tangle -o src/. lit/include/$@.lit
 
+Editor.hpp:
+	literati tangle -o src/. lit/include/$@.lit
+
 Event.hpp:
 	literati tangle -o src/. lit/include/$@.lit
 
@@ -172,6 +179,9 @@ Input.hpp:
 	literati tangle -o src/. lit/include/$@.lit
 
 Level.hpp:
+	literati tangle -o src/. lit/include/$@.lit
+
+LevelView.hpp:
 	literati tangle -o src/. lit/include/$@.lit
 
 Paddle.hpp:
@@ -237,6 +247,12 @@ ComposableObject.cpp:
 Dimension.cpp:
 	literati tangle -o src/. lit/src/$@.lit
 
+Editor.cpp:
+	literati tangle -o src/. lit/src/$@.lit
+
+EditorMain.cpp:
+	literati tangle -o src/. lit/src/$@.lit
+
 Event.cpp:
 	literati tangle -o src/. lit/src/$@.lit
 
@@ -250,6 +266,9 @@ Input.cpp:
 	literati tangle -o src/. lit/src/$@.lit
 
 Level.cpp:
+	literati tangle -o src/. lit/src/$@.lit
+
+LevelView.cpp:
 	literati tangle -o src/. lit/src/$@.lit
 
 Main.cpp:
@@ -282,6 +301,12 @@ ComposableObject.o: ComposableObject.hpp ComposableObject.cpp
 Dimension.o: Dimension.hpp Dimension.cpp
 	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/Dimension.cpp
 
+Editor.o: Editor.hpp Editor.cpp
+	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/Editor.cpp
+
+EditorMain.o:  EditorMain.cpp
+	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/EditorMain.cpp
+
 Event.o: Event.hpp Event.cpp
 	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/Event.cpp
 
@@ -296,6 +321,9 @@ Input.o: Input.hpp Input.cpp
 
 Level.o: Level.hpp Level.cpp
 	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/Level.cpp
+
+LevelView.o: LevelView.hpp LevelView.cpp
+	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/LevelView.cpp
 
 Main.o:  Main.cpp
 	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/Main.cpp
@@ -396,8 +424,8 @@ EventManager_unittest: EventManager_unittest.o EventManager.o ComposableObject.o
 Input_unittest: Input_unittest.o Input.o gtest_main.a libgmock.a
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Input_unittest.o Input.o gtest_main.a libgmock.a -o $@
 
-Level_unittest: Level_unittest.o Level.o Brick.o ComposableObject.o Collidable.o ComponentFeature.o Dimension.o gtest_main.a libgmock.a
-	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Level_unittest.o Level.o Brick.o ComposableObject.o Collidable.o ComponentFeature.o Dimension.o gtest_main.a libgmock.a -o $@
+Level_unittest: Level_unittest.o Level.o Dimension.o ComponentFeature.o Collidable.o Brick.o ComposableObject.o gtest_main.a libgmock.a
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Level_unittest.o Level.o Dimension.o ComponentFeature.o Collidable.o Brick.o ComposableObject.o gtest_main.a libgmock.a -o $@
 
 Paddle_unittest: Paddle_unittest.o Paddle.o Dimension.o ComponentFeature.o Collidable.o ComposableObject.o gtest_main.a libgmock.a
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Paddle_unittest.o Paddle.o Dimension.o ComponentFeature.o Collidable.o ComposableObject.o gtest_main.a libgmock.a -o $@

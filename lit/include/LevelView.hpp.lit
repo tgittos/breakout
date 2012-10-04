@@ -1,0 +1,27 @@
+== The class ==
+-
+class LevelView {
+  public:
+  LevelView(){};
+  ~LevelView(){};
+};
+-
+
+== Includes ==
+-
+-
+
+== Include guard ==
+-
+#ifndef LEVEL_VIEW_H
+#define LEVEL_VIEW_H
+
+Includes.
+
+The class.
+
+#endif
+-
+
+== @LevelView.hpp ==
+Include guard.

@@ -7,7 +7,7 @@ This is due to the need for a single interface to the
 game used in the bootstrapping process.
 
 == State enumeration ==
-Pang is a state driven game, meaning that the game can
+Breakout is a state driven game, meaning that the game can
 only be in a single state at a given time, with the
 available states in the enumeration.
 -
@@ -18,7 +18,7 @@ enum GameState {
 -
 
 == Game state variable ==
-For Pang to be state driven, we need to be able to hold
+For Breakout to be state driven, we need to be able to hold
 the current state of the app
 -
 static GameState _gameState;
