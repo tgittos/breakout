@@ -1,0 +1,45 @@
+== SFML View ==
+Every object that will be drawn using SFML needs
+to use this base abstract class, as it functions
+as a contract to the game and the editor about
+how these elements will render themselves.
+
+If we decided to port this game to other platforms
+with other supporting libraries (like SDL to begin
+with), then we would implement a more general interface
+that this would have to inherit. But we aren't going
+to do that until we have to.
+
+== Draw ==
+All SFML view objects need to be able to draw
+themselves.
+-
+virtual void Draw() = 0;
+-
+
+== The class ==
+-
+class SFMLView {
+  public:
+  Draw.
+};
+-
+
+== Includes ==
+-
+-
+
+== Include guard ==
+-
+#ifndef SFML_VIEW_H
+#define SFML_VIEW_H
+
+Includes.
+
+The class.
+
+#endif
+-
+
+== @SFMLView.hpp ==
+Include guard.

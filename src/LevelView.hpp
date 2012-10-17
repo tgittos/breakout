@@ -2,10 +2,13 @@
 #define LEVEL_VIEW_H
 
 
+class Level;
+
 class LevelView {
   public:
-  LevelView(){};
-  ~LevelView(){};
+  virtual ~LevelView() {};
+
+  virtual void Draw(Level* level) = 0;
 };
 
 #endif

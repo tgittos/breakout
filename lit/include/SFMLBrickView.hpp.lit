@@ -1,0 +1,91 @@
+== SFML Brick view ==
+This is a concrete implementation of the LevelView
+abstract class. This will leverage SFML to draw
+a brick to the screen.
+
+== Get brick colour ==
+The colour of a brick is determined by it's type.
+I considered writing an enum that would seamlessly
+convert between brick type to brick color, but it
+doesn't change the need to turn that into an SFML
+colour, so I decided to just make a function that
+will get the brick's SFML color from it's type.
+-
+sf::Color GetColor();
+-
+
+== Constructor ==
+Take a brick and store a reference to it for drawing
+later.
+-
+SFMLBrickView(sf::RenderWindow& window, Level& level, Brick& brick);
+-
+
+== Window variable ==
+-
+sf::RenderWindow& _window;
+-
+
+== Brick variable ==
+-
+Brick& _brick;
+-
+
+== Level variable ==
+-
+Level& _level;
+-
+
+== Draw ==
+-
+void Draw();
+-
+
+== The class ==
+-
+class SFMLBrickView : public SFMLView {
+  public:
+  Constructor.
+  ~SFMLBrickView(){};
+
+  Draw.
+
+  private:
+  Window variable.
+  Brick variable.
+  Level variable.
+
+  Get brick colour.
+};
+-
+
+== Includes ==
+-
+#include "SFMLView.hpp"
+-
+
+== Forward declarations ==
+-
+namespace sf {
+  class RenderWindow;
+};
+class Brick;
+class Level;
+-
+
+== Include guard ==
+-
+#ifndef SFML_BRICK_VIEW_H
+#define SFML_BRICK_VIEW_H
+
+Includes.
+
+Forward declarations.
+
+The class.
+
+#endif
+-
+
+== @SFMLBrickView.hpp ==
+Include guard.

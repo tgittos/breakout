@@ -1,0 +1,138 @@
+== The game object manager ==
+This class is responsible for managing references
+to assets imported into the game, and rendering
+them.
+
+== Constructor ==
+-
+GameObjectManager::GameObjectManager()
+{
+}
+-
+
+== Destructor ==
+The destructor for the game object manager is
+responsible for deallocating every asset added to
+the manager to free the memory
+
+This actually does some cool stuff. Normally when
+you use for_each, you need to use an iterator,
+which is the return object of _gameObjects.begin().
+Normally in the loop, you call the ++ method on the
+iterator, however here, we're executing the
+deallocation functor.
+for_each takes a unary function as it's last argument,
+with the current item in the colleciton as the
+argument to that function.
+See more here:
+http://www.cplusplus.com/reference/algorithm/for_each/
+-
+GameObjectManager::~GameObjectManager()
+{
+  std::for_each(_gameObjects.begin(), _gameObjects.end(), GameObjectDeallocator());
+}
+-
+
+== Add game object method ==
+Insert the game object into the map, with it's name
+as the key.
+-
+void GameObjectManager::Add(std::string name, VisibleGameObject* gameObject)
+{
+  _gameObjects.insert(std::pair<std::string, VisibleGameObject*>(name, gameObject));
+}
+-
+
+== Get game object method ==
+Retrieve an object by it's name. If we can't find
+it, return null
+-
+VisibleGameObject* GameObjectManager::Get(std::string name) const
+{
+  std::map<std::string, VisibleGameObject*>::const_iterator results = _gameObjects.find(name);
+  if(_gameObjects.end() == results)
+  {
+    return NULL;
+  }
+  return results->second;
+}
+-
+
+== Remove game object method ==
+Remove an object by it's name from the game object
+list, and deallocate it's memory
+-
+void GameObjectManager::Remove(std::string name)
+{
+  std::map<std::string, VisibleGameObject*>::iterator results = _gameObjects.find(name);
+  if(_gameObjects.end() != results)
+  {
+    delete results->second;
+    _gameObjects.erase(results);
+  }
+}
+-
+
+== Game object count method ==
+-
+int GameObjectManager::GetObjectCount() const
+{
+  return _gameObjects.size();
+}
+-
+
+== Update all game objects ==
+Run the game for all the game objects for a slice
+of time.
+-
+void GameObjectManager::UpdateAll()
+{
+  std::map<std::string, VisibleGameObject*>::const_iterator itr = _gameObjects.begin();
+  float timeDelta = Game::GetWindow().GetFrameTime();
+  while(_gameObjects.end() != itr)
+  {
+    itr->second->Update(timeDelta);
+    itr++;
+  }
+}
+-
+
+== Draw all game objects method ==
+Loop through all the game objects and call their
+draw method
+-
+void GameObjectManager::DrawAll(sf::RenderWindow& window)
+{
+  std::map<std::string, VisibleGameObject*>::const_iterator itr = _gameObjects.begin();
+  while(_gameObjects.end() != itr)
+  {
+    itr->second->Draw(window);
+    itr++;
+  }
+}
+-
+
+== Includes ==
+-
+#include "gameobjectmanager.hpp"
+#include "game.hpp"
+-
+
+== @gameobjectmanager.cpp ==
+Includes.
+
+Constructor.
+
+Destructor.
+
+Add game object method.
+
+Get game object method.
+
+Remove game object method.
+
+Game object count method.
+
+Update all game objects.
+
+Draw all game objects method.

@@ -1,0 +1,63 @@
+== SFML Level View ==
+See header for details on what this object is.
+The comments here will concern implementation details.
+
+== Draw ==
+Iterate through the list of views and draw them all.
+-
+void SFMLLevelView::Draw() {
+  /*
+  sf::Shape rect = sf::Shape::Rectangle(
+    50.f,
+    100.f,
+    150.f,
+    250.f,
+    sf::Color::White, true, sf::Color::White
+  );
+  rect.EnableFill(false);
+  _window.Draw(rect);
+  */
+
+  for(std::list<SFMLBrickView*>::iterator itr = _brickViews.begin(); itr != _brickViews.end(); ++itr) {
+    (*itr)->Draw();
+  }
+}
+-
+
+== Constructor ==
+Iterate through the bricks, create a view for them
+and store the view in a list.
+-
+SFMLLevelView::SFMLLevelView(sf::RenderWindow& window, Level& level)
+  :_window(window), _level(level) {
+  Brick** grid = _level.GetGrid();
+  int totalBricks = _level.GetTotalBricks();
+  for(int i = 0; i < totalBricks; i++) {
+    Brick* brick = grid[i];
+    SFMLBrickView* view = new SFMLBrickView(_window, _level, *brick);
+    _brickViews.push_back(view);
+  }
+}
+-
+
+== Includes ==
+-
+#include <list>
+#include "SFML/Window.hpp"
+#include "SFML/Graphics.hpp"
+#include "SFMLLevelView.hpp"
+#include "Level.hpp"
+#include "SFMLBrickView.hpp"
+-
+
+== Wrapper ==
+-
+Includes.
+
+Constructor.
+
+Draw.
+-
+
+== @SFMLLevelView.cpp ==
+Wrapper.

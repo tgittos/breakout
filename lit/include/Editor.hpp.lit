@@ -11,9 +11,9 @@ MVC architecture.
 Details on why the editor is state driven can be
 found in Game.hpp.lit
 -
-enum EditorState { 
-  Uninitialized, 
-  Exiting 
+enum EditorState {
+  Uninitialized,
+  Exiting
 };
 -
 
@@ -34,6 +34,13 @@ static sf::RenderWindow _mainWindow;
 -
 const static int SCREEN_WIDTH = 1024;
 const static int SCREEN_HEIGHT = 768;
+-
+
+== Render list ==
+Each item that needs to be rendered will be added to
+the render list
+-
+static std::list<SFMLView*> _renderables;
 -
 
 == Start the editor ==
@@ -66,7 +73,7 @@ static void SaveLevel(const char* path);
 
 == New level ==
 -
-static void NewLevel(const char* path);
+static void NewLevel();
 -
 
 == Select brick type ==
@@ -114,7 +121,7 @@ class Editor {
   New level.
 
   Select brick type.
-  
+
   Add brick.
   Remove brick.
   Replace brick.
@@ -125,6 +132,7 @@ class Editor {
 
   Editor state variable.
   Window reference variable.
+  Render list.
   Current brick type.
   Current level.
 
@@ -137,6 +145,7 @@ class Editor {
 == Forward declarations ==
 -
 class Level;
+class SFMLView;
 -
 
 == Includes ==

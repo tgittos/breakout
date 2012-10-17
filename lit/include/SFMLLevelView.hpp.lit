@@ -1,0 +1,83 @@
+== SFML Level View ==
+This is a concrete implementation of the LevelView
+abstract class. This will leverage SFML to draw
+a level to the screen.
+
+== Constructor ==
+Take a SFML window so that we can draw into it
+during the render method.
+-
+SFMLLevelView(sf::RenderWindow& window, Level& level);
+-
+
+== Window reference ==
+-
+sf::RenderWindow& _window;
+-
+
+== Level reference ==
+-
+Level& _level;
+-
+
+== Draw ==
+Draw the level to the SFML window.
+-
+virtual void Draw();
+-
+
+== The view list ==
+When we create a view, we will go through all
+the bricks in the level and create a brick
+view for it. Then we add the brick view to a
+list for later rendering.
+-
+std::list<SFMLBrickView*> _brickViews;
+-
+
+== The class ==
+-
+class SFMLLevelView : public SFMLView {
+  public:
+  Constructor.
+  ~SFMLLevelView(){};
+
+  Draw.
+
+  private:
+  Window reference.
+  Level reference.
+  The view list.
+};
+-
+
+== Includes ==
+-
+#include "SFMLView.hpp"
+-
+
+== Forward declarations ==
+-
+namespace sf {
+  class RenderWindow;
+};
+class Level;
+class SFMLBrickView;
+-
+
+== Include guard ==
+-
+#ifndef SFML_LEVEL_VIEW_H
+#define SFML_LEVEL_VIEW_H
+
+Includes.
+
+Forward declarations.
+
+The class.
+
+#endif
+-
+
+== @SFMLLevelView.hpp ==
+Include guard.

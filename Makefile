@@ -97,7 +97,7 @@ gtest_main.a : gtest-all.o gtest_main.o
 
 ####################################################################
 # Google Mock build targets
-####################################################################	
+####################################################################
 
 gmock-all.o:
 	$(CXX) $(GTEST_IFLAGS) -I${GTEST_DIR} $(GMOCK_IFLAGS) -I${GMOCK_DIR} $(CXXFLAGS) -c ${GMOCK_DIR}/src/gmock-all.cc
@@ -135,9 +135,22 @@ breakout: includes Main.o Game.o
 	mkdir -p bin
 	$(CXX) Main.o Game.o $(IFLAGS) $(LDFLAGS) $(CXXFLAGS) -o bin/$@
 
-editor: includes EditorMain.o Editor.o
+editor: includes gamecore.o sfmlview.o Editor.o EditorMain.o
 	mkdir -p bin
-	$(CXX) EditorMain.o Editor.o $(IFLAGS) $(LDFLAGS) $(CXXFLAGS) -o bin/$@
+	$(CXX) gamecore.o sfmlview.o Editor.o EditorMain.o $(IFLAGS) $(LDFLAGS) $(CXXFLAGS) -o bin/$@
+
+####################################################################
+# Library build targets
+####################################################################
+
+components.o: includes ComposableObject.o Collidable.o Dimension.o
+	ld -r ComposableObject.o Collidable.o Dimension.o -o components.o
+
+gamecore.o: includes components.o Level.o Brick.o Ball.o Paddle.o Input.o Score.o
+	ld -r components.o Level.o Brick.o Ball.o Paddle.o Input.o Score.o -o gamecore.o
+
+sfmlview.o: includes SFMLLevelView.o SFMLBrickView.o
+	ld -r SFMLLevelView.o SFMLBrickView.o -o sfmlview.o
 
 ####################################################################
 # Auto generated build targets
@@ -175,6 +188,9 @@ EventManager.hpp:
 Game.hpp:
 	literati tangle -o src/. lit/include/$@.lit
 
+GameObjectManager.hpp:
+	literati tangle -o src/. lit/include/$@.lit
+
 Input.hpp:
 	literati tangle -o src/. lit/include/$@.lit
 
@@ -188,6 +204,15 @@ Paddle.hpp:
 	literati tangle -o src/. lit/include/$@.lit
 
 Score.hpp:
+	literati tangle -o src/. lit/include/$@.lit
+
+SFMLBrickView.hpp:
+	literati tangle -o src/. lit/include/$@.lit
+
+SFMLLevelView.hpp:
+	literati tangle -o src/. lit/include/$@.lit
+
+SFMLView.hpp:
 	literati tangle -o src/. lit/include/$@.lit
 
 MockBall.hpp:
@@ -262,13 +287,13 @@ EventManager.cpp:
 Game.cpp:
 	literati tangle -o src/. lit/src/$@.lit
 
+GameObjectManager.cpp:
+	literati tangle -o src/. lit/src/$@.lit
+
 Input.cpp:
 	literati tangle -o src/. lit/src/$@.lit
 
 Level.cpp:
-	literati tangle -o src/. lit/src/$@.lit
-
-LevelView.cpp:
 	literati tangle -o src/. lit/src/$@.lit
 
 Main.cpp:
@@ -278,6 +303,12 @@ Paddle.cpp:
 	literati tangle -o src/. lit/src/$@.lit
 
 Score.cpp:
+	literati tangle -o src/. lit/src/$@.lit
+
+SFMLBrickView.cpp:
+	literati tangle -o src/. lit/src/$@.lit
+
+SFMLLevelView.cpp:
 	literati tangle -o src/. lit/src/$@.lit
 
 Ball.o: Ball.hpp Ball.cpp
@@ -316,14 +347,14 @@ EventManager.o: EventManager.hpp EventManager.cpp
 Game.o: Game.hpp Game.cpp
 	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/Game.cpp
 
+GameObjectManager.o: GameObjectManager.hpp GameObjectManager.cpp
+	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/GameObjectManager.cpp
+
 Input.o: Input.hpp Input.cpp
 	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/Input.cpp
 
 Level.o: Level.hpp Level.cpp
 	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/Level.cpp
-
-LevelView.o: LevelView.hpp LevelView.cpp
-	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/LevelView.cpp
 
 Main.o:  Main.cpp
 	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/Main.cpp
@@ -333,6 +364,12 @@ Paddle.o: Paddle.hpp Paddle.cpp
 
 Score.o: Score.hpp Score.cpp
 	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/Score.cpp
+
+SFMLBrickView.o: SFMLBrickView.hpp SFMLBrickView.cpp
+	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/SFMLBrickView.cpp
+
+SFMLLevelView.o: SFMLLevelView.hpp SFMLLevelView.cpp
+	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/SFMLLevelView.cpp
 
 Ball_unittest.cpp:
 	literati tangle -o src/. lit/test/$@.lit
@@ -353,6 +390,9 @@ Dimension_unittest.cpp:
 	literati tangle -o src/. lit/test/$@.lit
 
 EventManager_unittest.cpp:
+	literati tangle -o src/. lit/test/$@.lit
+
+GameObjectManager_unittest.cpp:
 	literati tangle -o src/. lit/test/$@.lit
 
 Input_unittest.cpp:
@@ -388,6 +428,9 @@ Dimension_unittest.o: Dimension_unittest.cpp Dimension.hpp $(GTEST_HEADERS)
 EventManager_unittest.o: EventManager_unittest.cpp EventManager.hpp $(GTEST_HEADERS)
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/EventManager_unittest.cpp -o $@
 
+GameObjectManager_unittest.o: GameObjectManager_unittest.cpp GameObjectManager.hpp $(GTEST_HEADERS)
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/GameObjectManager_unittest.cpp -o $@
+
 Input_unittest.o: Input_unittest.cpp Input.hpp $(GTEST_HEADERS)
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/Input_unittest.cpp -o $@
 
@@ -420,6 +463,9 @@ Dimension_unittest: Dimension_unittest.o Dimension.o ComponentFeature.o gtest_ma
 
 EventManager_unittest: EventManager_unittest.o EventManager.o ComposableObject.o gtest_main.a libgmock.a
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) EventManager_unittest.o EventManager.o ComposableObject.o gtest_main.a libgmock.a -o $@
+
+GameObjectManager_unittest: GameObjectManager_unittest.o gameobjectmanager.o game.o Game.o visiblegameobject.o gtest_main.a libgmock.a
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) GameObjectManager_unittest.o gameobjectmanager.o game.o Game.o visiblegameobject.o gtest_main.a libgmock.a -o $@
 
 Input_unittest: Input_unittest.o Input.o gtest_main.a libgmock.a
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Input_unittest.o Input.o gtest_main.a libgmock.a -o $@

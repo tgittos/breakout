@@ -1,14 +1,38 @@
+== Level View ==
+The LevelView class is an abstract class that
+describes how to render a Level. It forms a
+contract that the game can expect concrete
+rendering classes to conform to, and means that
+we can change the supporting library of rendering
+(from SFML to SDL, for example) without having
+to change any of the actual game code. We just need
+to swap out the concrete class.
+
+== Draw ==
+The render method expects to take an instance of
+the Level class. Concrete implementations can
+do whatever they want once they get it.
+-
+virtual void Draw(Level* level) = 0;
+-
+
 == The class ==
 -
 class LevelView {
   public:
-  LevelView(){};
-  ~LevelView(){};
+  virtual ~LevelView() {};
+
+  Draw.
 };
 -
 
 == Includes ==
 -
+-
+
+== Forward declarations ==
+-
+class Level;
 -
 
 == Include guard ==
@@ -17,6 +41,8 @@ class LevelView {
 #define LEVEL_VIEW_H
 
 Includes.
+
+Forward declarations.
 
 The class.
 

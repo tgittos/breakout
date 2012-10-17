@@ -1,0 +1,125 @@
+== The game object manager header ==
+In Pang, we only have a handful of assets, so
+managing them is not a huge deal. However, in
+larger, more complex games, it is possible to
+have a lot more assets.
+
+I'm not 100% sure what this class is for. It
+seems like it's half file manager, half
+something else that handles updates to the
+objects and rendering.
+
+A file manager handles loading and unloading
+assets from disk. Loading and trashing assets
+as we need them will introduce a lot of disk
+thrashing into the game, and is just plain
+inefficient.
+
+In any case, this header will outline what it
+does do, even if it does many things.
+
+== Add a game object ==
+Register a game object with the manager, giving
+it a name and a pointer to where it is stored.
+
+The pointers we're dealing with in this tutorial
+can, and should be replaced by Boost smart pointers.
+Smart pointers count the number of references
+that live out in the wild, and if there are no
+more references, the pointer is deleted.
+-
+void Add(std::string name, VisibleGameObject* gameObject);
+-
+
+== Get a game object ==
+Retrieve the pointer to a game object by it's
+name
+-
+VisibleGameObject* Get(std::string name) const;
+-
+
+== Remove a game object ==
+Remove a game object from memory by it's name
+-
+void Remove(std::string name);
+-
+
+== Update all the game objects ==
+Update, in this context, is running the game object
+for a slice of time. The game object itself is
+responsible for what it does during the time slice.
+-
+void UpdateAll();
+-
+
+== Draw all the game objects ==
+-
+void DrawAll(sf::RenderWindow& window);
+-
+
+== Get number of game objects ==
+-
+int GetObjectCount() const;
+-
+
+== Game object map ==
+-
+std::map<std::string, VisibleGameObject*> _gameObjects;
+-
+
+== Deallocate object memory functor ==
+A struct that can be executed like a function that
+will take an entry of the map and deallocate the
+memory for the game object.
+-
+struct GameObjectDeallocator
+{
+  void operator()(const std::pair<std::string, VisibleGameObject*>& p) const
+  {
+    delete p.second;
+  }
+};
+-
+
+== The class ==
+-
+class GameObjectManager
+{
+public:
+  GameObjectManager();
+  ~GameObjectManager();
+
+  Add a game object.
+  Remove a game object.
+  Get number of game objects.
+  Get a game object.
+
+  Update all the game objects.
+  Draw all the game objects.
+
+private:
+  Game object map.
+
+  Deallocate object memory functor.
+};
+-
+
+== Includes ==
+-
+#include "visiblegameobject.hpp"
+-
+
+== Include guard ==
+-
+#ifndef GAME_OBJECT_MANAGER_H
+#define GAME_OBJECT_MANAGER_H
+
+Includes.
+
+The class.
+
+#endif
+-
+
+== @gameobjectmanager.hpp ==
+Include guard.

@@ -2,19 +2,32 @@
 This is the editor class
 
 == Initial state ==
+Due to the nature of C++, we have to declare and
+initialize static variables in the C++ body code
+as well as the header.
 -
 Editor::EditorState Editor::_editorState = Uninitialized;
 sf::RenderWindow Editor::_mainWindow;
+std::list<SFMLView*> Editor::_renderables;
+Level* Editor::_currentLevel;
 -
 
 == Start the editor ==
+Throw up an SFML window and enter the rendering loop.
+When we're exiting, exit from the loop and close the
+window.
 -
 void Editor::Start() {
   if(_editorState != Uninitialized)
     return;
 
   _mainWindow.Create(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32), "Foobar Editor");
-  
+
+  //NewLevel();
+  LoadLevel("../test/fixtures/level.txt");
+  SFMLLevelView* currentLevelView = new SFMLLevelView(_mainWindow, *_currentLevel);
+  _renderables.push_back((SFMLView*)currentLevelView);
+
   while(!IsExiting())
   {
     EditorLoop();
@@ -24,23 +37,47 @@ void Editor::Start() {
 }
 -
 
+== New level ==
+-
+void Editor::NewLevel() {
+  _currentLevel = new Level();
+}
+-
+
+== Load level ==
+-
+void Editor::LoadLevel(const char* path) {
+  _currentLevel = new Level();
+  _currentLevel->LoadFromFile(path);
+  // offset the level for testing purposes
+  Dimension* d = _currentLevel->GetFeature<Dimension>();
+  d->SetX(100);
+  d->SetY(50);
+}
+-
+
 == Method to check if exiting ==
+Poll the state, which gets set during the editor
+loop.
 -
 bool Editor::IsExiting()
 {
-  if(_editorState == Editor::Exiting) 
+  if(_editorState == Editor::Exiting)
     return true;
-  else 
+  else
     return false;
 }
 -
 
 == The editor loop ==
+If we recieved a closing event or the user presses
+the escape key, set the state of the app to exiting.
+Otherwise continue rendering.
 -
 void Editor::EditorLoop() {
   sf::Event currentEvent;
   _mainWindow.GetEvent(currentEvent);
-  
+
   switch(_editorState)
   {
     default:
@@ -65,13 +102,19 @@ void Editor::EditorLoop() {
 == Render the editor ==
 Render the editor
 -
-_mainWindow.Clear(sf::Color(255,255,255));
+_mainWindow.Clear(sf::Color::Black);
+for(std::list<SFMLView*>::iterator itr = _renderables.begin(); itr != _renderables.end(); ++itr) {
+  (*itr)->Draw();
+}
 _mainWindow.Display();
 -
 
 == Includes ==
 -
 #include "Editor.hpp"
+#include "SFMLLevelView.hpp"
+#include "Level.hpp"
+#include "Dimension.hpp"
 -
 
 == Wrapper ==
@@ -83,6 +126,10 @@ Start the editor.
 Method to check if exiting.
 
 The editor loop.
+
+New level.
+
+Load level.
 
 Initial state.
 -

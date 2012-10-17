@@ -6,6 +6,7 @@
 #include "Brick.hpp"
 
 class Level;
+class SFMLView;
 
 class Editor {
   public:
@@ -13,7 +14,7 @@ class Editor {
 
   static void LoadLevel(const char* path);
   static void SaveLevel(const char* path);
-  static void NewLevel(const char* path);
+  static void NewLevel();
 
   static void SelectBrickType(Brick::BrickType type);
 
@@ -31,6 +32,7 @@ class Editor {
 
   static EditorState _editorState;
   static sf::RenderWindow _mainWindow;
+  static std::list<SFMLView*> _renderables;
   static Brick::BrickType _currentType;
   static Level* _currentLevel;
 

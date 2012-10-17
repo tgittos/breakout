@@ -97,7 +97,7 @@ gtest_main.a : gtest-all.o gtest_main.o
 
 ####################################################################
 # Google Mock build targets
-####################################################################	
+####################################################################
 
 gmock-all.o:
 	$(CXX) $(GTEST_IFLAGS) -I${GTEST_DIR} $(GMOCK_IFLAGS) -I${GMOCK_DIR} $(CXXFLAGS) -c ${GMOCK_DIR}/src/gmock-all.cc
@@ -135,9 +135,22 @@ breakout: includes Main.o Game.o
 	mkdir -p bin
 	$(CXX) Main.o Game.o $(IFLAGS) $(LDFLAGS) $(CXXFLAGS) -o bin/$@
 
-editor: includes EditorMain.o Editor.o
+editor: includes gamecore.o sfmlview.o Editor.o EditorMain.o
 	mkdir -p bin
-	$(CXX) EditorMain.o Editor.o $(IFLAGS) $(LDFLAGS) $(CXXFLAGS) -o bin/$@
+	$(CXX) gamecore.o sfmlview.o Editor.o EditorMain.o $(IFLAGS) $(LDFLAGS) $(CXXFLAGS) -o bin/$@
+
+####################################################################
+# Library build targets
+####################################################################
+
+components.o: includes ComposableObject.o Collidable.o Dimension.o
+	ld -r ComposableObject.o Collidable.o Dimension.o -o components.o
+
+gamecore.o: includes components.o Level.o Brick.o Ball.o Paddle.o Input.o Score.o
+	ld -r components.o Level.o Brick.o Ball.o Paddle.o Input.o Score.o -o gamecore.o
+
+sfmlview.o: includes SFMLLevelView.o SFMLBrickView.o
+	ld -r SFMLLevelView.o SFMLBrickView.o -o sfmlview.o
 
 ####################################################################
 # Auto generated build targets

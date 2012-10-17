@@ -1,0 +1,14 @@
+== Includes ==
+-
+#include "gtest/gtest.h"
+#include "gmock/gmock.h"
+#include "MockGameObjectManager.hpp"
+-
+
+== Wrapper ==
+-
+Includes.
+-
+
+== @GameObjectManager_unittest.cpp ==
+Wrapper.
