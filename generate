@@ -33,7 +33,7 @@ end
 
 def load_generator(name)
   begin
-    require "#{name}.rb" 
+    require "#{name}.rb"
   rescue LoadError
     abort "Cannot find generator for #{name}"
   end
@@ -45,35 +45,16 @@ def get_class(name)
   klass.constantize
 end
 
-def generate_all
-  Dir.entries("lit/test").reject{|f| f !~ /unittest\.cpp.lit$/}.collect do |f|
-    (@file_list ||= []) << f.split('_').first
-  end
-  
-  Dir.entries("generators").reject{|f| f =~ /^\./}.collect do |f|
-    f.gsub! /\.rb$/, ''
-    load_generator f
-    @file_list.each do |file|
-      klass = get_class(f)
-      klass.generate file unless klass::EXCLUDE_FROM_ALL
-    end
-  end
-end
-
 def usage
   <<-EOS
   generate [#{Dir.entries("generators").reject{|f| f =~ /^\./}.collect{|f| f.gsub(/\.rb/,'')}.join('|')}] [name]
   EOS
 end
 
-abort usage if ARGV.count < 2 && !%w{all makefile}.include?(ARGV.first)
-if ARGV.first == "all"
-  generate_all
+abort usage if ARGV.count < 2 && !%w{makefile}.include?(ARGV.first)
+load_generator ARGV.first
+if ARGV.length == 2
+  get_class(ARGV.first).generate ARGV.last
 else
-  load_generator ARGV.first
-  if ARGV.length == 2
-    get_class(ARGV.first).generate ARGV.last
-  else
-    get_class(ARGV.first).generate
-  end  
+  get_class(ARGV.first).generate
 end

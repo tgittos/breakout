@@ -1,0 +1,65 @@
+== Clickable Unit Tests ==
+These are unit tests for the Clickable feature that
+objects can include. They test that objects can
+dispatch events.
+
+Each of the tests should be relatively straight
+forward, so the documentation on them will not be
+as explanatory as the documentation on the code.
+
+== Can get event string ==
+-
+TEST(Clickable, GetEventString) {
+  Clickable c("foobar");
+  ASSERT_EQ(std::string("foobar::click"), c.GetEventString());
+}
+-
+
+== Can dispatch event ==
+-
+TEST(Clickable, DispatchEvent) {
+  Clickable c("foobar");
+  MockEventSubscriber mes = MockEventSubscriber(c.GetEventString());
+  ASSERT_EQ(0, mes.MyInteger);
+  c.Click();
+  ASSERT_EQ(1, mes.MyInteger);
+}
+-
+
+== Fake event subscriber for tests ==
+-
+class MockEventSubscriber : public EventHandler {
+  public:
+  int MyInteger;
+  MockEventSubscriber(std::string event) {
+    MyInteger = 0;
+    EventManager::GetInstance().Subscribe(event, EventManager::Handler(this, static_cast<void (EventHandler::*)(void*)>(&MockEventSubscriber::OnClick)));
+  };
+  void OnClick(void* data) {
+    MyInteger = 1;
+  }
+};
+-
+
+== Includes ==
+-
+#include "gtest/gtest.h"
+#include "gmock/gmock.h"
+#include "Clickable.hpp"
+#include "EventManager.hpp"
+#include "EventHandler.hpp"
+-
+
+== Wrapper ==
+-
+Includes.
+
+Fake event subscriber for tests.
+
+Can get event string.
+
+Can dispatch event.
+-
+
+== @Clickable_unittest.cpp ==
+Wrapper.

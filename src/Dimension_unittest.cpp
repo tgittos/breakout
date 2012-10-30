@@ -45,3 +45,11 @@ TEST(DimensionTest, GetHeight) {
   d.SetHeight(50.f);
   ASSERT_EQ(50.f, d.GetHeight());
 }
+
+TEST(DimensionTest, Inside) {
+  Dimension d;
+  d.SetHeight(50.f);
+  d.SetWidth(50.f);
+  ASSERT_TRUE(d.Inside(20, 20));
+  ASSERT_FALSE(d.Inside(100, 100));
+}

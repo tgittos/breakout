@@ -1,0 +1,87 @@
+== SFML Button view ==
+Leverage SFML to draw a Button.
+
+== Draw ==
+Render the button to the screen.
+-
+void Draw();
+-
+
+== Click ==
+The user interacts directly with views, which means
+that when they click the mouse, they're clicking on
+a view.
+This method will pass clicks through to the underlying
+model.
+-
+void Click();
+-
+
+== Constructor ==
+-
+SFMLButtonView(sf::RenderWindow& window, Button& button);
+-
+
+== The render window ==
+-
+sf::RenderWindow& _window;
+-
+
+== The button ==
+-
+Button& _button;
+-
+
+== Reference to the font ==
+In order to render text using SFML, we need a font object.
+-
+sf::Font* _font;
+-
+
+== The class ==
+-
+class SFMLButtonView : public SFMLView {
+  public:
+  Constructor.
+  ~SFMLButtonView(){};
+
+  Draw.
+  Click.
+
+  private:
+  The render window.
+  The button.
+  Reference to the font.
+};
+-
+
+== Includes ==
+-
+#include "SFMLView.hpp"
+-
+
+== Forward declarations ==
+-
+namespace sf {
+  class RenderWindow;
+  class Font;
+};
+class Button;
+-
+
+== Include guard ==
+-
+#ifndef SFML_BUTTON_VIEW_H
+#define SFML_BUTTON_VIEW_H
+
+Includes.
+
+Forward declarations.
+
+The class.
+
+#endif
+-
+
+== @SFMLButtonView.hpp ==
+Include guard.

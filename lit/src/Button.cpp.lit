@@ -1,0 +1,63 @@
+== Button ==
+See header for details on what this object is.
+The comments here will concern implementation details.
+
+== Constructor ==
+Inject the following features:
+* Dimension
+* Clickable
+Also sets some defaults on the dimension.
+-
+Button::Button(std::string label):
+  _label(label) {
+  Dimension* d = new Dimension();
+  d->SetWidth(100);
+  d->SetHeight(50);
+  AddFeature(d);
+  AddFeature(new Clickable(NAMESPACE + "::" + _label));
+}
+-
+
+== Get event string ==
+The Clickable component holds the event string,
+so we can just ask it.
+-
+std::string Button::GetEventString() {
+  return GetFeature<Clickable>()->GetEventString();
+}
+-
+
+== Get label ==
+-
+std::string Button::GetLabel() {
+  return _label;
+}
+-
+
+== Event namespace ==
+-
+std::string Button::NAMESPACE = "button";
+-
+
+== Includes ==
+-
+#include "Button.hpp"
+#include "Dimension.hpp"
+#include "Clickable.hpp"
+-
+
+== Wrapper ==
+-
+Includes.
+
+Constructor.
+
+Get event string.
+
+Get label.
+
+Event namespace.
+-
+
+== @Button.cpp ==
+Wrapper.

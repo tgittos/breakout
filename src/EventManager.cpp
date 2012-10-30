@@ -5,17 +5,17 @@ EventManager& EventManager::GetInstance() {
   return instance;
 }
 
-void EventManager::Subscribe(const char* eventIdentifier, EventManager::Handler handler) {
+void EventManager::Subscribe(const std::string eventIdentifier, EventManager::Handler handler) {
   std::list<EventManager::Handler>* subscribers = GetSubscribers(eventIdentifier);
   if (NULL == subscribers) {
     subscribers = new std::list<EventManager::Handler>;
-    _eventSubscriptions.insert(std::pair<const char*, std::list<EventManager::Handler>*>(eventIdentifier, subscribers));
+    _eventSubscriptions.insert(std::pair<const std::string, std::list<EventManager::Handler>*>(eventIdentifier, subscribers));
   }
   subscribers->push_back(handler);
 }
 
-int EventManager::SubscriberCount(const char* eventIdentifier) {
-  std::map<const char*, std::list<EventManager::Handler>*>::iterator itr = _eventSubscriptions.find(eventIdentifier);
+int EventManager::SubscriberCount(const std::string eventIdentifier) {
+  std::map<const std::string, std::list<EventManager::Handler>*>::iterator itr = _eventSubscriptions.find(eventIdentifier);
   if(_eventSubscriptions.end() == itr)
   {
     return 0;
@@ -24,8 +24,8 @@ int EventManager::SubscriberCount(const char* eventIdentifier) {
   }
 }
 
-std::list<EventManager::Handler>* EventManager::GetSubscribers(const char* eventIdentifier) {
-  std::map<const char*, std::list<EventManager::Handler>*>::iterator itr = _eventSubscriptions.find(eventIdentifier);
+std::list<EventManager::Handler>* EventManager::GetSubscribers(const std::string eventIdentifier) {
+  std::map<const std::string, std::list<EventManager::Handler>*>::iterator itr = _eventSubscriptions.find(eventIdentifier);
   if(_eventSubscriptions.end() == itr)
   {
     return NULL;
@@ -34,17 +34,21 @@ std::list<EventManager::Handler>* EventManager::GetSubscribers(const char* event
   }
 }
 
-void EventManager::Dispatch(const char* eventIdentifier, void* data) {
+void EventManager::Dispatch(const std::string eventIdentifier, void* data) {
   std::list<EventManager::Handler>* subscribersPtr = GetSubscribers(eventIdentifier);
   if (NULL != subscribersPtr) {
     std::list<EventManager::Handler> subscribers = *subscribersPtr;
     for(std::list<EventManager::Handler>::iterator itr = subscribers.begin(); itr != subscribers.end(); ++itr) {
       EventManager::Handler handler = *itr;
-      (handler.object->*handler.handlerPointer)(data);
+      if (!handler.isStatic) {
+        (handler.object->*handler.handlerPointer)(data);
+      } else {
+        (handler.staticHandlerPointer)(data);
+      }
     }
   }
 }
 
 EventManager::EventManager() {
-  std::map<const char*, std::list<Handler>*> _eventSubscriptions = std::map<const char*, std::list<Handler>*>();
+  std::map<const std::string, std::list<Handler>*> _eventSubscriptions = std::map<const std::string, std::list<Handler>*>();
 }

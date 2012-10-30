@@ -13,6 +13,10 @@ class Klass
 
     File.open("#{PATH}/#{file}.cpp.lit", "w") do |f|
       f.write <<-EOS
+== #{file} ==
+See header for details on what this object is.
+The comments here will concern implementation details.
+
 == Includes ==
 -
 #include "#{file}.hpp"

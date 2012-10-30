@@ -1,0 +1,65 @@
+== SFML Button View ==
+See header for details on what this object is.
+The comments here will concern implementation details.
+
+== Draw ==
+-
+void SFMLButtonView::Draw() {
+  Dimension* d = _button.GetFeature<Dimension>();
+  sf::Shape rect = sf::Shape::Rectangle(
+    d->GetX(),
+    d->GetY(),
+    d->GetX() + d->GetWidth(),
+    d->GetY() + d->GetHeight(),
+    sf::Color::Black, true, sf::Color::Black
+  );
+  sf::String l(_button.GetLabel(), *_font);
+  l.SetX(d->GetX() + 10);
+  l.SetY(d->GetY() + 10);
+
+  _window.Draw(rect);
+  _window.Draw(l);
+}
+-
+
+== Click ==
+-
+void SFMLButtonView::Click() {
+  _button.GetFeature<Clickable>()->Click();
+}
+-
+
+== Constructor ==
+Load the font. Don't worry about errors, because it's
+an internal tool.
+-
+SFMLButtonView::SFMLButtonView(sf::RenderWindow& window, Button& button):
+  _window(window), _button(button) {
+  _font = new sf::Font();
+  _font->LoadFromFile("assets/visitor.ttf");
+}
+-
+
+== Includes ==
+-
+#include "SFMLButtonView.hpp"
+#include "SFML/Window.hpp"
+#include "SFML/Graphics.hpp"
+#include "Button.hpp"
+#include "Dimension.hpp"
+#include "Clickable.hpp"
+-
+
+== Wrapper ==
+-
+Includes.
+
+Constructor.
+
+Draw.
+
+Click.
+-
+
+== @SFMLButtonView.cpp ==
+Wrapper.

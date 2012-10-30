@@ -31,33 +31,47 @@ TEST(EventManager, NoLeakySubscriptions) {
 }
 -
 
-== Fake event subscriber for tests ==
-The MockEventInterface pointer is optional, because sometimes
-we want an invalid subscriber (one that doesn't support the
-event interface)
+== Can subscribe to event using a static handler ==
 -
-class MockEventSubscriber : public ComposableObject {
+TEST(EventManager, StaticMethodHandler) {
+  ASSERT_EQ(0, MockEventSubscriber::MyStaticInteger);
+  EventManager::GetInstance().Dispatch("MockEvent3", NULL);
+  ASSERT_EQ(-1, MockEventSubscriber::MyStaticInteger);
+}
+-
+
+== Fake event subscriber for tests ==
+-
+class MockEventSubscriber : public EventHandler {
   public:
   int MyInteger;
+  static int MyStaticInteger;
   MockEventSubscriber() {
     MyInteger = 0;
-    EventManager::GetInstance().Subscribe("MockEvent", EventManager::Handler(this, static_cast<void (ComposableObject::*)(void*)>(&MockEventSubscriber::MockEventHandler)));
-    EventManager::GetInstance().Subscribe("MockEvent2", EventManager::Handler(this, static_cast<void (ComposableObject::*)(void*)>(&MockEventSubscriber::MockEvent2Handler)));
+    EventManager::GetInstance().Subscribe("MockEvent", EventManager::Handler(this, static_cast<void (EventHandler::*)(void*)>(&MockEventSubscriber::MockEventHandler)));
+
+    EventManager::GetInstance().Subscribe("MockEvent2", EventManager::Handler(this, static_cast<void (EventHandler::*)(void*)>(&MockEventSubscriber::MockEvent2Handler)));
+
+    EventManager::GetInstance().Subscribe("MockEvent3", EventManager::Handler(&MockEvent3Handler));
   };
+  ~MockEventSubscriber(){};
   void MockEventHandler(void* data) {
     MyInteger = 1;
-  }
+  };
   void MockEvent2Handler(void* data) {
     MyInteger++;
-  }
+  };
+  static void MockEvent3Handler(void* data) {
+    MyStaticInteger = -1;
+  };
 };
+int MockEventSubscriber::MyStaticInteger = 0;
 -
 
 == Includes ==
 -
 #include "gtest/gtest.h"
 #include "EventManager.hpp"
-#include "ComposableObject.hpp"
 -
 
 == Wrapper ==
@@ -71,6 +85,8 @@ Event manager initializes subscription list on construct.
 Event subscription, dispatching and receiving works as intended.
 
 Event subscription notifications don't leak into other subscriptions.
+
+Can subscribe to event using a static handler.
 -
 
 == @EventManager_unittest.cpp ==

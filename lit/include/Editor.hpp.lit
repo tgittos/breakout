@@ -105,6 +105,14 @@ static void ReplaceBrick(int x, int y);
 static Brick::BrickType _currentType;
 -
 
+== Exit button handler ==
+When the exit button event is dispatched, the editor
+needs to take action by listening to the event, and then
+setting the state to exiting.
+-
+static void ExitHandler(void* data);
+-
+
 == Current level ==
 -
 static Level* _currentLevel;
@@ -112,7 +120,7 @@ static Level* _currentLevel;
 
 == The class ==
 -
-class Editor {
+class Editor : public EventHandler {
   public:
   Start the editor.
 
@@ -139,6 +147,8 @@ class Editor {
   Render buttons.
   Exit poller method.
   Editor loop method.
+
+  Exit button handler.
 };
 -
 
@@ -153,6 +163,7 @@ class SFMLView;
 #include "SFML/Window.hpp"
 #include "SFML/Graphics.hpp"
 #include "Brick.hpp"
+#include "EventHandler.hpp"
 -
 
 == Include guard ==

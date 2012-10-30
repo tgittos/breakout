@@ -11,8 +11,13 @@ sf::Color SFMLBrickView::GetColor(){
   int points = _brick.GetPoints();
   sf::Color c;
   switch(points) {
+    case Brick::EMPTY:
+      // transparent
+      c = sf::Color(255, 255, 255, 0);
+      break;
     case Brick::UNBREAKABLE:
-      c = sf::Color::White;
+      // grey
+      c = sf::Color(128, 128, 128);
       break;
     case Brick::ONE_POINT:
       c = sf::Color::Yellow;

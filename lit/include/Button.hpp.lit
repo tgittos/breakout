@@ -1,0 +1,80 @@
+== The Button Class ==
+This is the logic of a UI button. It is has a
+screen presence, and hence a view (in another class),
+dimensions and is clickable.
+
+== Event namespace ==
+The clickable component requires a unique identifier
+for this consumer to prevent event collisions.
+Rather than having a magic string floating around, lets
+make it a const.
+-
+static std::string NAMESPACE;
+-
+
+== Constructor ==
+Every button has a label which is used during event
+dispatching, as well as rendering. So we require it
+during the construction.
+-
+Button(std::string label);
+-
+
+== Get event string ==
+When a handler wants to subscribe to a buttons event,
+it needs to get the event string right. Rather than
+forcing a programmer to read through source code to
+figure out what the event string will be, we will
+provide a method to get it.
+-
+std::string GetEventString();
+-
+
+== Get label ==
+-
+std::string GetLabel();
+-
+
+== Label ==
+-
+std::string _label;
+-
+
+== The class ==
+-
+class Button : public ComposableObject {
+  public:
+
+  Constructor.
+  ~Button(){};
+
+  Get event string.
+
+  Get label.
+
+  private:
+  Event namespace.
+  Label.
+};
+-
+
+== Includes ==
+-
+#include <string>
+#include "ComposableObject.hpp"
+-
+
+== Include guard ==
+-
+#ifndef BUTTON_H
+#define BUTTON_H
+
+Includes.
+
+The class.
+
+#endif
+-
+
+== @Button.hpp ==
+Include guard.

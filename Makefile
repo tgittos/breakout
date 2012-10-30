@@ -7,7 +7,7 @@ EXECUTABLES = breakout editor
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = Ball_unittest Brick_unittest EventManager_unittest Paddle_unittest Score_unittest ComposableObject_unittest Collidable_unittest Dimension_unittest Level_unittest
+TESTS = Ball_unittest Brick_unittest EventManager_unittest Paddle_unittest Score_unittest ComposableObject_unittest Collidable_unittest Dimension_unittest Clickable_unittest Level_unittest Button_unittest
 
 ####################################################################
 # Base variables
@@ -135,19 +135,22 @@ breakout: includes Main.o Game.o
 	mkdir -p bin
 	$(CXX) Main.o Game.o $(IFLAGS) $(LDFLAGS) $(CXXFLAGS) -o bin/$@
 
-editor: includes gamecore.o sfmlview.o Editor.o EditorMain.o
+editor: includes gamecore.o ui.o sfmlview.o Editor.o EditorMain.o
 	mkdir -p bin
-	$(CXX) gamecore.o sfmlview.o Editor.o EditorMain.o $(IFLAGS) $(LDFLAGS) $(CXXFLAGS) -o bin/$@
+	$(CXX) gamecore.o ui.o sfmlview.o Editor.o EditorMain.o $(IFLAGS) $(LDFLAGS) $(CXXFLAGS) -o bin/$@
 
 ####################################################################
 # Library build targets
 ####################################################################
 
-components.o: includes ComposableObject.o Collidable.o Dimension.o
-	ld -r ComposableObject.o Collidable.o Dimension.o -o components.o
+components.o: includes ComposableObject.o Collidable.o Dimension.o Clickable.o
+	ld -r ComposableObject.o Collidable.o Dimension.o Clickable.o -o components.o
 
 gamecore.o: includes components.o Level.o Brick.o Ball.o Paddle.o Input.o Score.o
 	ld -r components.o Level.o Brick.o Ball.o Paddle.o Input.o Score.o -o gamecore.o
+
+ui.o: includes EventManager.o Button.o SFMLButtonView.o
+	ld -r EventManager.o Button.o SFMLButtonView.o -o ui.o
 
 sfmlview.o: includes SFMLLevelView.o SFMLBrickView.o
 	ld -r SFMLLevelView.o SFMLBrickView.o -o sfmlview.o
@@ -162,6 +165,12 @@ Breakout.hpp:
 	literati tangle -o src/. lit/include/$@.lit
 
 Brick.hpp:
+	literati tangle -o src/. lit/include/$@.lit
+
+Button.hpp:
+	literati tangle -o src/. lit/include/$@.lit
+
+Clickable.hpp:
 	literati tangle -o src/. lit/include/$@.lit
 
 Collidable.hpp:
@@ -180,6 +189,9 @@ Editor.hpp:
 	literati tangle -o src/. lit/include/$@.lit
 
 Event.hpp:
+	literati tangle -o src/. lit/include/$@.lit
+
+EventHandler.hpp:
 	literati tangle -o src/. lit/include/$@.lit
 
 EventManager.hpp:
@@ -209,7 +221,13 @@ Score.hpp:
 SFMLBrickView.hpp:
 	literati tangle -o src/. lit/include/$@.lit
 
+SFMLButtonView.hpp:
+	literati tangle -o src/. lit/include/$@.lit
+
 SFMLLevelView.hpp:
+	literati tangle -o src/. lit/include/$@.lit
+
+SFMLUIView.hpp:
 	literati tangle -o src/. lit/include/$@.lit
 
 SFMLView.hpp:
@@ -260,6 +278,12 @@ Breakout.cpp:
 Brick.cpp:
 	literati tangle -o src/. lit/src/$@.lit
 
+Button.cpp:
+	literati tangle -o src/. lit/src/$@.lit
+
+Clickable.cpp:
+	literati tangle -o src/. lit/src/$@.lit
+
 Collidable.cpp:
 	literati tangle -o src/. lit/src/$@.lit
 
@@ -308,6 +332,9 @@ Score.cpp:
 SFMLBrickView.cpp:
 	literati tangle -o src/. lit/src/$@.lit
 
+SFMLButtonView.cpp:
+	literati tangle -o src/. lit/src/$@.lit
+
 SFMLLevelView.cpp:
 	literati tangle -o src/. lit/src/$@.lit
 
@@ -319,6 +346,12 @@ Breakout.o: Breakout.hpp Breakout.cpp
 
 Brick.o: Brick.hpp Brick.cpp
 	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/Brick.cpp
+
+Button.o: Button.hpp Button.cpp
+	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/Button.cpp
+
+Clickable.o: Clickable.hpp Clickable.cpp
+	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/Clickable.cpp
 
 Collidable.o: Collidable.hpp Collidable.cpp
 	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/Collidable.cpp
@@ -368,6 +401,9 @@ Score.o: Score.hpp Score.cpp
 SFMLBrickView.o: SFMLBrickView.hpp SFMLBrickView.cpp
 	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/SFMLBrickView.cpp
 
+SFMLButtonView.o: SFMLButtonView.hpp SFMLButtonView.cpp
+	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/SFMLButtonView.cpp
+
 SFMLLevelView.o: SFMLLevelView.hpp SFMLLevelView.cpp
 	$(CXX) $(IFLAGS) $(CXXFLAGS) -c -o $@ src/SFMLLevelView.cpp
 
@@ -378,6 +414,12 @@ Breakout_unittest.cpp:
 	literati tangle -o src/. lit/test/$@.lit
 
 Brick_unittest.cpp:
+	literati tangle -o src/. lit/test/$@.lit
+
+Button_unittest.cpp:
+	literati tangle -o src/. lit/test/$@.lit
+
+Clickable_unittest.cpp:
 	literati tangle -o src/. lit/test/$@.lit
 
 Collidable_unittest.cpp:
@@ -416,6 +458,12 @@ Breakout_unittest.o: Breakout_unittest.cpp Breakout.hpp $(GTEST_HEADERS)
 Brick_unittest.o: Brick_unittest.cpp Brick.hpp $(GTEST_HEADERS)
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/Brick_unittest.cpp -o $@
 
+Button_unittest.o: Button_unittest.cpp Button.hpp $(GTEST_HEADERS)
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/Button_unittest.cpp -o $@
+
+Clickable_unittest.o: Clickable_unittest.cpp Clickable.hpp $(GTEST_HEADERS)
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/Clickable_unittest.cpp -o $@
+
 Collidable_unittest.o: Collidable_unittest.cpp Collidable.hpp $(GTEST_HEADERS)
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/Collidable_unittest.cpp -o $@
 
@@ -452,6 +500,12 @@ Breakout_unittest: Breakout_unittest.o Breakout.o gtest_main.a libgmock.a
 Brick_unittest: Brick_unittest.o Brick.o Dimension.o ComponentFeature.o Collidable.o ComposableObject.o gtest_main.a libgmock.a
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Brick_unittest.o Brick.o Dimension.o ComponentFeature.o Collidable.o ComposableObject.o gtest_main.a libgmock.a -o $@
 
+Button_unittest: Button_unittest.o Button.o Dimension.o ComponentFeature.o Clickable.o ComposableObject.o EventManager.o gtest_main.a libgmock.a
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Button_unittest.o Button.o Dimension.o ComponentFeature.o Clickable.o ComposableObject.o EventManager.o gtest_main.a libgmock.a -o $@
+
+Clickable_unittest: Clickable_unittest.o Clickable.o EventManager.o ComponentFeature.o gtest_main.a libgmock.a
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Clickable_unittest.o Clickable.o EventManager.o ComponentFeature.o gtest_main.a libgmock.a -o $@
+
 Collidable_unittest: Collidable_unittest.o Collidable.o Dimension.o ComponentFeature.o ComposableObject.o gtest_main.a libgmock.a
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Collidable_unittest.o Collidable.o Dimension.o ComponentFeature.o ComposableObject.o gtest_main.a libgmock.a -o $@
 
@@ -461,11 +515,11 @@ ComposableObject_unittest: ComposableObject_unittest.o ComposableObject.o Compon
 Dimension_unittest: Dimension_unittest.o Dimension.o ComponentFeature.o gtest_main.a libgmock.a
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Dimension_unittest.o Dimension.o ComponentFeature.o gtest_main.a libgmock.a -o $@
 
-EventManager_unittest: EventManager_unittest.o EventManager.o ComposableObject.o gtest_main.a libgmock.a
-	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) EventManager_unittest.o EventManager.o ComposableObject.o gtest_main.a libgmock.a -o $@
+EventManager_unittest: EventManager_unittest.o EventManager.o gtest_main.a libgmock.a
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) EventManager_unittest.o EventManager.o gtest_main.a libgmock.a -o $@
 
-GameObjectManager_unittest: GameObjectManager_unittest.o gameobjectmanager.o game.o Game.o visiblegameobject.o gtest_main.a libgmock.a
-	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) GameObjectManager_unittest.o gameobjectmanager.o game.o Game.o visiblegameobject.o gtest_main.a libgmock.a -o $@
+GameObjectManager_unittest: GameObjectManager_unittest.o gameobjectmanager.o game.o Game.o gtest_main.a libgmock.a
+	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) GameObjectManager_unittest.o gameobjectmanager.o game.o Game.o gtest_main.a libgmock.a -o $@
 
 Input_unittest: Input_unittest.o Input.o gtest_main.a libgmock.a
 	$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) Input_unittest.o Input.o gtest_main.a libgmock.a -o $@

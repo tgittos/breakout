@@ -4,33 +4,40 @@
 #include <map>
 #include <list>
 #include <exception>
-#include "ComposableObject.hpp"
+#include <string>
+#include "EventHandler.hpp"
+
 
 class EventManager {
   public:
-  struct Handler{
-    ComposableObject* object;
-    void (ComposableObject::*handlerPointer)(void*);
+  struct Handler {
+    EventHandler* object;
+    void (EventHandler::*handlerPointer)(void*);
+    void (*staticHandlerPointer)(void*);
+    bool isStatic;
   
-    Handler(ComposableObject* o, void(ComposableObject::*h)(void*)):
-      object(o), handlerPointer(h) {}
+    Handler(EventHandler* o, void(EventHandler::*h)(void*)):
+      object(o), handlerPointer(h), staticHandlerPointer(NULL), isStatic(false) {}
+  
+    Handler(void(*h)(void*)):
+      object(NULL), handlerPointer(NULL), staticHandlerPointer(h), isStatic(true) {}
   };
 
   static EventManager& GetInstance();
 
-  void Subscribe(const char* eventIdentifier, Handler handler);
+  void Subscribe(const std::string eventIdentifier, Handler handler);
 
-  int SubscriberCount(const char* eventIdentifier);
+  int SubscriberCount(const std::string eventIdentifier);
 
-  void Dispatch(const char* eventIdentifier, void* data);
+  void Dispatch(const std::string eventIdentifier, void* data);
 
   private:
   EventManager();
   EventManager(EventManager const&); //copy constructor not implemented
   void operator=(EventManager const&); //assignment not implemented
 
-  std::map<const char*, std::list<Handler>*> _eventSubscriptions;
-  std::list<Handler>* GetSubscribers(const char*);
+  std::map<const std::string, std::list<Handler>*> _eventSubscriptions;
+  std::list<Handler>* GetSubscribers(const std::string eventIdentifier);
 };
 
 #endif

@@ -1,0 +1,99 @@
+== Button Unit Tests ==
+These are unit tests for the Button class in the game.
+They test the button has the features it needs.
+
+Each of the tests should be relatively straight
+forward, so the documentation on them will not be
+as explanatory as the documentation on the code.
+
+== Button has Dimension feature ==
+-
+TEST(ButtonTest, FeatureTest) {
+  Button b("foobar");
+  ASSERT_TRUE(b.HasFeature<Dimension>());
+  ASSERT_TRUE(b.HasFeature<Clickable>());
+}
+-
+
+== Button can dispatch events in Clicked method ==
+-
+TEST(ButtonTest, ClickedDispatchesEvent) {
+  Button b("foobar");
+  MockEventSubscriber mes = MockEventSubscriber(b.GetEventString());
+  ASSERT_EQ(0, mes.MyInteger);
+  b.GetFeature<Clickable>()->Click();
+  ASSERT_EQ(1, mes.MyInteger);
+}
+-
+
+== Button can return event string ==
+-
+TEST(ButtonTest, GetEventString) {
+  Button b("foobar");
+  ASSERT_EQ(std::string("button::foobar::click"), b.GetEventString());
+}
+-
+
+== Button can return label ==
+-
+TEST(ButtonTest, GetLabel) {
+  Button b("foobar");
+  ASSERT_EQ(std::string("foobar"), b.GetLabel());
+}
+-
+
+== Button pointer works properly ==
+-
+TEST(ButtonTest, Pointers) {
+  Button* b = new Button("foobar");
+  ASSERT_EQ(std::string("foobar"), b->GetLabel());
+  ASSERT_EQ(std::string("button::foobar::click"), b->GetEventString());
+}
+-
+
+== Fake event subscriber for tests ==
+-
+class MockEventSubscriber : public EventHandler {
+  public:
+  int MyInteger;
+  MockEventSubscriber(std::string event) {
+    MyInteger = 0;
+    EventManager::GetInstance().Subscribe(event, EventManager::Handler(this, static_cast<void (EventHandler::*)(void*)>(&MockEventSubscriber::OnClick)));
+  };
+  void OnClick(void* data) {
+    MyInteger = 1;
+  }
+};
+-
+
+== Includes ==
+-
+#include <string>
+#include "gtest/gtest.h"
+#include "gmock/gmock.h"
+#include "Button.hpp"
+#include "EventManager.hpp"
+#include "EventHandler.hpp"
+#include "Dimension.hpp"
+#include "Clickable.hpp"
+-
+
+== Wrapper ==
+-
+Includes.
+
+Fake event subscriber for tests.
+
+Button has Dimension feature.
+
+Button can dispatch events in Clicked method.
+
+Button can return event string.
+
+Button can return label.
+
+Button pointer works properly.
+-
+
+== @Button_unittest.cpp ==
+Wrapper.

@@ -50,6 +50,13 @@ Set the height of the owner.
 void SetHeight(float height);
 -
 
+== Inside ==
+Test if an x,y co-ordinate pair is inside the
+object
+-
+bool Inside(int x, int y);
+-
+
 == X ==
 -
 float _x;
@@ -96,6 +103,8 @@ class Dimension : public ComponentFeature {
 
   Get height.
   Set height.
+
+  Inside.
 
   private:
   X.

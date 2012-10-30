@@ -11,7 +11,7 @@
 class Level : public ComposableObject{
   public:
   static const int BRICKS_PER_ROW = 15;
-  static const int ROWS = 8;
+  static const int ROWS = 20;
 
   Level();
   ~Level();

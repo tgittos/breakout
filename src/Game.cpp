@@ -1,6 +1,5 @@
 #include "Game.hpp"
-void Game::Start(void)
-{
+void Game::Start(void) {
   if(_gameState != Uninitialized)
     return;
 

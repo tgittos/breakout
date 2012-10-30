@@ -104,9 +104,9 @@ static const int BRICKS_PER_ROW = 15;
 -
 
 == Rows to a grid ==
-8 rows to the grid
+15 rows to the grid
 -
-static const int ROWS = 8;
+static const int ROWS = 20;
 -
 
 == Total bricks ==

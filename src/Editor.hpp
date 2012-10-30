@@ -4,11 +4,12 @@
 #include "SFML/Window.hpp"
 #include "SFML/Graphics.hpp"
 #include "Brick.hpp"
+#include "EventHandler.hpp"
 
 class Level;
 class SFMLView;
 
-class Editor {
+class Editor : public EventHandler {
   public:
   static void Start();
 
@@ -38,6 +39,8 @@ class Editor {
 
   static bool IsExiting();
   static void EditorLoop();
+
+  static void ExitHandler(void* data);
 };
 
 #endif

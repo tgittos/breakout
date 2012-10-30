@@ -1,0 +1,33 @@
+== EventHandler ==
+An event handler responds to events dispatched
+by the EventManager.
+
+The point of this interface is to allow function
+pointers to be passed properly to the EventManager.
+
+== The class ==
+-
+class EventHandler {
+  public:
+  virtual ~EventHandler(){};
+};
+-
+
+== Includes ==
+-
+-
+
+== Include guard ==
+-
+#ifndef EVENT_HANDLER_H
+#define EVENT_HANDLER_H
+
+Includes.
+
+The class.
+
+#endif
+-
+
+== @EventHandler.hpp ==
+Include guard.

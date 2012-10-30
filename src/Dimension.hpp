@@ -23,6 +23,8 @@ class Dimension : public ComponentFeature {
   float GetHeight();
   void SetHeight(float height);
 
+  bool Inside(int x, int y);
+
   private:
   float _x;
   float _y;

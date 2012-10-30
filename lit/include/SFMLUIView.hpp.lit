@@ -1,0 +1,35 @@
+== SFMLUIView ==
+A subclass of the SFMLView, this method exposes a
+contract that deals with the interactivity of a
+UI element.
+
+== Click ==
+UI elements are clickable.
+
+== The class ==
+-
+class SFMLUIView {
+  public:
+  SFMLUIView(){};
+  ~SFMLUIView(){};
+};
+-
+
+== Includes ==
+-
+-
+
+== Include guard ==
+-
+#ifndef SFMLUI_VIEW_H
+#define SFMLUI_VIEW_H
+
+Includes.
+
+The class.
+
+#endif
+-
+
+== @SFMLUIView.hpp ==
+Include guard.

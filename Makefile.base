@@ -7,7 +7,7 @@ EXECUTABLES = breakout editor
 
 # All tests produced by this Makefile.  Remember to add new tests you
 # created to the list.
-TESTS = Ball_unittest Brick_unittest EventManager_unittest Paddle_unittest Score_unittest ComposableObject_unittest Collidable_unittest Dimension_unittest Level_unittest
+TESTS = Ball_unittest Brick_unittest EventManager_unittest Paddle_unittest Score_unittest ComposableObject_unittest Collidable_unittest Dimension_unittest Clickable_unittest Level_unittest Button_unittest
 
 ####################################################################
 # Base variables
@@ -135,19 +135,22 @@ breakout: includes Main.o Game.o
 	mkdir -p bin
 	$(CXX) Main.o Game.o $(IFLAGS) $(LDFLAGS) $(CXXFLAGS) -o bin/$@
 
-editor: includes gamecore.o sfmlview.o Editor.o EditorMain.o
+editor: includes gamecore.o ui.o sfmlview.o Editor.o EditorMain.o
 	mkdir -p bin
-	$(CXX) gamecore.o sfmlview.o Editor.o EditorMain.o $(IFLAGS) $(LDFLAGS) $(CXXFLAGS) -o bin/$@
+	$(CXX) gamecore.o ui.o sfmlview.o Editor.o EditorMain.o $(IFLAGS) $(LDFLAGS) $(CXXFLAGS) -o bin/$@
 
 ####################################################################
 # Library build targets
 ####################################################################
 
-components.o: includes ComposableObject.o Collidable.o Dimension.o
-	ld -r ComposableObject.o Collidable.o Dimension.o -o components.o
+components.o: includes ComposableObject.o Collidable.o Dimension.o Clickable.o
+	ld -r ComposableObject.o Collidable.o Dimension.o Clickable.o -o components.o
 
 gamecore.o: includes components.o Level.o Brick.o Ball.o Paddle.o Input.o Score.o
 	ld -r components.o Level.o Brick.o Ball.o Paddle.o Input.o Score.o -o gamecore.o
+
+ui.o: includes EventManager.o Button.o SFMLButtonView.o
+	ld -r EventManager.o Button.o SFMLButtonView.o -o ui.o
 
 sfmlview.o: includes SFMLLevelView.o SFMLBrickView.o
 	ld -r SFMLLevelView.o SFMLBrickView.o -o sfmlview.o

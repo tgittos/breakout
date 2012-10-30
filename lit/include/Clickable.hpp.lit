@@ -1,0 +1,81 @@
+== Clickable (Component Feature) ==
+The clickable feature allows an object to dispatch
+events when the Click method is called. It is not
+responsible for callbacks and listeners, and
+delegates it to the EventManager.
+
+== Click ==
+In order to model a user clicking on a button, the
+click method will dispatch a namespaced click event.
+-
+void Click();
+-
+
+== The click event ==
+The event needs to be passed to the EventManager as
+a string. Rather than having a magic string floating
+around, lets make it a const.
+-
+static const std::string CLICK;
+-
+
+== Constructor ==
+The constructor takes the namespace for the dispatched
+click event, so multiple Clickable objects don't
+interfere with one another.
+-
+Clickable(std::string ns);
+-
+
+== Get event string ==
+When a handler wants to subscribe to a Click event,
+it needs to get the event string right. Rather than
+forcing a programmer to read through source code to
+figure out what the event string will be, we will
+provide a method to get it.
+-
+std::string GetEventString();
+-
+
+== Namespace ==
+-
+std::string _namespace;
+-
+
+== The class ==
+-
+class Clickable : public ComponentFeature {
+  public:
+  Constructor.
+  ~Clickable(){};
+
+  Click.
+
+  Get event string.
+
+  private:
+  The click event.
+  Namespace.
+};
+-
+
+== Includes ==
+-
+#include <string>
+#include "ComponentFeature.hpp"
+-
+
+== Include guard ==
+-
+#ifndef CLICKABLE_H
+#define CLICKABLE_H
+
+Includes.
+
+The class.
+
+#endif
+-
+
+== @Clickable.hpp ==
+Include guard.

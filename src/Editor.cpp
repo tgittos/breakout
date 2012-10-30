@@ -1,7 +1,11 @@
+#include <iostream>
 #include "Editor.hpp"
 #include "SFMLLevelView.hpp"
 #include "Level.hpp"
 #include "Dimension.hpp"
+#include "SFMLButtonView.hpp"
+#include "Button.hpp"
+#include "EventManager.hpp"
 
 void Editor::Start() {
   if(_editorState != Uninitialized)
@@ -9,10 +13,17 @@ void Editor::Start() {
 
   _mainWindow.Create(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32), "Foobar Editor");
 
-  //NewLevel();
   LoadLevel("../test/fixtures/level.txt");
   SFMLLevelView* currentLevelView = new SFMLLevelView(_mainWindow, *_currentLevel);
   _renderables.push_back((SFMLView*)currentLevelView);
+
+  // load UI
+  Button* b = new Button("Exit");
+  SFMLButtonView* exitButtonView = new SFMLButtonView(_mainWindow, *b);
+  _renderables.push_back((SFMLView*)exitButtonView);
+
+  // subscribe to editor events
+  EventManager::GetInstance().Subscribe(b->GetEventString(), EventManager::Handler(&ExitHandler));
 
   while(!IsExiting())
   {
@@ -49,7 +60,24 @@ void Editor::EditorLoop() {
           _editorState = Editor::Exiting;
         }
       }
-      _mainWindow.Clear(sf::Color::Black);
+      if(currentEvent.Type == sf::Event::MouseButtonReleased &&
+         currentEvent.MouseButton.Button == sf::Mouse::Left) {
+        // loop through renderables to see what we clicked on
+        for(std::list<SFMLView*>::iterator itr = _renderables.begin(); itr != _renderables.end(); ++itr) {
+          SFMLView* view = *itr;
+          if (NULL != dynamic_cast<SFMLButtonView*>(view)) {
+            (dynamic_cast<SFMLButtonView*>(view))->Click();
+          }
+          /*
+          if (view->HasFeature<Dimension>()) {
+            if(view->GetFeature<Dimension>()->Inside(input.GetMouseX(), input.GetMouseY()) && view->HasFeature<Clickable>()) {
+              view->GetFeature<Clickable>->Click();
+            }
+          }
+          */
+        }
+      }
+      _mainWindow.Clear(sf::Color::White);
       for(std::list<SFMLView*>::iterator itr = _renderables.begin(); itr != _renderables.end(); ++itr) {
         (*itr)->Draw();
       }
@@ -75,3 +103,7 @@ Editor::EditorState Editor::_editorState = Uninitialized;
 sf::RenderWindow Editor::_mainWindow;
 std::list<SFMLView*> Editor::_renderables;
 Level* Editor::_currentLevel;
+
+void Editor::ExitHandler(void* data) {
+  _editorState = Editor::Exiting;
+}

@@ -121,16 +121,17 @@ class Makefile
     includes = ["lit/src/#{get_game_name(get_name file)}.cpp.lit",
                 "lit/include/#{get_game_name(get_name file)}.hpp.lit",
                 "lit/test/#{file}"].collect do |file|
-      next unless File.exists? file 
+      next unless File.exists? file
       IO.readlines(file).collect do |l|
         matches = l.gsub(/\n/,'').match(/^#include\s["']([^",]+)["']$/)
         matches.captures.first if matches
       end
-        .reject{|i| found.include? i }
-        .reject{|i| ["gtest/gtest.h", "gmock/gmock.h", "#{get_game_name file}.hpp", "Mock#{get_game_name file}.hpp"].include? i}
-        .reject{|i| i =~ /^Mock/ }
-        .reject{|i| i =~ /^SFML/ }
+        .reject{|i| found.include? i } # file has already been added as dependency
+        .reject{|i| ["gtest/gtest.h", "gmock/gmock.h", "#{get_game_name file}.hpp", "Mock#{get_game_name file}.hpp"].include? i} # file is a special include
+        .reject{|i| i =~ /^Mock/ } # file is a mock anything
+        .reject{|i| i =~ /^SFML/ } # file belongs to SFML
     end.flatten.uniq.compact
+      .reject{|i| !File.exists? "lit/src/#{i.gsub(/hpp/,'cpp')}.lit" } # file doesn't have a corresponding class
     includes.each_with_object([]){|i, memo| memo.concat([i].concat(extract_dependencies(i, includes)))}.uniq
   end
 

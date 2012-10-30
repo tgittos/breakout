@@ -1,0 +1,53 @@
+== Clickable ==
+See header for details on what this object is.
+The comments here will concern implementation details.
+
+== Click ==
+Send the click event to the EventManager singleton.
+Prefix the event with the namespace given.
+-
+void Clickable::Click() {
+  EventManager::GetInstance().Dispatch(GetEventString(), NULL);
+}
+-
+
+== Get event string ==
+-
+std::string Clickable::GetEventString() {
+  return _namespace + std::string("::") + CLICK;
+}
+-
+
+== Constructor ==
+-
+Clickable::Clickable(std::string ns):
+  _namespace(ns) {
+}
+-
+
+== The click event ==
+-
+const std::string Clickable::CLICK("click");
+-
+
+== Includes ==
+-
+#include "Clickable.hpp"
+#include "EventManager.hpp"
+-
+
+== Wrapper ==
+-
+Includes.
+
+Constructor.
+
+Click.
+
+Get event string.
+
+The click event.
+-
+
+== @Clickable.cpp ==
+Wrapper.

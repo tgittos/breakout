@@ -13,6 +13,12 @@ class Header
 
     File.open("#{PATH}/#{file}.hpp.lit", "w") do |f|
       f.write <<-EOS
+== #{file} ==
+Write a description on what this class responsible for,
+and what it does at a 10,000ft view.
+Do not cover how it does what it does. That is for the
+class implementation.
+
 == The class ==
 -
 class #{file} {

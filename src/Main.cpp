@@ -1,6 +1,6 @@
-#include "Editor.hpp"
+#include "Game.hpp"
 int main(int argc, char** argv)
 {
-  Editor::Start();
+  Game::Start();
   return 0;
 }

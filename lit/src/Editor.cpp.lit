@@ -23,10 +23,17 @@ void Editor::Start() {
 
   _mainWindow.Create(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32), "Foobar Editor");
 
-  //NewLevel();
   LoadLevel("../test/fixtures/level.txt");
   SFMLLevelView* currentLevelView = new SFMLLevelView(_mainWindow, *_currentLevel);
   _renderables.push_back((SFMLView*)currentLevelView);
+
+  // load UI
+  Button* b = new Button("Exit");
+  SFMLButtonView* exitButtonView = new SFMLButtonView(_mainWindow, *b);
+  _renderables.push_back((SFMLView*)exitButtonView);
+
+  // subscribe to editor events
+  EventManager::GetInstance().Subscribe(b->GetEventString(), EventManager::Handler(&ExitHandler));
 
   while(!IsExiting())
   {
@@ -73,6 +80,11 @@ bool Editor::IsExiting()
 If we recieved a closing event or the user presses
 the escape key, set the state of the app to exiting.
 Otherwise continue rendering.
+
+Technical note: When searching through the list of
+views for an instance of a subclass of SFMLView, use
+dynamic_cast rather than C style casts, otherwise
+you'll run into the horrible object slicing.
 -
 void Editor::EditorLoop() {
   sf::Event currentEvent;
@@ -93,6 +105,23 @@ void Editor::EditorLoop() {
           _editorState = Editor::Exiting;
         }
       }
+      if(currentEvent.Type == sf::Event::MouseButtonReleased &&
+         currentEvent.MouseButton.Button == sf::Mouse::Left) {
+        // loop through renderables to see what we clicked on
+        for(std::list<SFMLView*>::iterator itr = _renderables.begin(); itr != _renderables.end(); ++itr) {
+          SFMLView* view = *itr;
+          if (NULL != dynamic_cast<SFMLButtonView*>(view)) {
+            (dynamic_cast<SFMLButtonView*>(view))->Click();
+          }
+          /*
+          if (view->HasFeature<Dimension>()) {
+            if(view->GetFeature<Dimension>()->Inside(input.GetMouseX(), input.GetMouseY()) && view->HasFeature<Clickable>()) {
+              view->GetFeature<Clickable>->Click();
+            }
+          }
+          */
+        }
+      }
       Render the editor.
     }
   }
@@ -102,19 +131,30 @@ void Editor::EditorLoop() {
 == Render the editor ==
 Render the editor
 -
-_mainWindow.Clear(sf::Color::Black);
+_mainWindow.Clear(sf::Color::White);
 for(std::list<SFMLView*>::iterator itr = _renderables.begin(); itr != _renderables.end(); ++itr) {
   (*itr)->Draw();
 }
 _mainWindow.Display();
 -
 
+== Exit button handler ==
+-
+void Editor::ExitHandler(void* data) {
+  _editorState = Editor::Exiting;
+}
+-
+
 == Includes ==
 -
+#include <iostream>
 #include "Editor.hpp"
 #include "SFMLLevelView.hpp"
 #include "Level.hpp"
 #include "Dimension.hpp"
+#include "SFMLButtonView.hpp"
+#include "Button.hpp"
+#include "EventManager.hpp"
 -
 
 == Wrapper ==
@@ -132,6 +172,8 @@ New level.
 Load level.
 
 Initial state.
+
+Exit button handler.
 -
 
 == @Editor.cpp ==

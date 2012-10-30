@@ -6,6 +6,7 @@
 class Brick : public ComposableObject {
   public:
     enum BrickType {
+      EMPTY = -1,
       UNBREAKABLE = 0,
       ONE_POINT = 1,
       THREE_POINTS = 3,
