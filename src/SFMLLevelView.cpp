@@ -17,18 +17,6 @@ SFMLLevelView::SFMLLevelView(sf::RenderWindow& window, Level& level)
 }
 
 void SFMLLevelView::Draw() {
-  /*
-  sf::Shape rect = sf::Shape::Rectangle(
-    50.f,
-    100.f,
-    150.f,
-    250.f,
-    sf::Color::White, true, sf::Color::White
-  );
-  rect.EnableFill(false);
-  _window.Draw(rect);
-  */
-
   for(std::list<SFMLBrickView*>::iterator itr = _brickViews.begin(); itr != _brickViews.end(); ++itr) {
     (*itr)->Draw();
   }

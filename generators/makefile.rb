@@ -25,12 +25,15 @@ class Makefile
     end
 
     # construct rules to build every mock from it's literati file
-    mocks = Dir.entries("lit/mocks").reject{|f| f =~ /^\./}.collect do |f|
-      (@includes_list ||= []) << f
-      <<-EOS
+    # mocks are optional
+    if Dir.exists?("lit/mocks")
+      mocks = Dir.entries("lit/mocks").reject{|f| f =~ /^\./}.collect do |f|
+        (@includes_list ||= []) << f
+        <<-EOS
 #{get_name f}.hpp:
 \tliterati tangle -o src/. lit/mocks/$@.lit
-      EOS
+        EOS
+      end
     end
 
     # construct rules to build every source file from it's literati file
@@ -52,33 +55,36 @@ class Makefile
     end
 
     # construct rules to build every test source file from it's literati file
-    test_sources = Dir.entries("lit/test").reject{|f| f =~ /^\./}.collect do |f|
-      (@test_sources_list || []) << f
-      <<-EOS
+    # tests are optional
+    if Dir.exists?("lit/test")
+      test_sources = Dir.entries("lit/test").reject{|f| f =~ /^\./}.collect do |f|
+        (@test_sources_list || []) << f
+        <<-EOS
 #{get_name f}.cpp:
 \tliterati tangle -o src/. lit/test/$@.lit
-      EOS
-    end
+        EOS
+      end
 
-    # construct rules to build every test object from the gtest/game object/test source file
-    test_objects = Dir.entries("lit/test").reject{|f| f =~ /^\./}.collect do |f|
-      (@test_objects_list || []) << f
-      <<-EOS
+      # construct rules to build every test object from the gtest/game object/test source file
+      test_objects = Dir.entries("lit/test").reject{|f| f =~ /^\./}.collect do |f|
+        (@test_objects_list || []) << f
+        <<-EOS
 #{get_name f}.o: #{get_name f}.cpp #{get_game_name(get_name f)}.hpp $(GTEST_HEADERS)
 \t$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) -c $(SRC_DIR)/#{get_name f}.cpp -o $@
-      EOS
-    end
+        EOS
+      end
 
-    # construct rules to build every test binary from test objects/gtest
-    test_binaries = Dir.entries("lit/test").reject{|f| f =~ /^\./}.collect do |f|
-      # examine the cpp file to find includes that we don't already know about
-      # and add them as both dependencies and sources to the compile
-      test_includes = extract_dependencies(f).reject{|i| i == "#{get_name f}.o" }
+      # construct rules to build every test binary from test objects/gtest
+      test_binaries = Dir.entries("lit/test").reject{|f| f =~ /^\./}.collect do |f|
+        # examine the cpp file to find includes that we don't already know about
+        # and add them as both dependencies and sources to the compile
+        test_includes = extract_dependencies(f).reject{|i| i == "#{get_name f}.o" }
 
-      <<-EOS
+        <<-EOS
 #{get_name f}: #{get_name f}.o #{test_includes.map{|i| "#{i.split('.').first}.o"}.join(" ")} gtest_main.a libgmock.a
 \t$(CXX) $(IFLAGS) $(GTEST_IFLAGS) $(GMOCK_IFLAGS) $(CXXFLAGS) #{get_name f}.o #{test_includes.map{|i| "#{i.split('.').first}.o"}.join(" ")} gtest_main.a libgmock.a -o $@
-      EOS
+        EOS
+      end
     end
 
     # write all the rules + the base out to a new Makefile
@@ -87,17 +93,17 @@ class Makefile
       f.write "\n"
       f.write includes.join("\n")
       f.write "\n"
-      f.write mocks.join("\n")
+      f.write mocks.join("\n") unless mocks.nil?
       f.write "\n"
       f.write game_sources.join("\n")
       f.write "\n"
       f.write game_objects.join("\n")
       f.write "\n"
-      f.write test_sources.join("\n")
+      f.write test_sources.join("\n") unless test_sources.nil?
       f.write "\n"
-      f.write test_objects.join("\n")
+      f.write test_objects.join("\n") unless test_objects.nil?
       f.write "\n"
-      f.write test_binaries.join("\n")
+      f.write test_binaries.join("\n") unless test_binaries.nil?
     end
   end
 
@@ -112,7 +118,7 @@ class Makefile
   end
 
   def self.header?(f)
-    result = @includes_list.select{|i| i =~ /^#{f}/}.first
+    result = (@includes_list || []).select{|i| i =~ /^#{f}/}.first
     return "#{get_name(result)}.hpp" if result
     return ""
   end

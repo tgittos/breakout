@@ -13,6 +13,7 @@ found in Game.hpp.lit
 -
 enum EditorState {
   Uninitialized,
+  LeftMouseButtonDown,
   Exiting
 };
 -
@@ -41,6 +42,7 @@ Each item that needs to be rendered will be added to
 the render list
 -
 static std::list<SFMLView*> _renderables;
+static std::list<Button*> _buttons;
 -
 
 == Start the editor ==
@@ -113,6 +115,11 @@ setting the state to exiting.
 static void ExitHandler(void* data);
 -
 
+== Foobar button handler ==
+-
+static void FoobarHandler(void* data);
+-
+
 == Current level ==
 -
 static Level* _currentLevel;
@@ -149,6 +156,7 @@ class Editor : public EventHandler {
   Editor loop method.
 
   Exit button handler.
+  Foobar button handler.
 };
 -
 
@@ -156,6 +164,7 @@ class Editor : public EventHandler {
 -
 class Level;
 class SFMLView;
+class Button;
 -
 
 == Includes ==

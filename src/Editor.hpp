@@ -8,6 +8,7 @@
 
 class Level;
 class SFMLView;
+class Button;
 
 class Editor : public EventHandler {
   public:
@@ -26,6 +27,7 @@ class Editor : public EventHandler {
   private:
   enum EditorState {
     Uninitialized,
+    LeftMouseButtonDown,
     Exiting
   };
   const static int SCREEN_WIDTH = 1024;
@@ -34,6 +36,7 @@ class Editor : public EventHandler {
   static EditorState _editorState;
   static sf::RenderWindow _mainWindow;
   static std::list<SFMLView*> _renderables;
+  static std::list<Button*> _buttons;
   static Brick::BrickType _currentType;
   static Level* _currentLevel;
 
@@ -41,6 +44,7 @@ class Editor : public EventHandler {
   static void EditorLoop();
 
   static void ExitHandler(void* data);
+  static void FoobarHandler(void* data);
 };
 
 #endif
