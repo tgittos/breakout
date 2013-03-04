@@ -26,7 +26,6 @@ class Level : public ComposableObject{
   void SaveToFile(const char* path);
 
   void AddBrick(int row, int col, Brick* newBrick);
-  void DeleteBrick(int row, int col);
   void ChangeBrick(int row, int col, Brick::BrickType newType);
 
   private:

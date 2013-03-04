@@ -12,6 +12,23 @@ void SFMLLevelView::Draw() {
 }
 -
 
+== Map mouse coords to brick ==
+-
+int* SFMLLevelView::MapMouseToBrick(int mouseX, int mouseY) {
+  Dimension* d =  _level.GetFeature<Dimension>();
+  int x = d->GetX();
+  int y = d->GetY();
+  int width = d->GetWidth();
+  int height = d->GetHeight();
+  int row = floor(((mouseY - y) * 1.f / height) * Level::ROWS);
+  int col = floor(((mouseX - x) * 1.f / width) * Level::BRICKS_PER_ROW);
+  int* coords = new int[2];
+  coords[0] = row;
+  coords[1] = col;
+  return coords;
+}
+-
+
 == Constructor ==
 Iterate through the bricks, create a view for them
 and store the view in a list.
@@ -30,12 +47,15 @@ SFMLLevelView::SFMLLevelView(sf::RenderWindow& window, Level& level)
 
 == Includes ==
 -
+#include <iostream>
+#include <math.h>
 #include <list>
 #include "SFML/Window.hpp"
 #include "SFML/Graphics.hpp"
 #include "SFMLLevelView.hpp"
 #include "Level.hpp"
 #include "SFMLBrickView.hpp"
+#include "Dimension.hpp"
 -
 
 == Wrapper ==
@@ -45,6 +65,8 @@ Includes.
 Constructor.
 
 Draw.
+
+Map mouse coords to brick.
 -
 
 == @SFMLLevelView.cpp ==

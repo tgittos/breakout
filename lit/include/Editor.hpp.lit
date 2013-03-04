@@ -24,6 +24,11 @@ The current state the editor is in.
 static EditorState _editorState;
 -
 
+== Current brick type ==
+-
+static Brick::BrickType _currentType;
+-
+
 == Window reference variable ==
 In addition to the game state variable, we need to hold
 a reference to the SFML window
@@ -78,33 +83,8 @@ static void SaveLevel(const char* path);
 static void NewLevel();
 -
 
-== Select brick type ==
--
-static void SelectBrickType(Brick::BrickType type);
--
-
-== Add brick ==
--
-static void AddBrick(int x, int y);
--
-
-== Remove brick ==
--
-static void RemoveBrick(int x, int y);
--
-
-== Replace brick ==
--
-static void ReplaceBrick(int x, int y);
--
-
 == Render buttons ==
 -
--
-
-== Current brick type ==
--
-static Brick::BrickType _currentType;
 -
 
 == Exit button handler ==
@@ -115,14 +95,45 @@ setting the state to exiting.
 static void ExitHandler(void* data);
 -
 
-== Foobar button handler ==
+== Delete brick button handler ==
 -
-static void FoobarHandler(void* data);
+static void DeleteBrickHandler(void* data);
+-
+
+== Unbreakable brick button handler ==
+-
+static void UnbreakableBrickHandler(void* data);
+-
+
+== One point brick button handler ==
+-
+static void OnePointBrickHandler(void* data);
+-
+
+== Three point brick button handler ==
+-
+static void ThreePointBrickHandler(void* data);
+-
+
+== Five point brick button handler ==
+-
+static void FivePointBrickHandler(void* data);
+-
+
+== Seven point brick button handler ==
+-
+static void SevenPointBrickHandler(void* data);
+-
+
+== Level click handler ==
+-
+static void LevelClickHandler(int mouseX, int mouseY);
 -
 
 == Current level ==
 -
 static Level* _currentLevel;
+static SFMLLevelView* _currentLevelView;
 -
 
 == The class ==
@@ -135,20 +146,14 @@ class Editor : public EventHandler {
   Save level.
   New level.
 
-  Select brick type.
-
-  Add brick.
-  Remove brick.
-  Replace brick.
-
   private:
   State enumeration.
   Screen width and height.
 
   Editor state variable.
+  Current brick type.
   Window reference variable.
   Render list.
-  Current brick type.
   Current level.
 
   Render buttons.
@@ -156,7 +161,13 @@ class Editor : public EventHandler {
   Editor loop method.
 
   Exit button handler.
-  Foobar button handler.
+  Delete brick button handler.
+  Unbreakable brick button handler.
+  One point brick button handler.
+  Three point brick button handler.
+  Five point brick button handler.
+  Seven point brick button handler.
+  Level click handler.
 };
 -
 
@@ -173,6 +184,7 @@ class Button;
 #include "SFML/Graphics.hpp"
 #include "Brick.hpp"
 #include "EventHandler.hpp"
+#include "SFMLLevelView.hpp"
 -
 
 == Include guard ==

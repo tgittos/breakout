@@ -15,24 +15,66 @@ void Editor::Start() {
   _mainWindow.Create(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32), "Foobar Editor");
 
   LoadLevel("../test/fixtures/level.txt");
-  SFMLLevelView* currentLevelView = new SFMLLevelView(_mainWindow, *_currentLevel);
-  _renderables.push_back((SFMLView*)currentLevelView);
+  _currentLevelView = new SFMLLevelView(_mainWindow, *_currentLevel);
+  _renderables.push_back((SFMLView*)_currentLevelView);
 
   // load UI
   Button* btnExit = new Button("Exit");
   SFMLButtonView* exitButtonView = new SFMLButtonView(_mainWindow, *btnExit);
   _buttons.push_back(btnExit);
   _renderables.push_back((SFMLView*)exitButtonView);
-
-  Button* btnFoobar = new Button("Foobar");
-  btnFoobar->GetFeature<Dimension>()->SetY(100);
-  SFMLButtonView* foobarButtonView = new SFMLButtonView(_mainWindow, *btnFoobar);
-  _buttons.push_back(btnFoobar);
-  _renderables.push_back((SFMLView*)foobarButtonView);
-
-  // subscribe to editor events
+  // wire up events
   EventManager::GetInstance().Subscribe(btnExit->GetEventString(), EventManager::Handler(&ExitHandler));
-  EventManager::GetInstance().Subscribe(btnFoobar->GetEventString(), EventManager::Handler(&FoobarHandler));
+  
+  // set up model
+  Button* btnDeleteBrick = new Button("Delete Brick");
+  btnDeleteBrick->GetFeature<Dimension>()->SetY(100);
+  btnDeleteBrick->GetFeature<Dimension>()->SetWidth(200);
+  // set up view
+  SFMLButtonView* deleteBrickButtonView = new SFMLButtonView(_mainWindow, *btnDeleteBrick);
+  _buttons.push_back(btnDeleteBrick);
+  _renderables.push_back((SFMLView*)deleteBrickButtonView);
+  EventManager::GetInstance().Subscribe(btnDeleteBrick->GetEventString(), EventManager::Handler(&DeleteBrickHandler));
+  
+  Button* btnUnbreakableBrick = new Button("Unbreakable");
+  btnUnbreakableBrick->GetFeature<Dimension>()->SetY(150);
+  btnUnbreakableBrick->GetFeature<Dimension>()->SetWidth(200);
+  SFMLButtonView* unbreakableBrickButtonView = new SFMLButtonView(_mainWindow, *btnUnbreakableBrick);
+  _buttons.push_back(btnUnbreakableBrick);
+  _renderables.push_back((SFMLView*)unbreakableBrickButtonView);
+  EventManager::GetInstance().Subscribe(btnUnbreakableBrick->GetEventString(),EventManager::Handler(&UnbreakableBrickHandler));
+  
+  Button* btnOnePointBrick = new Button("1 Point");
+  btnOnePointBrick->GetFeature<Dimension>()->SetY(200);
+  btnOnePointBrick->GetFeature<Dimension>()->SetWidth(200);
+  SFMLButtonView* onePointBrickView = new SFMLButtonView(_mainWindow, *btnOnePointBrick);
+  _buttons.push_back(btnOnePointBrick);
+  _renderables.push_back((SFMLView*)onePointBrickView);
+  EventManager::GetInstance().Subscribe(btnOnePointBrick->GetEventString(),EventManager::Handler(&OnePointBrickHandler));
+  
+  Button* btnThreePointBrick = new Button("3 Points");
+  btnThreePointBrick->GetFeature<Dimension>()->SetY(250);
+  btnThreePointBrick->GetFeature<Dimension>()->SetWidth(200);
+  SFMLButtonView* threePointBrickView = new SFMLButtonView(_mainWindow, *btnThreePointBrick);
+  _buttons.push_back(btnThreePointBrick);
+  _renderables.push_back((SFMLView*)threePointBrickView);
+  EventManager::GetInstance().Subscribe(btnThreePointBrick->GetEventString(),EventManager::Handler(&ThreePointBrickHandler));
+  
+  Button* btnFivePointBrick = new Button("5 Points");
+  btnFivePointBrick->GetFeature<Dimension>()->SetY(300);
+  btnFivePointBrick->GetFeature<Dimension>()->SetWidth(200);
+  SFMLButtonView* fivePointBrickView = new SFMLButtonView(_mainWindow, *btnFivePointBrick);
+  _buttons.push_back(btnFivePointBrick);
+  _renderables.push_back((SFMLView*)fivePointBrickView);
+  EventManager::GetInstance().Subscribe(btnFivePointBrick->GetEventString(),EventManager::Handler(&FivePointBrickHandler));
+  
+  Button* btnSevenPointBrick = new Button("7 Points");
+  btnSevenPointBrick->GetFeature<Dimension>()->SetY(350);
+  btnSevenPointBrick->GetFeature<Dimension>()->SetWidth(200);
+  SFMLButtonView* sevenPointBrickView = new SFMLButtonView(_mainWindow, *btnSevenPointBrick);
+  _buttons.push_back(btnSevenPointBrick);
+  _renderables.push_back((SFMLView*)sevenPointBrickView);
+  EventManager::GetInstance().Subscribe(btnSevenPointBrick->GetEventString(),EventManager::Handler(&SevenPointBrickHandler));
 
   while(!IsExiting())
   {
@@ -66,9 +108,17 @@ void Editor::EditorLoop() {
           if (btn->HasFeature<Dimension>()) {
             if(btn->GetFeature<Dimension>()->Inside(input.GetMouseX(), input.GetMouseY()) && btn->HasFeature<Clickable>()) {
               btn->GetFeature<Clickable>()->Click();
+              break;
             }
           }
         }
+      }
+      // see if we clicked on the level
+      // this is outside the if statement so we can support
+      // mouse dragging
+      if (_currentLevel->GetFeature<Dimension>()->Inside(input.GetMouseX(), input.GetMouseY())) {
+        LevelClickHandler(input.GetMouseX(), input.GetMouseY());
+        break;
       }
       break;
     default:
@@ -88,13 +138,13 @@ void Editor::EditorLoop() {
          currentEvent.MouseButton.Button == sf::Mouse::Left) {
         _editorState = Editor::LeftMouseButtonDown;
       }
-      _mainWindow.Clear(sf::Color::White);
-      for(std::list<SFMLView*>::iterator itr = _renderables.begin(); itr != _renderables.end(); ++itr) {
-        (*itr)->Draw();
-      }
-      _mainWindow.Display();
     }
   }
+  _mainWindow.Clear(sf::Color::White);
+  for(std::list<SFMLView*>::iterator itr = _renderables.begin(); itr != _renderables.end(); ++itr) {
+    (*itr)->Draw();
+  }
+  _mainWindow.Display();
 }
 
 void Editor::NewLevel() {
@@ -106,7 +156,7 @@ void Editor::LoadLevel(const char* path) {
   _currentLevel->LoadFromFile(path);
   // offset the level for testing purposes
   Dimension* d = _currentLevel->GetFeature<Dimension>();
-  d->SetX(100);
+  d->SetX(200);
   d->SetY(50);
 }
 
@@ -115,11 +165,46 @@ sf::RenderWindow Editor::_mainWindow;
 std::list<SFMLView*> Editor::_renderables;
 std::list<Button*> Editor::_buttons;
 Level* Editor::_currentLevel;
+SFMLLevelView* Editor::_currentLevelView;
+Brick::BrickType Editor::_currentType;
 
 void Editor::ExitHandler(void* data) {
   _editorState = Editor::Exiting;
 }
 
-void Editor::FoobarHandler(void* data) {
-  std::cout << "FOOBAR!" << std::endl;
+void Editor::DeleteBrickHandler(void* data) {
+  std::cout << "setting type to empty" << std::endl;
+  _currentType = Brick::EMPTY;
+}
+
+void Editor::UnbreakableBrickHandler(void* data) {
+  std::cout << "setting type to unbreakable" << std::endl;
+  _currentType = Brick::UNBREAKABLE;
+}
+
+void Editor::OnePointBrickHandler(void* data) {
+  std::cout << "setting type to 1 point" << std::endl;
+  _currentType = Brick::ONE_POINT;
+}
+
+void Editor::ThreePointBrickHandler(void* data) {
+  std::cout << "setting type to 3 points" << std::endl;
+  _currentType = Brick::THREE_POINTS;
+}
+
+void Editor::FivePointBrickHandler(void* data) {
+  std::cout << "setting type to 5 points" << std::endl;
+  _currentType = Brick::FIVE_POINTS;
+}
+
+void Editor::SevenPointBrickHandler(void* data) {
+  std::cout << "setting type to 7 points" << std::endl;
+  _currentType = Brick::SEVEN_POINTS;
+}
+
+void Editor::LevelClickHandler(int mouseX, int mouseY) {
+  // convert mouse x/y to brick index
+  int* coords = _currentLevelView->MapMouseToBrick(mouseX, mouseY);
+  _currentLevel->ChangeBrick(coords[0], coords[1], _currentType);
+  delete coords;
 }

@@ -26,6 +26,11 @@ Draw the level to the SFML window.
 virtual void Draw();
 -
 
+== Map mouse coords to brick ==
+-
+int* MapMouseToBrick(int mouseX, int mouseY);
+-
+
 == The view list ==
 When we create a view, we will go through all
 the bricks in the level and create a brick
@@ -43,6 +48,7 @@ class SFMLLevelView : public SFMLView {
   ~SFMLLevelView(){};
 
   Draw.
+  Map mouse coords to brick.
 
   private:
   Window reference.

@@ -16,6 +16,13 @@ bool Brick::IsUnbreakable() {
 }
 -
 
+== Change type ==
+-
+void Brick::ChangeType(Brick::BrickType newType) {
+  _type = newType;
+}
+-
+
 == Constructor ==
 Set the width/height of the brick based off of
 the constants declared in the class.
@@ -58,6 +65,8 @@ Constructor.
 Get points.
 
 Is unbreakable?.
+
+Change type.
 -
 
 == @Brick.cpp ==

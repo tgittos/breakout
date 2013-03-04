@@ -11,7 +11,10 @@ Level::Level():
     _grid[i] = NULL;
     _totalBricks++;
   }
-  AddFeature(new Dimension());
+  Dimension * d = new Dimension();
+  d->SetWidth(BRICKS_PER_ROW * Brick::BRICK_WIDTH);
+  d->SetHeight(_totalBricks / BRICKS_PER_ROW * Brick::BRICK_HEIGHT);
+  AddFeature(d);
 }
 
 Level::~Level() {
@@ -74,14 +77,8 @@ void Level::AddBrick(int row, int col, Brick* newBrick) {
   _grid[row * BRICKS_PER_ROW + col] = newBrick;
 }
 
-void Level::DeleteBrick(int row, int col) {
-  delete _grid[row * BRICKS_PER_ROW + col];
-  _grid[row * BRICKS_PER_ROW + col] = NULL;
-}
-
 void Level::ChangeBrick(int row, int col, Brick::BrickType newType) {
-  DeleteBrick(row, col);
-  AddBrick(row, col, new Brick(newType));
+  _grid[row * BRICKS_PER_ROW + col]->ChangeType(newType);
 }
 
 Brick** Level::GetGrid() {

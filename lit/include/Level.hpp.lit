@@ -58,15 +58,6 @@ This method is used in the editor only.
 void AddBrick(int row, int col, Brick* newBrick);
 -
 
-== Delete a brick from the grid ==
-Given a cell identity, remove a brick from the
-grid.
-
-This method is used in the editor only.
--
-void DeleteBrick(int row, int col);
--
-
 == Change a brick's type ==
 Given a cell identify and a brick type, change the
 value of the brick.
@@ -134,7 +125,6 @@ class Level : public ComposableObject{
   Save level.
 
   Add a brick to the grid.
-  Delete a brick from the grid.
   Change a brick's type.
 
   private:

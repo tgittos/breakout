@@ -20,6 +20,7 @@ class Brick : public ComposableObject {
 
     int GetPoints();
     bool IsUnbreakable();
+    void ChangeType(BrickType newType);
 
   private:
     BrickType _type;

@@ -39,6 +39,12 @@ Checks if the brick is an unbreakable brick
 bool IsUnbreakable();
 -
 
+== Change type ==
+Change the brick's type. Used in the editor.
+-
+void ChangeType(BrickType newType);
+-
+
 == My type ==
 The type of brick that this brick is.
 -
@@ -57,6 +63,7 @@ class Brick : public ComposableObject {
 
     Get points.
     Is unbreakable?.
+    Change type.
 
   private:
     My type.

@@ -22,3 +22,7 @@ int Brick::GetPoints() {
 bool Brick::IsUnbreakable() {
   return _type == Brick::UNBREAKABLE;
 }
+
+void Brick::ChangeType(Brick::BrickType newType) {
+  _type = newType;
+}

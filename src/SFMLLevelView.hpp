@@ -15,6 +15,7 @@ class SFMLLevelView : public SFMLView {
   ~SFMLLevelView(){};
 
   virtual void Draw();
+  int* MapMouseToBrick(int mouseX, int mouseY);
 
   private:
   sf::RenderWindow& _window;
