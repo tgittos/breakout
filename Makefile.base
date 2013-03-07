@@ -22,7 +22,7 @@ endif
 CXX = g++
 
 # Flags passed to the C++ compiler.
-CXXFLAGS = -g -Wall -Wextra -m32
+CXXFLAGS = -g -Wall -Wextra -m32 -pthread
 
 # Source code directory
 SRC_DIR = src
@@ -38,7 +38,7 @@ TEST_DIR = tests
 IFLAGS = -Isrc
 
 # Link flags for Linux
-LDFLAGS = -lGL -lGLU -lglut -lGLEW
+LDFLAGS = -lGL -lGLU -lsfml-system -lsfml-graphics -lsfml-window -lsfml-audio
 
 # Link flags for OS X, overrides Linux
 ifeq "$(OSTYPE)" "Darwin"

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include "Editor.hpp"
 #include "SFMLLevelView.hpp"
 #include "Level.hpp"
@@ -14,7 +15,15 @@ void Editor::Start() {
 
   _mainWindow.Create(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT, 32), "Foobar Editor");
 
-  LoadLevel("../test/fixtures/level.txt");
+  std::ifstream file("data/level");
+  if (file.good())
+  {
+    LoadLevel("data/level");
+  }
+  else
+  {
+    NewLevel();
+  }
   _currentLevelView = new SFMLLevelView(_mainWindow, *_currentLevel);
   _renderables.push_back((SFMLView*)_currentLevelView);
 
@@ -75,6 +84,14 @@ void Editor::Start() {
   _buttons.push_back(btnSevenPointBrick);
   _renderables.push_back((SFMLView*)sevenPointBrickView);
   EventManager::GetInstance().Subscribe(btnSevenPointBrick->GetEventString(),EventManager::Handler(&SevenPointBrickHandler));
+  
+  Button* btnSave = new Button("Save");
+  btnSave->GetFeature<Dimension>()->SetY(450);
+  btnSave->GetFeature<Dimension>()->SetWidth(200);
+  SFMLButtonView* saveView = new SFMLButtonView(_mainWindow, *btnSave);
+  _buttons.push_back(btnSave);
+  _renderables.push_back((SFMLView*)saveView);
+  EventManager::GetInstance().Subscribe(btnSave->GetEventString(), EventManager::Handler(&SaveHandler));
 
   while(!IsExiting())
   {
@@ -112,6 +129,8 @@ void Editor::EditorLoop() {
             }
           }
         }
+        // probably wasn't a button, lets see if it was a renderable
+
       }
       // see if we clicked on the level
       // this is outside the if statement so we can support
@@ -149,6 +168,9 @@ void Editor::EditorLoop() {
 
 void Editor::NewLevel() {
   _currentLevel = new Level();
+  Dimension* d = _currentLevel->GetFeature<Dimension>();
+  d->SetX(200);
+  d->SetY(50);
 }
 
 void Editor::LoadLevel(const char* path) {
@@ -207,4 +229,9 @@ void Editor::LevelClickHandler(int mouseX, int mouseY) {
   int* coords = _currentLevelView->MapMouseToBrick(mouseX, mouseY);
   _currentLevel->ChangeBrick(coords[0], coords[1], _currentType);
   delete coords;
+}
+
+void Editor::SaveHandler(void* data) {
+  _currentLevel->SaveToFile("data/level");
+  std::cout << "saved" << std::endl;
 }

@@ -86,7 +86,15 @@ class ComponentFeature;
 == Includes ==
 For those files we can't forward declare, use includes
 -
+Ubuntu includes.
 #include <list>
+-
+
+== Ubuntu includes ==
+These includes are reuired for building on Ubuntu.
+I'm not sure if they're required for all versions of Linux.
+-
+#include <cstddef>
 -
 
 == Include guard ==

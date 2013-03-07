@@ -42,7 +42,15 @@ void Editor::Start() {
 == Load a starting level ==
 Right now this is hard coded for testing.
 -
-LoadLevel("../test/fixtures/level.txt");
+std::ifstream file("data/level");
+if (file.good())
+{
+  LoadLevel("data/level");
+}
+else
+{
+  NewLevel(); 
+}
 _currentLevelView = new SFMLLevelView(_mainWindow, *_currentLevel);
 _renderables.push_back((SFMLView*)_currentLevelView);
 -
@@ -107,12 +115,23 @@ SFMLButtonView* sevenPointBrickView = new SFMLButtonView(_mainWindow, *btnSevenP
 _buttons.push_back(btnSevenPointBrick);
 _renderables.push_back((SFMLView*)sevenPointBrickView);
 EventManager::GetInstance().Subscribe(btnSevenPointBrick->GetEventString(),EventManager::Handler(&SevenPointBrickHandler));
+
+Button* btnSave = new Button("Save");
+btnSave->GetFeature<Dimension>()->SetY(450);
+btnSave->GetFeature<Dimension>()->SetWidth(200);
+SFMLButtonView* saveView = new SFMLButtonView(_mainWindow, *btnSave);
+_buttons.push_back(btnSave);
+_renderables.push_back((SFMLView*)saveView);
+EventManager::GetInstance().Subscribe(btnSave->GetEventString(), EventManager::Handler(&SaveHandler));
 -
 
 == New level ==
 -
 void Editor::NewLevel() {
   _currentLevel = new Level();
+  Dimension* d = _currentLevel->GetFeature<Dimension>();
+  d->SetX(200);
+  d->SetY(50);
 }
 -
 
@@ -171,6 +190,8 @@ void Editor::EditorLoop() {
             }
           }
         }
+        // probably wasn't a button, lets see if it was a renderable
+
       }
       // see if we clicked on the level
       // this is outside the if statement so we can support
@@ -278,9 +299,18 @@ void Editor::LevelClickHandler(int mouseX, int mouseY) {
 }
 -
 
+== Save handler ==
+-
+void Editor::SaveHandler(void* data) {
+  _currentLevel->SaveToFile("data/level");
+  std::cout << "saved" << std::endl;
+}
+-
+
 == Includes ==
 -
 #include <iostream>
+#include <fstream>
 #include "Editor.hpp"
 #include "SFMLLevelView.hpp"
 #include "Level.hpp"
@@ -322,6 +352,8 @@ Five point brick button handler.
 Seven point brick button handler.
 
 Event click handler.
+
+Save handler.
 -
 
 == @Editor.cpp ==

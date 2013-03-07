@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include <math.h>
 #include <iostream>
 #include <fstream>
@@ -59,7 +60,7 @@ TEST(LevelTest, LoadLevelHasBricks) {
   l.LoadFromFile("test/fixtures/level.txt");
   Brick** grid = l.GetGrid();
   for(int i = 0; i < l.GetTotalBricks(); i++) {
-    //int y = (int)std::floor(i * 1.f / Level::BRICKS_PER_ROW);
+    //int y = (int)floor(i * 1.f / Level::BRICKS_PER_ROW);
     //int x = i % Level::BRICKS_PER_ROW;
     Brick* brick = grid[i];
     ASSERT_TRUE(NULL != brick);
@@ -72,7 +73,7 @@ TEST(LevelTest, LoadLevelGivesBricksCorrectXY) {
   l.LoadFromFile("test/fixtures/level.txt");
   Brick** grid = l.GetGrid();
   for(int i = 0; i < l.GetTotalBricks(); i++) {
-    int row = (int)std::floor(i * 1.f / Level::BRICKS_PER_ROW);
+    int row = (int)floor(i * 1.f / Level::BRICKS_PER_ROW);
     int col = i % Level::BRICKS_PER_ROW;
     int brickX = col * Brick::BRICK_WIDTH;
     int brickY = row * Brick::BRICK_HEIGHT;

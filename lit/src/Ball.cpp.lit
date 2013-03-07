@@ -58,10 +58,18 @@ Ball::Ball():
 
 == Includes ==
 -
+Ubuntu includes.
 #include <math.h>
 #include <time.h>
 #include "Ball.hpp"
 #include "Dimension.hpp"
+-
+
+== Ubuntu includes ==
+These includes are for building on Ubuntu.
+I'm not sure if they are required for all versions of Linux.
+-
+#include <cstdlib>
 -
 
 == Wrapper ==

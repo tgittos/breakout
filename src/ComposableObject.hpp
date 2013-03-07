@@ -1,6 +1,7 @@
 #ifndef COMPOSABLE_OBJECT_H
 #define COMPOSABLE_OBJECT_H
 
+#include <cstddef>
 #include <list>
 
 class ComponentFeature;

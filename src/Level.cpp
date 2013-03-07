@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
+#include <math.h>
 #include "Level.hpp"
 #include "Dimension.hpp"
 #include "Collidable.hpp"
@@ -8,7 +9,12 @@
 Level::Level():
   _totalBricks(0) {
   for(int i = 0; i < ROWS * BRICKS_PER_ROW; i++) {
-    _grid[i] = NULL;
+    int row = floor(i / BRICKS_PER_ROW);
+    int col = i % BRICKS_PER_ROW;
+    Brick* b = new Brick(Brick::EMPTY);
+    b->GetFeature<Dimension>()->SetX(col * Brick::BRICK_WIDTH);
+    b->GetFeature<Dimension>()->SetY(row * Brick::BRICK_HEIGHT);
+    _grid[i] = b;
     _totalBricks++;
   }
   Dimension * d = new Dimension();
@@ -99,6 +105,11 @@ std::vector<std::string> Level::ReadFile(const char* path) {
       strings.push_back(theString);
     }
     fileStream.close();
+  }
+  else
+  {
+    std::cout << "Cannot open file " << path << std::endl;
+    std::terminate();
   }
   return strings;
 }

@@ -47,6 +47,7 @@ class Editor : public EventHandler {
   static void FivePointBrickHandler(void* data);
   static void SevenPointBrickHandler(void* data);
   static void LevelClickHandler(int mouseX, int mouseY);
+  static void SaveHandler(void* data);
 };
 
 #endif

@@ -130,6 +130,11 @@ static void SevenPointBrickHandler(void* data);
 static void LevelClickHandler(int mouseX, int mouseY);
 -
 
+== Save handler ==
+-
+static void SaveHandler(void* data);
+-
+
 == Current level ==
 -
 static Level* _currentLevel;
@@ -168,6 +173,7 @@ class Editor : public EventHandler {
   Five point brick button handler.
   Seven point brick button handler.
   Level click handler.
+  Save handler.
 };
 -
 
